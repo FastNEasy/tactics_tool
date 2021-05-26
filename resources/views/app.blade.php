@@ -17,7 +17,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
 </head>
 <body class="no-margin-where-the-hell-is-it-coming-from">
     <div id="app">
@@ -82,7 +83,7 @@
                     <app></app>
                 </div>
             @else
-                Log in please
+                <!-- Log in please -->
                 @yield('content')
             @endif 
         </main>
