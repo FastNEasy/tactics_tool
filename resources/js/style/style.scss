@@ -1,41 +1,45 @@
-.nav {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-}
-.navbar-nav {
-    transition: all 0.4s;
-}
-.navbar-nav .nav-link {
-    color: rgb(58, 19, 19);
-}
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link:focus {
-    color: rgb(189, 41, 41);
-    text-decoration: none;
-}
 
-.navbar-nav .navbar-brand {
-    color: rgb(58, 19, 19);
-}
-
-
-/* Change navbar styling on scroll */
-.navbar-nav.active {
-    background: rgb(151, 96, 96);
-    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-nav.active .nav-link {
-    color: #555;
-}
-
-.navbar-nav.active .nav-link:hover,
-.navbar-nav.active .nav-link:focus {
-    color: #555;
-    text-decoration: none;
-}
-
-.navbar-nav.active .navbar-brand {
-    color: #555;
+#app{
+    // background-color: yellowgreen !important;
+    .nav-it-und{
+        background-color: rgba(202, 195, 195, 0.678) !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        a{
+            display: block;
+            overflow: hidden;
+            background-color: rgb(156,156,156);
+            text-align: center;
+            padding: 14px 16px;
+            max-block-size: 100%;
+            text-decoration: none;
+        }
+        .nav-item:hover{
+            background-color: rgba(219, 82, 82, 0.856);
+        }
+        a:hover {
+            background-color: rgba(219, 82, 82, 0.856);
+        }
+        .nav-link:hover{
+            background-color: rgba(219, 82, 82, 0.856);
+        }
+        .nav-link{
+            margin: 5px;
+        
+        }
+    }
+    a.navbar-brand{
+        margin: auto;
+        text-align: left;
+        display: block;
+        overflow: hidden;
+        padding: 14px 16px;
+        max-block-size: 100%;
+        text-decoration: none;
+    }
+    .container{
+        background-color: rgba(202, 195, 195, 0.678);
+    }
+    
 }
