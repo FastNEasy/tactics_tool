@@ -30,13 +30,13 @@ export default {
 	grid-template-columns: 1fr 1fr 1fr;
 
 	.a{
-		background: red;
+		background: rgb(150,150,150);
 	}
 	.b{
-		background: green;
+		background: rgb(120,120,120);
 	}
 	.c{
-		background: blue;
+		background: rgb(130,130,130);
 	}
     .a, .b, .c{
         height: 100vh;
