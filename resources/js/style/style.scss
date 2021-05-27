@@ -36,16 +36,19 @@ body
             margin: 5px;
         
         }
+        a.navbar-brand{
+            justify-content: left;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            text-align: left;
+            display: block;
+            overflow: hidden;
+            padding: 14px 16px;
+            max-block-size: 100%;
+            text-decoration: none;
+        }
     }
-    a.navbar-brand{
-        margin: auto;
-        text-align: left;
-        display: block;
-        overflow: hidden;
-        padding: 14px 16px;
-        max-block-size: 100%;
-        text-decoration: none;
-    }
+    
     .container{
         background-color: rgba(202, 195, 195, 0.678);
     }
@@ -101,4 +104,14 @@ body
   transition-duration: 0.4s;
   cursor: pointer;
 
+}
+.check{
+    display: inline-block;
+    text-align: center;
+    width: 10vw;
+    margin-left: 0.5vw;
+    #testInp{
+        width: 8vw;
+        margin: auto;
+    }
 }

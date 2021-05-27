@@ -8,6 +8,6 @@ class SampleController extends Controller
 {
     public function doEndpoint(Request $request)
     {
-        return response()->json(['data' => [1, 2, 3]]);
+        // return response()->json(['data' => [1, 2, 3]]);
     }
 }

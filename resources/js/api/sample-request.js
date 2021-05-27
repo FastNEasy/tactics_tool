@@ -1,4 +1,5 @@
 import request from '@/utility/request';
+import { data } from 'jquery';
 // import Resource from '@/api/resource';
 
 // class ExampleApi extends Resource {
@@ -10,15 +11,16 @@ class ExampleApi {
   }
 
   doRequest(data){
-    return request({
-      url: '/' + this.uri + '/do-request',
-      /** For GET request params go under... well... 'params' */
-      method: 'get',
-      params: data,
-      /** For POST request params go under 'data' */
-    //   method: 'post',
-    //   data: data,
-    });
+    // return request({
+    //   url: '/' + this.uri + '/do-request',
+    //   /** For GET request params go under... well... 'params' */
+    //   method: 'get',
+    //   params: data,
+    //   /** For POST request params go under 'data' */
+    // //   method: 'post',
+    // //   data: data,
+    // });
+    return data;
   }
 }
 

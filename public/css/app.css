@@ -38,8 +38,10 @@ body {
   margin: 5px;
 }
 
-#app a.navbar-brand {
-  margin: auto;
+#app .nav-it-und a.navbar-brand {
+  justify-content: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
   text-align: left;
   display: block;
   overflow: hidden;
@@ -101,4 +103,16 @@ body {
   margin: 4px 2px;
   transition-duration: 0.4s;
   cursor: pointer;
+}
+
+.check {
+  display: inline-block;
+  text-align: center;
+  width: 10vw;
+  margin-left: 0.5vw;
+}
+
+.check #testInp {
+  width: 8vw;
+  margin: auto;
 }

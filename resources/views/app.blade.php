@@ -28,10 +28,11 @@
                 <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button> -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                </a>
+                
                 <div class="nav-it-und" id="navbarSupportedContent">
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        {{ config('app.name', 'Laravel') }}
+                    </a>
                     <!-- Left Side Of Navbar -->
 
                     <!-- Right Side Of Navbar -->
@@ -77,16 +78,18 @@
 
         <main class="py-4">
             @if (Auth::check())
+                <h1>HELLO THERE CAPTAIN</h1>
                 <div id="theApp">
-                    <app></app>
+                    <app>
+                    </app>
                 </div>
+                
             @else
                 <!-- Log in please -->
                 @yield('content')
             @endif 
         </main>
     </div>
-
     <script src="{{ mix('js/vendor.js') }}"></script>
     <script src="{{ mix('js/manifest.js') }}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
