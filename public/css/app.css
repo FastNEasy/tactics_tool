@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #d1d1d1;
+  background-color: rgba(202, 195, 195, 0.678);
   font-family: 'Arial';
 }
 
@@ -54,9 +54,13 @@ body {
   background-color: rgba(202, 195, 195, 0.678);
 }
 
+.card-body {
+  padding-top: 8%;
+}
+
 .form-control {
-  width: 70%;
-  padding: 12px 20px;
+  width: 30%;
+  padding: 20px 20px;
   margin: 8px 0;
   box-sizing: border-box;
   font-size: 20px;
@@ -86,11 +90,35 @@ body {
   justify-content: center;
 }
 
-.form-check {
-  padding-right: 44%;
+label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
 }
 
-.loginButton {
+.form-check {
+  width: 200px;
+  height: 50px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+label.form-check-label {
+  width: 120px;
+  display: inline-block;
+  justify-content: center;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}
+
+.checkBox {
+  width: 20px;
+  height: 20px;
+}
+
+.button {
   background-color: #4CAF50;
   /* Green */
   border: none;
@@ -115,4 +143,20 @@ body {
 .check #testInp {
   width: 8vw;
   margin: auto;
+}
+
+.container-reg {
+  background: #949494;
+  width: 70%;
+  box-sizing: content-box;
+  padding: 1%;
+  margin: 3% auto 0;
+  border: 3pt solid #f79d9d;
+  text-align: center;
+}
+
+.col-regis {
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 20px;
 }
