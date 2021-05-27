@@ -3,7 +3,7 @@ body
 {  
     margin: 0;  
     padding: 0;  
-    background-color:#d1d1d1;  
+    background-color:rgba(202, 195, 195, 0.678);
     font-family: 'Arial';  
 } 
 
@@ -47,7 +47,7 @@ body
         text-decoration: none;
     }
     .container{
-        background-color: rgba(202, 195, 195, 0.678);
+        background-color:rgba(202, 195, 195, 0.678);
     }
     
 }
@@ -60,35 +60,68 @@ body
 //     border: 1px solid rgba(0,0,0,0.1);  
 //     margin-top:15%
 // }
-.form-control{
-    width: 70%;
-    padding: 12px 20px;
+
+
+
+.card-body{ //padding no augsas
+    padding-top: 15%;
+}
+
+.form-control{//textfield lielumi
+    width: 30%;
+    padding: 20px 20px;
     margin: 8px 0; 
     box-sizing: border-box;
     font-size:20px;
 }
 
-.form-control::placeholder{
+.form-control::placeholder{//textfield placeholdder
     font-size:20px;
 }
 
-.col-md-6{
+.col-md-6{ //textboxi centra
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.form-group.row.mb-0{
+.form-group.row.mb-0{  //button un forgot password centra
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+label{ //register page label centra
+    margin-left:35%;
+    font-family: 'Brush Script MT', cursive;
+    font-size:18px;
 }
 
 .form-check{
- padding-right: 44%;
+    width:200px;
+    height: 50px;
+    margin:auto;
+    display:flex;
+    justify-content: center;
 }
 
-.loginButton{
+
+label.form-check-label{
+    width:120px;
+    display:inline-block;
+    justify-content: center;
+    white-space:nowrap;
+    margin:0;
+    padding:0;
+    font-size:18px;
+}
+.checkBox{
+    width: 20px;
+    height: 20px;
+}
+
+
+.button{
     background-color: #4CAF50; /* Green */
   border: none;
   color: white;
