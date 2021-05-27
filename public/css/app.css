@@ -102,3 +102,12 @@ body {
   transition-duration: 0.4s;
   cursor: pointer;
 }
+
+.container-reg {
+  background: #949494;
+  width: 600px;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 8% auto 0;
+  border: 3px solid #f79d9d;
+}
