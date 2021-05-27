@@ -53,7 +53,7 @@ body {
 }
 
 .card-body {
-  padding-top: 10%;
+  padding-top: 8%;
 }
 
 .form-control {
@@ -133,9 +133,16 @@ label.form-check-label {
 
 .container-reg {
   background: #949494;
-  box-sizing: border-box;
-  padding: 10px;
+  width: 70%;
+  box-sizing: content-box;
+  padding: 1%;
   margin: 3% auto 0;
-  border: 3px solid #f79d9d;
+  border: 3pt solid #f79d9d;
   text-align: center;
+}
+
+.col-regis {
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 20px;
 }
