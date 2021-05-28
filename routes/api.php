@@ -22,6 +22,8 @@ Route::group(['middleware' => 'api'], function () {//midleware izpildaas pirms u
     Route::group(['prefix' => 'example-api'], function () {
         // Route::get('do-request', 'SampleController@doEndpoint');
         Route::post('save-sports-type', 'App\Http\Controllers\SportsTypeController@saveSportsType');
+        Route::post('save-tactic', 'App\Http\Controllers\TacticsController@saveTactic');
+        //pievienot route
     });
 
     Route::apiResource('users', 'UserController');

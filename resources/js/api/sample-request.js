@@ -30,6 +30,13 @@ class ExampleApi {
         data: data,
       });
   }
+  saveTactic(data){
+    return request({
+      url: '/' + this.uri + '/save-tactic',
+      method: 'post',
+      data: data,
+    });
+  }
 }
 
 export { ExampleApi as default };

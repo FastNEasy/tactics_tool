@@ -22,10 +22,10 @@ class CreateTacticsTable extends Migration
             });
             Schema::create('table_tactics', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedInteger("id_presets");
+                $table->foreignID('id_presets')->constrained('table_preset');
                 $table->string("tactic_name");
                 $table->string("id_tactic_table");
-                $table->unsignedInteger("id_user");
+                $table->foreignID('id_user')->constrained('users');
                 $table->timestamps();
             });
         } catch (\Throwable $th) {
