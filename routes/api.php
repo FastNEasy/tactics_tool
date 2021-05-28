@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::group(['middleware' => 'api'], function () {
+Route::group(['middleware' => 'api'], function () {//midleware izpildaas pirms un peec
     Route::group(['prefix' => 'example-api'], function () {
-        Route::get('do-request', 'SampleController@doEndpoint');
+        // Route::get('do-request', 'SampleController@doEndpoint');
+        Route::post('save-sports-type', 'App\Http\Controllers\SportsTypeController@saveSportsType');
     });
 
     Route::apiResource('users', 'UserController');
