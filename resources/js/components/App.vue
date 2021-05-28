@@ -8,7 +8,7 @@
         </div>
 
 
-        <button @click="onClickAdd(count)" v-show="count || ( !count && animations.length > 0)">
+        <button @click="onClickAdd()" v-show="count || ( !count && animations.length > 0)">
           <!-- Click me {{ count }} -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ export default {
       const data = await sampleRequest.doRequest();
       console.log('Data:', data);
     },
-    onClickAdd(index){
+    onClickAdd(){
       this.animations.push({ animation: "" });
       this.count++;
     },
