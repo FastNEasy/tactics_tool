@@ -1,11 +1,11 @@
 import request from '@/utility/request';
-import { data } from 'jquery';
 // import Resource from '@/api/resource';
 
 // class ExampleApi extends Resource {
 class ExampleApi {
-  constructor() {
-    this.uri = 'example-api';
+  constructor(endPoint) {
+    this.uri = 'api/example-api' + (endPoint ? `/${endPoint}` : "");//inline ifs (if ? true : else)
+
     /** When is extended. */
     // super('production');
   }
@@ -21,6 +21,14 @@ class ExampleApi {
     // //   data: data,
     // });
     return data;
+  }
+  saveSportsType(data){
+      return request({
+        url: '/' + this.uri + '/save-sports-type',
+        /** For POST request params go under 'data' */
+        method: 'post',
+        data: data,
+      });
   }
 }
 

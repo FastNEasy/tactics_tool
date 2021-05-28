@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <div class="a">
+      <div>
+        <input v-model="sportsName" />  
+        <button @click="onSave()">save</button>
+
+      </div>
       <div class="form-group" id="form-add-anim" v-for="(animation,count) in animations" :key="count">
         
         <div v-for="data in model" :key="data.id">
@@ -62,6 +67,7 @@ export default {
       animations: [{ animation: "" }],
       model: [{}],
       txtFieldVal: 0,
+      sportsName: null,
     }
   },
 
@@ -84,7 +90,23 @@ export default {
     },
     onClickPrint(){
       console.log("Data: ", this.txtFieldVal);
-    }
+    },
+    onSave(){
+      // orderResource.store(data).then(response => {
+      //   }).catch(error => {
+      //     console.log(error);
+      //   }).finally(() => {
+      //     this.saving = false;
+      //   });
+      sampleRequest.saveSportsType({ sportsTypeName: this.sportsName }).then(response => {
+        console.log("Response received", response);
+      }).catch(error => {
+        console.log("Error",error);
+      }).finally(() => {
+        
+      });
+      console.log(`Sports Name: ${this.sportsName}`);
+    },
   },
 };
 </script>
