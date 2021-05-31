@@ -6,13 +6,19 @@
         <button @click="onSave()">save</button>
 
       </div>
+      
+      <div>
+        <input v-model="tacticsName" />  
+        <button @click="needSave()">needSave</button>
+
+        </div>
       <div class="form-group" id="form-add-anim" v-for="(animation,count) in animations" :key="count">
         
         <div v-for="data in model" :key="data.id">
           <input class="inputData" type="number" :v-model="data.name" max="24" width="24" height="24">
         </div>
 
-
+        
         <button @click="onClickAdd()" v-show="count || ( !count && animations.length > 0)">
           <!-- Click me {{ count }} -->
           <svg
@@ -68,6 +74,9 @@ export default {
       model: [{}],
       txtFieldVal: 0,
       sportsName: null,
+      tacticsName: null,
+      idPresets:1,
+      idTactics:null,
     }
   },
 
@@ -106,6 +115,16 @@ export default {
         
       });
       console.log(`Sports Name: ${this.sportsName}`);
+    },
+     needSave(){
+      sampleRequest.saveTacticName({ tacticsName: this.tacticsName }).then(response => {
+        console.log("Response received", response);
+      }).catch(error => {
+        console.log("Error",error);
+      }).finally(() => {
+        
+      });
+      console.log(`Tactics name: ${this.tacticsName}`);
     },
   },
 };
