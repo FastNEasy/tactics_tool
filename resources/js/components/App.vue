@@ -1,24 +1,23 @@
 <template>
   <div id="app">
     <div class="a">
-      <div>
-        <input v-model="sportsName" />  
+      <div class="sportsName">
+        <input v-model="sportsName" /> 
         <button @click="onSave()">save</button>
-
       </div>
-      
-      <div>
-        <input v-model="tacticsName" />  
-        <button @click="needSave()">needSave</button>
 
-        </div>
+      <div class="addTactic">
+        <input v-model="tacticName" />
+        <input type="number" v-model="presetID" />
+        <button @click="onTacticAdd()">add tactic</button>
+      </div>
+
+
       <div class="form-group" id="form-add-anim" v-for="(animation,count) in animations" :key="count">
-        
         <div v-for="data in model" :key="data.id">
-          <input class="inputData" type="number" :v-model="data.name" max="24" width="24" height="24">
+          <input class="inputData" type="number" :v-model="data.name" max="24" width="24" height="24"/>
         </div>
 
-        
         <button @click="onClickAdd()" v-show="count || ( !count && animations.length > 0)">
           <!-- Click me {{ count }} -->
           <svg
@@ -50,7 +49,7 @@
             />
           </svg>
         </button>
-        <button type="submit" @click="onClickPrint()" width="24" height="24">Press to save</button>  
+        <!-- <button type="submit" @click="onClickPrint()" width="24" height="24">Press to save</button>   -->
       </div>
     </div>
     <div class="b"></div>
@@ -59,24 +58,29 @@
 </template>
 
 <script>
+
 import SampleRequest from '@/api/sample-request';
+import Cookies from 'js-cookie';
 const sampleRequest = new SampleRequest();
 export default {
   name: 'App',
   created(){
     this.getData();
+    this.user = JSON.parse(Cookies.get(this.user));
+  console.log(this.user);
   },
 
   data(){
     return{
+      user: null,
       count: 0,
       animations: [{ animation: "" }],
       model: [{}],
-      txtFieldVal: 0,
       sportsName: null,
-      tacticsName: null,
-      idPresets:1,
-      idTactics:null,
+      tacticName: null,
+      presetID: 1,
+      identif: 1,
+
     }
   },
 
@@ -97,9 +101,7 @@ export default {
         return;
       }
     },
-    onClickPrint(){
-      console.log("Data: ", this.txtFieldVal);
-    },
+    //saving preset changes
     onSave(){
       // orderResource.store(data).then(response => {
       //   }).catch(error => {
@@ -116,15 +118,15 @@ export default {
       });
       console.log(`Sports Name: ${this.sportsName}`);
     },
-     needSave(){
-      sampleRequest.saveTacticName({ tacticsName: this.tacticsName }).then(response => {
-        console.log("Response received", response);
+
+    //adding tactic to the table
+    onTacticAdd(){
+      sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginID: this.user}).then(response => {
+        console.log("Response received-2", response);
       }).catch(error => {
-        console.log("Error",error);
-      }).finally(() => {
-        
+        console.log("Error-2", error);
       });
-      console.log(`Tactics name: ${this.tacticsName}`);
+      console.log(`Tactic name: ${this.tacticName}`);
     },
   },
 };

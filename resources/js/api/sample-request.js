@@ -31,9 +31,11 @@ class ExampleApi {
         data: data,
       });
   }
-  saveTacticName(data){
+
+  saveTactic(data){
     return request({
-      url: '/' + this.uri + '/save-tactics-name',
+      url: '/' + this.uri + '/save-tactic',
+
       method: 'post',
       data: data,
     });
