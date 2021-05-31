@@ -20,7 +20,6 @@
       <!-- izveidot jaunu lauku, kuraa iespejams pievienot animaciju(jauna click funkcija, kas izveido animacijas ) -->
       <!-- izveidot iespeju pievienot/nonjemt speletajus un to koordinates fikset tabula ar pogu vai ko tml -->
     </div>
-    </div>
     <div class="b"></div>
     <div class="c"></div>
   </div>
@@ -52,7 +51,8 @@ export default {
 
       presetID: 1,//padariit so ka izveli, pectam
 
-
+    }
+  },
   methods: {
     async getData(){
       const data = await sampleRequest.doRequest();
@@ -105,9 +105,8 @@ export default {
         return;
       }
     },
-  },
-};
-
+  }
+}
 </script>
 <style lang="scss" scoped>
 #app{
