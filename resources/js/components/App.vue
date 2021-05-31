@@ -70,7 +70,10 @@ export default {
         
       });
       console.log(`Sports Name: ${this.sportsName}`);
+
+      
     },
+
     //adding tactic to the table
     onTacticAdd(){
       sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginId: this.user }).then(response => {
