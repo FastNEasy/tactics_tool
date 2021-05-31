@@ -58,16 +58,20 @@
 
 <script>
 import SampleRequest from '@/api/sample-request';
+import Cookies from 'js-cookie';
 const sampleRequest = new SampleRequest();
 export default {
   name: 'App',
   created(){
     this.getData();
+    this.user = JSON.parse(Cookies.get("UserObject"));
+    console.log(this.user)
   },
 
   data(){
     return{
       count: 0,
+      user: null,
       animations: [{ animation: "" }],
       model: [{}],
       sportsName: null,
@@ -116,7 +120,7 @@ export default {
 
     //adding tactic to the table
     onTacticAdd(){
-      sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, identify: this.identif }).then(response => {
+      sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginID: this.user }).then(response => {
         console.log("Response received-2", response);
       }).catch(error => {
         console.log("Error-2", error);

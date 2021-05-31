@@ -10,10 +10,13 @@ class TacticsController extends Controller
         $tacticTableN = "_tactic_table";
         $params = (Object)$request->all();
         $query = new tacticsModel();
+        $userID = $params->loginID;
         $query->id_presets = $params->presetChoice;
         $query->tactic_name = $params->nameTactic;
-        $query->id_tactic_table = $params->identify.$tacticTableN;
-        $query->id_user = 1;//$params->Auth::user()->id
+        $query->id_tactic_table ="";
+        $query->id_user = $userID['id'];//$params->Auth::user()->id\
+        $query->save();
+        $query->id_tactic_table = "$query->id"."$tacticTableN";
         $query->save();
         return response()->json([
             "Data" => $params,
