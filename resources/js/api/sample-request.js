@@ -1,4 +1,5 @@
 import request from '@/utility/request';
+
 // import Resource from '@/api/resource';
 
 // class ExampleApi extends Resource {
@@ -29,6 +30,14 @@ class ExampleApi {
         method: 'post',
         data: data,
       });
+  }
+
+  saveTacticsName(data){
+    return request({
+      url: '/' + this.uri + '/save-tactics-name',
+      method: 'post',
+      data: data,
+    });
   }
 }
 

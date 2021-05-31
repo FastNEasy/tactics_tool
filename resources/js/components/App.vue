@@ -4,8 +4,13 @@
       <div>
         <input v-model="sportsName" />  
         <button @click="onSave()">save</button>
-
       </div>
+
+    <div>
+      <input placeholder="tacticsName" v-model="tacticsName" />
+      <button @click="onClickSaveTacticsName()">save tactics name</button>
+    </div>
+
       <div class="form-group" id="form-add-anim" v-for="(animation,count) in animations" :key="count">
         
         <div v-for="data in model" :key="data.id">
@@ -68,6 +73,7 @@ export default {
       model: [{}],
       txtFieldVal: 0,
       sportsName: null,
+      tacticsName: null,
     }
   },
 
@@ -106,7 +112,20 @@ export default {
         
       });
       console.log(`Sports Name: ${this.sportsName}`);
+
+      
     },
+
+    onClickSaveTacticsName(){
+      sampleRequest.saveTacticsName({ sportTacticsName: this.tacticsName }).then(response => {
+        console.log("Response received", response);
+      }).catch(error => {
+        console.log("Error",error);
+      }).finally(() => {
+        
+      });
+      console.log(`Tactics Name: ${this.tacticsName}`);      
+    }
   },
 };
 </script>
