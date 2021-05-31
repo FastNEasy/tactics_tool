@@ -22,10 +22,12 @@ class CreateTacticsTable extends Migration
             });
             Schema::create('table_tactics', function (Blueprint $table) {
                 $table->id();
-                $table->foreignID('id_presets')->constrained('table_preset')->onUpdate('cascade')->onDelete('cascade');
+
+                $table->foreignID('id_presets')->constrained('table_preset')->onDelete('cascade')->onUpdate('cascade');
                 $table->string("tactic_name");
                 $table->string("id_tactic_table");
-                $table->foreignID('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+                $table->foreignID('id_user')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+
                 $table->timestamps();
             });
         } catch (\Throwable $th) {
@@ -33,20 +35,19 @@ class CreateTacticsTable extends Migration
             Schema::dropIfExists('table_preset');
             Schema::dropIfExists('table_tactics');
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-            //Schema::dropIfExists('$id_tactic_table');
             throw $th;
 
         }
         //theses tables go into the request
         // Schema::create('id_table_tactic', function (Blueprint $table) {
         //     $table->id();
-        //     $table->integer("id_player");
-        //     $table->unsignedInteger("id_anim");
-        //     $table->float("player_pos_x");
-        //     $table->float("player_pos_y");
-        //     $table->timestamps();
+            // $table->integer("id_player");
+            // $table->foreignID("id_anim")->onUpdate('cascade')->onDelete('cascade')->constrained('animation');
+            // $table->float("player_pos_x");
+            // $table->float("player_pos_y");
+            // $table->timestamps();
         // });
-        // Schema::create('table_animation', function (Blueprint $table) {
+        // Schema::create('nimation', function (Blueprint $table) {
         //     $table->id();
         //     $table->bigInteger("time");
         //     $table->text("comment");
@@ -65,6 +66,6 @@ class CreateTacticsTable extends Migration
         Schema::dropIfExists('table_preset');
         Schema::dropIfExists('table_tactics');
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        //Schema::dropIfExists('$id_tactic_table');
+
     }
 }

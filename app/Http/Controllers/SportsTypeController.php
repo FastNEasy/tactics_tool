@@ -13,9 +13,9 @@ class SportsTypeController extends Controller
         $query->field_picture = "ASF";
         $query->save();
         return response()->json([
-            "Data" => $params,
-            "SavedValue" => $query,
-            "Status" => "okay", // php norada objektu of array
+            "data" => $params,
+            "saved_value" => $query,
+            "status" => "okay", // php norada objektu of array
         ]);
     }
 }

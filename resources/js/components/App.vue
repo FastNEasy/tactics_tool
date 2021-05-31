@@ -2,55 +2,23 @@
   <div id="app">
     <div class="a">
       <div class="sportsName">
+        <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
+        <!-- state managment  -->
         <input v-model="sportsName" /> 
-        <button class="open-button" @click="onSave()" >save</button>
+
+        <button class="open-button" @click="onSave()">save</button>
       </div>
       <div class = "form-popup" id="myForm">
-      <div class="addTactic">
-        <input v-model="tacticName" />
-        <input type="number" v-model="presetID" />
-        <button type= "button" id = "formButton" @click="onTacticAdd()">add tactic</button>
-      </div>
-
-
-      <div class="form-group" id="form-add-anim" v-for="(animation,count) in animations" :key="count">
-        <div v-for="data in model" :key="data.id">
-          <input class="inputData" type="number" :v-model="data.name" max="24" width="24" height="24"/>
+        <div class="addTactic">
+          <input v-model="tacticName" placeholder="Taktikas nosaukums" />
+          <input type="number" v-model="presetID" placeholder="Speles laukums" />
+          <button @click="onTacticAdd()">add tactic</button>
         </div>
+        <!-- padarit pogas pasleptas peec nospieshanas -->
 
-        <button @click="onClickAdd()" v-show="count || ( !count && animations.length > 0)">
-          <!-- Click me {{ count }} -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            class="ml-2 cursor-pointer"
-          >
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path
-              fill="green"
-              d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
-            />
-          </svg>
-        </button>
-        <button @click="onClickRemove(count)" v-show="count == animations.length-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            class="ml-2 cursor-pointer"
-          >
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path
-              fill="#EC4899"
-              d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z"
-            />
-          </svg>
-        </button>
-        <!-- <button type="submit" @click="onClickPrint()" width="24" height="24">Press to save</button>   -->
       </div>
+      <!-- izveidot jaunu lauku, kuraa iespejams pievienot animaciju(jauna click funkcija, kas izveido animacijas ) -->
+      <!-- izveidot iespeju pievienot/nonjemt speletajus un to koordinates fikset tabula ar pogu vai ko tml -->
     </div>
     </div>
     <div class="b"></div>
@@ -76,33 +44,19 @@ export default {
   data(){
     return{
       count: 0,
-      user: null,
+      user : null,
       animations: [{ animation: "" }],
       model: [{}],
       sportsName: null,
       tacticName: null,
-      presetID: 1,
-      identif: 1,
 
-    }
-  },
+      presetID: 1,//padariit so ka izveli, pectam
+
 
   methods: {
     async getData(){
       const data = await sampleRequest.doRequest();
       console.log('Data:', data);
-    },
-    onClickAdd(){
-      this.animations.push({ animation: "" });
-      this.count++;
-    },
-    onClickRemove(index){
-      if(this.count > 0){
-        this.animations.splice(index, 1);
-        this.count--;
-      }else{
-        return;
-      }
     },
     //saving preset changes
     onSave(){
@@ -111,6 +65,7 @@ export default {
       //     console.log(error);
       //   }).finally(() => {
       //     this.saving = false;
+
       //   });
     
       document.getElementById("myForm").style.display = "block";
@@ -131,11 +86,24 @@ export default {
     onTacticAdd(){
 
       sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginID: this.user }).then(response => {
+
         console.log("Response received-2", response);
       }).catch(error => {
         console.log("Error-2", error);
       });
       console.log(`Tactic name: ${this.tacticName}`);
+    },
+    onClickAdd(){//revamp this for new button functions
+      this.animations.push({ animation: "" });
+      this.count++;
+    },
+    onClickRemove(index){//revamp this for new button functions
+      if(this.count > 0){
+        this.animations.splice(index, 1);
+        this.count--;
+      }else{
+        return;
+      }
     },
   },
 };
