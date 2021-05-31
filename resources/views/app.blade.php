@@ -78,6 +78,7 @@
 
         <main class="py-4">
             @if (Auth::check())
+                {{setcookie("UserObject", json_encode(Auth::user()), time()+3600, "/", "localhost:3000")}}
                 <h1>HELLO THERE CAPTAIN</h1>
                 <div id="theApp">
                     <app>

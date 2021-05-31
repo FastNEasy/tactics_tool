@@ -160,3 +160,7 @@ label.form-check-label {
   padding-bottom: 1%;
   font-size: 20px;
 }
+
+.form-popup {
+  display: none;
+}
