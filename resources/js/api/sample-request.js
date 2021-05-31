@@ -1,5 +1,7 @@
 import request from '@/utility/request';
-//import { post } from 'jquery';
+
+
+
 // import Resource from '@/api/resource';
 
 // class ExampleApi extends Resource {

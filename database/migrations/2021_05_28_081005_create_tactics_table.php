@@ -22,16 +22,20 @@ class CreateTacticsTable extends Migration
             });
             Schema::create('table_tactics', function (Blueprint $table) {
                 $table->id();
-                $table->foreignID('id_presets')->constrained('table_preset');
+                $table->foreignID('id_presets')->constrained('table_preset')->onUpdate('cascade')->onDelete('cascade');
                 $table->string("tactic_name");
                 $table->string("id_tactic_table");
-                $table->foreignID('id_user')->constrained('users');
+                $table->foreignID('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
                 $table->timestamps();
             });
         } catch (\Throwable $th) {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             Schema::dropIfExists('table_preset');
             Schema::dropIfExists('table_tactics');
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            //Schema::dropIfExists('$id_tactic_table');
             throw $th;
+
         }
         //theses tables go into the request
         // Schema::create('id_table_tactic', function (Blueprint $table) {
@@ -57,7 +61,10 @@ class CreateTacticsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('table_preset');
         Schema::dropIfExists('table_tactics');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        //Schema::dropIfExists('$id_tactic_table');
     }
 }

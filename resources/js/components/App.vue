@@ -3,13 +3,13 @@
     <div class="a">
       <div class="sportsName">
         <input v-model="sportsName" /> 
-        <button @click="onSave()">save</button>
+        <button class="open-button" @click="onSave()" >save</button>
       </div>
-
+      <div class = "form-popup" id="myForm">
       <div class="addTactic">
         <input v-model="tacticName" />
         <input type="number" v-model="presetID" />
-        <button @click="onTacticAdd()">add tactic</button>
+        <button type= "button" id = "formButton" @click="onTacticAdd()">add tactic</button>
       </div>
 
 
@@ -52,6 +52,7 @@
         <!-- <button type="submit" @click="onClickPrint()" width="24" height="24">Press to save</button>   -->
       </div>
     </div>
+    </div>
     <div class="b"></div>
     <div class="c"></div>
   </div>
@@ -66,14 +67,16 @@ export default {
   name: 'App',
   created(){
     this.getData();
-    this.user = JSON.parse(Cookies.get(this.user));
-  console.log(this.user);
+
+    this.user = JSON.parse(Cookies.get("UserObject"));
+    console.log(this.user)
+
   },
 
   data(){
     return{
-      user: null,
       count: 0,
+      user: null,
       animations: [{ animation: "" }],
       model: [{}],
       sportsName: null,
@@ -109,6 +112,9 @@ export default {
       //   }).finally(() => {
       //     this.saving = false;
       //   });
+    
+      document.getElementById("myForm").style.display = "block";
+
       sampleRequest.saveSportsType({ sportsTypeName: this.sportsName }).then(response => {
         console.log("Response received", response);
       }).catch(error => {
@@ -117,11 +123,14 @@ export default {
         
       });
       console.log(`Sports Name: ${this.sportsName}`);
+
+      
     },
 
     //adding tactic to the table
     onTacticAdd(){
-      sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginID: this.user}).then(response => {
+
+      sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginID: this.user }).then(response => {
         console.log("Response received-2", response);
       }).catch(error => {
         console.log("Error-2", error);
@@ -130,6 +139,7 @@ export default {
     },
   },
 };
+
 </script>
 <style lang="scss" scoped>
 #app{

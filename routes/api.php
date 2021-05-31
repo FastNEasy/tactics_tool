@@ -25,7 +25,6 @@ Route::group(['middleware' => 'api'], function () {//midleware izpildaas pirms u
         Route::post('save-tactic', 'App\Http\Controllers\TacticsController@saveTactic');
         //pievienot route
     });
-
     Route::apiResource('users', 'UserController');
     Route::get('users/{user}/permissions', 'UserController@permissions');
 
