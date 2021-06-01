@@ -33,7 +33,14 @@ class ExampleApi {
         data: data,
       });
   }
-
+  saveBase64(data){
+    return request({
+      url: '/' + this.uri + '/save-base64',
+      /** For POST request params go under 'data' */
+      method: 'post',
+      data: data,
+    });
+}
   saveTactic(data){
     return request({
       url: '/' + this.uri + '/save-tactic',

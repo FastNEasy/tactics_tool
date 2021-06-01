@@ -24,8 +24,8 @@ class TacticsController extends Controller
         $animTableName = "$secondSideAnim"."$query->id";
         $query->id_tactic_table = $tableNameTactic;
         $query->save();
-        if (!Schema::hasTable($animTableName)) {//parvietot sho uz atsevisku funkciju, kas pievienos tabulai animacijas
-            Schema::create($animTableName, function (Blueprint $table) {
+        if (!Schema::hasTable($query->id_tactic_table )) {//parvietot sho uz atsevisku funkciju, kas pievienos tabulai animacijas
+            Schema::create($query->id_tactic_table , function (Blueprint $table) {
                 $table->id();
                 $table->bigInteger("time");
                 $table->text("comment");
@@ -37,7 +37,7 @@ class TacticsController extends Controller
             Schema::create($tableNameTactic, function($table){
                 $table->increments('id');
                 $table->integer("id_player");
-                $table->foreignID("id_anim")->constrained('animation')->onUpdate('cascade')->onDelete('cascade');//nonemt sho
+                $table->foreignID("id_anim")->constrained($query->id_tactic_table )->onUpdate('cascade')->onDelete('cascade');//nonemt sho
                 $table->float("player_pos_x");
                 $table->float("player_pos_y");
                 $table->timestamps();
@@ -51,3 +51,6 @@ class TacticsController extends Controller
     }
 
 }
+//stavokla menigaments ()
+//vue ex (vua )
+//
