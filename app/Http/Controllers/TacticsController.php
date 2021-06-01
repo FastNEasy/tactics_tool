@@ -24,7 +24,7 @@ class TacticsController extends Controller
         $animTableName = "$secondSideAnim"."$query->id";
         $query->id_tactic_table = $tableNameTactic;
         $query->save();
-        if (!Schema::hasTable($animTableName)) {//parvietot sho uz atsevisku funkciju, kas pievienos tabulai animacijas
+        if (!Schema::hasTable($animTableName)) {
             Schema::create($animTableName, function (Blueprint $table) {
                 $table->id();
                 $table->bigInteger("time");

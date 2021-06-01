@@ -10,7 +10,7 @@ class SportsTypeController extends Controller
         $params = (Object)$request->all();
         $query = new sportsType();
         $query->sports_name = $params->sportsTypeName;
-        $query->field_picture = "ASF";
+        $query->field_picture = $params->baseImg;
         $query->save();
         return response()->json([
             "data" => $params,
