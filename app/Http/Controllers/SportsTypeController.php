@@ -22,6 +22,7 @@ class SportsTypeController extends Controller
     public function getSportsTypes(Request $request){
         $params = (Object)$request->all(); 
         if(isset($params->id)){
+            
         }else{
             $query = sportsType::select('id','sports_name')->get();    
         }
