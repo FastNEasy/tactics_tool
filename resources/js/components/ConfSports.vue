@@ -1,26 +1,23 @@
 <template>
     <div id="confsports">
-        <div class="displayTables">
-            <table class="table">
+            <table id="sportsTypeTable">
                 <thead>
                     <tr id="headerT">
                         <th>Sport Type</th>
-                        <th><router-link class="button-link" to="/edit">Create new!</router-link></th>
+                        <th><router-link class="buttonCreate" to="/edit">Create new!</router-link></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(sport, index) in sports" :key="sport.id">
-                        <td>{{ sport.sports_name }}</td>
-                        <td>
-                            <router-link class="button-table1" :to="`/sportinfo/${sport.id}`" >Edit</router-link>
-                            <!-- <button @click="editPreset(sport)" to="/sportinfo/{$sport.id}">edit</button> -->
-                            <button class="button-table1" @click="removePreset(sport.id, index)">Delete</button>
+                        <td class="tpyeNameCell">{{ sport.sports_name }}</td>
+                        <td class="tableButtonCell">
+                            <th><router-link class="button" :to="`/sportinfo/${sport.id}`" >Edit</router-link></th>
+                            <th><button class="button" @click="removePreset(sport.id, index)">Delete</button></th>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
 </template>
 
 <script>
@@ -60,53 +57,49 @@
 
 <style lang="scss" scoped>
     #confsports{  
-        .displayTables{
           
-            table{
-                margin-left: 40%; 
+            #sportsTypeTable{
+                font-family: "Lucida Console", "Courier New", monospace;
+                border-collapse: collapse;
+                width: 60%;
                 background: gray;
                 border-collapse: collapse;
                 border: 1px solid black;
+                margin:0 auto;
             }
             #headerT{
                 font-size: 20px;
             }
-            th, td, tr {
-                padding: 10px;
+            
+            #sportsTypeTable td, #sportsTypeTable tr{
                 border-bottom: 0.5px solid black;
-                color: white;
+                padding: 10px;
+                color:white;
+                font-weight: bold;
             }
+            
+            // td, tr {
+            //     padding: 10px;
+            //     border-bottom: 0.5px solid black;
+            //     color: white;
+            //     text-align: right;
+            // }
             tr:hover {
-                background-color: #ca4a4a;
+                background-color: #7a7171;
                 color: rgb(80, 67, 67)
             }
-            .button-link {
-                background-color: #1db40f;
-                border: none;
-                color: white;
-                padding: 10px 24px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 20px;
-                margin: 4px 2px;
-                cursor: pointer;
+            
+            .tpyeNameCell{
+                font-size:25px;
+                left:30%;
             }
-            .button-link:hover {
-                background-color: rgb(160, 33, 33);
+
+            .tableButtonCell{
+                text-align: right;
+                width:20%;
             }
-            .button-table{
-                background-color: white;
-                color: black;
-                padding: 5px 15px;
-                text-decoration: none;
-            }
-            .button-table:hover {
-                background-color: rgb(160, 33, 33);
-                color: white;
-                cursor: pointer;
-            }
-            .button-table1{
+
+            .button{
                 display:inline-block;
                 padding:0.3em 1.2em;
                 margin:0 0.3em 0.3em 0;
@@ -120,17 +113,45 @@
                 text-align:center;
                 transition: all 0.2s;
             }
-            .button-table1:hover {
+            .button:hover {
+                background-color: #f44336;
+                color: white;
+                cursor: pointer;
+            }
+            .button-table{
+                background-color: white;
+                color: black;
+                padding: 5px 15px;
+                text-decoration: none;
+            }
+            .button-table:hover {
                 background-color: rgb(160, 33, 33);
                 color: white;
                 cursor: pointer;
             }
-        }
-        button{
-            display:inline-block;
-            font-size:16px;
-            text-align: center;
-            margin: 4px 4px;
-        }
+            .buttonCreate{
+                background-color: #1db40f;
+                border: none;
+                color: white;
+                padding: 10px 24px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 20px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+            .buttonCreate:hover {
+                background-color: rgb(160, 33, 33);
+                color: white;
+                cursor: pointer;
+            }
+        
+        // button{
+        //     display:inline-block;
+        //     font-size:16px;
+        //     text-align: center;
+        //     margin: 4px 4px;
+        // }
     }
 </style>
