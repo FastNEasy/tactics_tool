@@ -16,7 +16,7 @@
         ]
     },
     "devDependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.19",
         "babel-eslint": "^10.1.0",
         "bootstrap": "^5.0.0",
         "browser-sync": "^2.26.14",

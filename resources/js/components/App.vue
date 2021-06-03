@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <div class="navigation">
       <ul>
         <li>
@@ -14,26 +13,24 @@
           </div>
         </li>
         <li>
-          <div class="gridItem">
+          <!-- <div class="gridItem">
             <router-link to="/edit">Go to Edit</router-link>
-          </div>
+          </div> -->
         </li>
         <li>
           <div class="gridItem">
-            <router-link to="/sportinfo">Go to sports info</router-link>
+            <router-link to="/confsports">Check all Sports</router-link>
           </div>
         </li>
       </ul>
     </div>
     <div class="b">
       <router-view></router-view>
-
     </div>
   </div>
 </template>
 
 <script>
-
   import SampleRequest from '@/api/sample-request';
   import Cookies from 'js-cookie';
   const sampleRequest = new SampleRequest();
@@ -56,8 +53,8 @@
       },
     },
   };
-
 </script>
+
 <style lang="scss" scoped>
   #app{
     width: 100vw;
@@ -71,7 +68,6 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        width: 1fr;
         background-color: rgba(173, 27, 27, 0.925);
         li a {
           display: grid;
@@ -90,11 +86,12 @@
         }
       }
     }
-    .b{// router view atradisies b
+    .b {// router view atradisies b
       background: rgb(150,150,100);//vairaaak stilizet b lauku
     }
     .navigation, .b{
-      height: 20vh;
+      height: 100vh;
     }
   }
+
 </style>

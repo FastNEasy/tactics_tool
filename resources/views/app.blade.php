@@ -82,7 +82,6 @@
                 <h1>HELLO THERE CAPTAIN</h1>
                 <div id="theApp">
                     <app>
-                    
                     </app>
                 </div>
                 

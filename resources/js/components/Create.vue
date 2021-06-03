@@ -2,7 +2,7 @@
     <div id="create">
         <div class="addTactic">
             <input v-model="tacticName" placeholder="Taktikas nosaukums" />
-            <input type="number" v-model="presetID" placeholder="Speles laukums" />
+            <input type="number" v-model="presetID" placeholder="Sporta veids" />
             <button @click="onTacticAdd()">add tactic</button>
         </div>
     </div>
@@ -23,7 +23,7 @@
                     user : null,
                     //potenciali arii preset id, lai zinatu kadam sporta veidam taktika
                     tacticName: null,
-                    presetID: 1,
+                    presetID: 14,
                 }
             },
             methods: {
@@ -39,11 +39,14 @@
                     });
                     console.log(`Tactic name: ${this.tacticName}`);
                 },
+                myFunction() {
+                    document.getElementById("myDropdown").classList.toggle("show");
+                }
             },
 
         };
 </script>
 
 <style lang="scss" scoped>
-
+    
 </style>

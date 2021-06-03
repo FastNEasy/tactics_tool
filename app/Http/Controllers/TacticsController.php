@@ -9,7 +9,7 @@ use App\Models\TacticsModel;
 use Illuminate\Support\Facades\Auth;
 class TacticsController extends Controller
 {
-    public function saveTactic(Request $request){
+     public function saveTactic(Request $request){
         $tacticTableN = "_tactic_table";
         $secondSideAnim = "animation_";
         $params = (Object)$request->all();
@@ -24,10 +24,8 @@ class TacticsController extends Controller
         $animTableName = "$secondSideAnim"."$query->id";
         $query->id_tactic_table = $tableNameTactic;
         $query->save();
-
         if (!Schema::hasTable($animTableName)) {
             Schema::create($animTableName, function (Blueprint $table) {
-
                 $table->id();
                 $table->bigInteger("time");
                 $table->text("comment");
@@ -50,6 +48,27 @@ class TacticsController extends Controller
             "saved_value" => $query,
             "status" => "okay",
         ]);
+
+        }
+        public function getTacticName(Request $request){
+            $params = (Object)$request->all(); 
+            // if(isset($params->id)){
+
+            // }
+            // else{
+                $query = tacticsModel::select('id','tactic_name')->get();
+            //}
+            return response()->json([
+                "data" => $query,
+            ]);
     }
 
+    public function deleteTacticName(Request $request){
+        $params = (Object)$request->all();
+        $query = tacticsModel::find($params->id)->delete();
+        // return response()->json([
+        //     "a" => $params,
+        // ]);
+        // alert("Deleted preset: $deletedSport");
+    }
 }

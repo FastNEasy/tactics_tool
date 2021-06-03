@@ -3,16 +3,17 @@
         <div class="viewEdit">
             <div class="sportsName">
                 <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
-                <input v-model="sportsName" /> 
-                <input
+                <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport" /><br><br>
+                <input class="inputField"
                     type="file" 
                     name="uploadFieldName"  
                     @change="onchange($event.target)"
                     accept="image/*"
                 />
                 <img id="imageHolder">
-                <button class="open-button" @click="onSave()">save</button>
+                <button type="submit" @click="onSave()">save</button>
             </div>
+            <router-link class="button-link" to="/confsports">Return to list!</router-link>
         </div>
     </div>
 </template>
@@ -62,12 +63,48 @@
                 console.log("Error",error);
                 }).finally(() => {});
                 console.log(`Sports Name: ${this.sportsName}`);
-                console.log(`Sports Pic: ${this.base64Img}`);
+                // console.log(`Sports Pic: ${this.base64Img}`);
             },
         },
     };
 </script>
 
 <style lang="scss" scoped>
-   
+    #edit{
+        .button-link {
+            background-color: #5e645d;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .button-link:hover {
+            background-color: rgb(160, 33, 33);
+        }
+       .sportsNameInput{
+            width:30%;
+            height: 5vh;
+            font-size:20px;
+       }
+
+        .inputField{
+            background-color: green;
+            &input[type=file]::file-selector-button {
+                border: 2px solid #6c5ce7;
+                padding: .2em .4em;
+                border-radius: .2em;
+                background-color: #a29bfe;
+                transition: 1s;
+            }
+        }
+        input#file-upload-button{
+            color:green;
+            font-size:20px;
+        }
+    }
 </style>
