@@ -2,15 +2,20 @@
     <div id="sportinfo">
         <div class="viewEdit">
             <div class="sportsName">
-                <input v-model="sportsName" /> 
-                <input
-                    type="file" 
-                    name="uploadFieldName"  
-                    @change="onchange($event.target)"
-                    accept="image/*"
-                />
+                <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport" /><br><br>
+                <div class="file-input">
+                    <input
+                        type="file" 
+                        id="file"
+                        class="file"  
+                        @change="onchange($event.target)"
+                        accept="image/*"
+                    >
+                    <label for="file">Select Image</label><br><br>
+                </div>
+
                 <img id="imageHolder">
-                <button class="open-button" @click="onSave()"> update </button>
+                  <button class="updateButton" type="submit" @click="onSave()">Update</button><br><br>
             </div>
         </div>
         
@@ -74,8 +79,72 @@
 
 <style lang="scss" scoped>
     #sportinfo{
+        text-align: center;
+        padding-top:5%;
+
         .text-view{
             color: rgb(104, 250, 59);
+        }
+
+        .sportsNameInput{
+            width:30%;
+            height: 5vh;
+            font-size:20px;
+       }
+
+        .file {
+            opacity: 0;
+            width: 0.1px;
+            height: 0.1px;
+            position: absolute;
+        }
+        .file-input label {
+            display: block;
+            position: relative;
+            width: 200px;
+            height: 50px;
+            margin:0 auto;
+            border-radius: 25px;
+            background: linear-gradient(40deg, #636060, #73f579);
+            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform .2s ease-out;
+        }
+
+        .file-input label:hover{
+            background: linear-gradient(40deg, #929090, #97f39c);
+        }
+
+        .file-input label:active{
+            top: 1px;
+        }
+
+        .updateButton {
+            background-color:#44c767;
+            border-radius:28px;
+            border:1px solid #18ab29;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:17px;
+            padding:16px 31px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #2f6627;
+        }
+
+        .updateButton:hover {
+            background-color:#5cbf2a;
+        }
+
+        .updateButton:active {
+            position:relative;
+            top:1px;
         }
     }
     

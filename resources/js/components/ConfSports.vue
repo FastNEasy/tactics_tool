@@ -59,10 +59,11 @@
 </script>
 
 <style lang="scss" scoped>
-    #confsports{
+    #confsports{  
         .displayTables{
+          
             table{
-                margin-left: 25%; 
+                margin-left: 40%; 
                 background: gray;
                 border-collapse: collapse;
                 border: 1px solid black;
@@ -124,6 +125,12 @@
                 color: white;
                 cursor: pointer;
             }
+        }
+        button{
+            display:inline-block;
+            font-size:16px;
+            text-align: center;
+            margin: 4px 4px;
         }
     }
 </style>
