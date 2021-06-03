@@ -23,6 +23,7 @@
     import Cookies from 'js-cookie';
     const sampleRequest = new SampleRequest();
         export default {
+            
             name: 'View',
             created(){
                 this.getData();
@@ -34,6 +35,7 @@
                     tacticsName: {},
                 }
             },
+
             methods:{
                 async getData(){
                     const {data} = await sampleRequest.getTacticName();
@@ -105,6 +107,8 @@
             text-decoration: none;
             //display: inline-block;
             font-size: 20px;
+            font-family: Stencil Std, fantasy;
+            font-weight: bold;
             margin: 4px 2px;
             cursor: pointer;
         }
