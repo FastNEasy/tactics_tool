@@ -22,6 +22,11 @@
             <router-link to="/confsports">Check all Sports</router-link>
           </div>
         </li>
+        <li>
+          <div class="gridItem">
+            <router-link to="/sportinfo">Go to sports info edit</router-link>
+          </div>
+        </li>
       </ul>
     </div>
     <div class="b">
