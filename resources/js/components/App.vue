@@ -4,12 +4,12 @@
       <ul>
         <li>
           <div class="gridItem">
-            <router-link to="/create">Create a Tactic</router-link>
+            <router-link to="/createtactic">Create a Tactic</router-link>
           </div>
         </li>
         <li>
           <div class="gridItem">
-            <router-link to="/view">Go to all tactics</router-link>
+            <router-link to="/tacticlist">Go to all tactics</router-link>
           </div>
         </li>
         <li>
@@ -19,7 +19,7 @@
         </li>
         <li>
           <div class="gridItem">
-            <router-link to="/confsports">Check all Sports</router-link>
+            <router-link to="/sportlist">Check all Sports</router-link>
           </div>
         </li>
       </ul>

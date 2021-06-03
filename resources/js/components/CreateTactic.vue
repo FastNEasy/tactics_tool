@@ -22,7 +22,7 @@
     import Cookies from 'js-cookie';
     const sampleRequest = new SampleRequest();
         export default {
-            name: 'Create',
+            name: 'CreateTactic',
             created(){
                 this.getData();
                 this.user = JSON.parse(Cookies.get("UserObject"));
