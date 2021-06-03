@@ -28,13 +28,11 @@
                 this.getData();
                 this.user = JSON.parse(Cookies.get("UserObject"));
             },
-
             data(){
                 return{
                     tacticsName: {},
                 }
             },
-
             methods:{
                 async getData(){
                     const {data} = await sampleRequest.getTacticName();
