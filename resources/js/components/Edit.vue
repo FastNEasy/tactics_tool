@@ -18,7 +18,7 @@
                 
 
                 <img id="imageHolder">
-                <button class="saveButton" type="submit" @click="onSave()">save</button><br><br>
+                <router-link @click.native="onSave()" class="saveButton" to="/confsports">Save</router-link>
             </div>
             <router-link class="button-link" to="/confsports">Return to list!</router-link>
         </div>
@@ -72,6 +72,10 @@
                 console.log(`Sports Name: ${this.sportsName}`);
                 // console.log(`Sports Pic: ${this.base64Img}`);
             },
+
+            refreshPage(){
+                window.location.reload();
+            }, 
         },
     };
 </script>
@@ -79,7 +83,7 @@
 <style lang="scss" scoped>
     #edit{
         text-align: center;
-        padding-top:10%;
+        padding-top:5%;
         .button-link {
             background-color: #5e645d;
             border: none;

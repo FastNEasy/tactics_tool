@@ -7,9 +7,9 @@
                         <td class="tacticsNameCell">{{ tactics.tactic_name}}</td>
                         <td class= "tableButtonCell">
                             <div class="buttons">
-                                <button>View</button>
-                                <button>Edit</button>
-                                <button @click="deleteTactic(tactics.id, index)">Delete</button>
+                                <th><router-link class="button" to="/viewtactic">View</router-link></th>
+                                <th><router-link class="button" to="/edittactic">Edit</router-link></th>
+                                <th><button class="button" @click="deleteTactic(tactics.id, index)">Delete</button></th>
                             </div>
                         </td>
                     </tr>
@@ -23,6 +23,7 @@
     import Cookies from 'js-cookie';
     const sampleRequest = new SampleRequest();
         export default {
+            
             name: 'View',
             created(){
                 this.getData();
@@ -34,6 +35,7 @@
                     tacticsName: {},
                 }
             },
+
             methods:{
                 async getData(){
                     const {data} = await sampleRequest.getTacticName();
@@ -63,11 +65,12 @@
             font-family: "Lucida Console", "Courier New", monospace;
             border-collapse: collapse;
             width: 100%;
+            //border-block: 1px solid black;
         }
 
         #tacticsNameTable td, #tacticsNameTable th{
             //border: 1px solid rgb(247, 186, 186);
-            padding: 15px;
+            padding: 10px;
         }
         
         #tacticsNameTable tr:nth-child(even){
@@ -91,18 +94,21 @@
 
         .tableButtonCell{
             text-align: right;
-            width:25%;
+            width:20%;
         }
 
-        button{
+
+        .button{
             background-color: #f27b72;
             border: none;
             color: white;
             padding: 15px 32px;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
+            //display: inline-block;
             font-size: 20px;
+            font-family: Stencil Std, fantasy;
+            font-weight: bold;
             margin: 4px 2px;
             cursor: pointer;
         }
