@@ -48,7 +48,7 @@
     { path: '/view', component: View },
     { path: '/edit', component: Edit},
     { path: '/confsports', component : ConfSports},
-    { path: '/sportinfo', component: SportInfo}
+    { path: '/sportinfo/:id', component: SportInfo}
   ]
   const router = new VueRouter({
     routes // short for `routes: routes`

@@ -12,8 +12,9 @@
                     <tr v-for="(sport, index) in sports" :key="sport.id">
                         <td>{{ sport.sports_name }}</td>
                         <td>
-                            <button @click="editPreset(sport)">Edit</button>
-                            <button @click="removePreset(sport.id, index)">Delete</button>
+                            <router-link class="button-table1" :to="`/sportinfo/${sport.id}`" >Edit</router-link>
+                            <!-- <button @click="editPreset(sport)" to="/sportinfo/{$sport.id}">edit</button> -->
+                            <button class="button-table1" @click="removePreset(sport.id, index)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -92,6 +93,36 @@
             }
             .button-link:hover {
                 background-color: rgb(160, 33, 33);
+            }
+            .button-table{
+                background-color: white;
+                color: black;
+                padding: 5px 15px;
+                text-decoration: none;
+            }
+            .button-table:hover {
+                background-color: rgb(160, 33, 33);
+                color: white;
+                cursor: pointer;
+            }
+            .button-table1{
+                display:inline-block;
+                padding:0.3em 1.2em;
+                margin:0 0.3em 0.3em 0;
+                border-radius:2em;
+                box-sizing: border-box;
+                text-decoration:none;
+                font-family:'Roboto',sans-serif;
+                font-weight:bold;
+                color:#FFFFFF;
+                background-color:#1db40f;
+                text-align:center;
+                transition: all 0.2s;
+            }
+            .button-table1:hover {
+                background-color: rgb(160, 33, 33);
+                color: white;
+                cursor: pointer;
             }
         }
     }

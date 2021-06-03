@@ -2,7 +2,6 @@
     <div id="sportinfo">
         <div class="viewEdit">
             <div class="sportsName">
-                <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
                 <input v-model="sportsName" /> 
                 <input
                     type="file" 
@@ -26,22 +25,22 @@
             this.getData();
             // this.user = JSON.parse(Cookies.get("UserObject"));
             // console.log(this.user);
+            // console.log(this.$route.params.id);
         },
          data(){
             return{
-                // user : null,
-                // animations: [{ animation: "" }],
-                // model: [{}],
+                sports: {},
                 sportsName: null,
                 base64Img: null,
-                id: 14, //pagaidam statisks 
+                id: this.$route.params.id, //pagaidam statisks 
             }
         },
         methods:{
             
         async getData(){
-                const {data} = await sampleRequest.getSportsInfo({ id:this.id});
-                this.sportsName=data.data;
+                console.log("Editing:",this.id);
+                const {data} = await sampleRequest.getSportsTypes({ id:this.id});
+                this.sportsName = data.sports_name;
                 this.sport = data;
                 console.log('Data:', data);  
             },
