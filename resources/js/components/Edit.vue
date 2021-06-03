@@ -79,7 +79,7 @@
 <style lang="scss" scoped>
     #edit{
         text-align: center;
-        padding-top:10%;
+        padding-top:5%;
         .button-link {
             background-color: #5e645d;
             border: none;
