@@ -34,7 +34,7 @@
                 // model: [{}],
                 sportsName: null,
                 base64Img: null,
-                id: 3,
+                id: 4, //pagaidam statisks 
             }
         },
         methods:{

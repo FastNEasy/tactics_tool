@@ -77,15 +77,22 @@ class ExampleApi {
       method: 'post',
       data: data,
     });
-}
-saveBase64(data){
-  return request({
-    url: '/' + this.uri + '/save-base64',
-    /** For POST request params go under 'data' */
-    method: 'post',
-    data: data,
-  });
-}
+  }
+  saveBase64(data){
+    return request({
+      url: '/' + this.uri + '/save-base64',
+      /** For POST request params go under 'data' */
+      method: 'post',
+      data: data,
+    });
+  }
+  getSportsInfo(data){
+    return request({
+      url: '/' + this.uri + '/display-sport',
+      method: 'get',
+      params: data,
+    });
+  }
 }
 
 export { ExampleApi as default };
