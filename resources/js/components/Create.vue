@@ -23,7 +23,7 @@
                     user : null,
                     //potenciali arii preset id, lai zinatu kadam sporta veidam taktika
                     tacticName: null,
-                    presetID: 14,
+                    presetID: 1,
                 }
             },
             methods: {
