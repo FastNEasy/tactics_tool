@@ -47,9 +47,25 @@ class ExampleApi {
       data: data,
     });
   }
+
+  getTacticName(data){
+    return request({
+      url: '/' + this.uri + '/display-tactic-name',
+      method: 'get',
+      data: data,
+    });
+  }
   deleteSportsTypes(data){
     return request({
       url: '/' + this.uri + '/delete-sport',
+      method: 'post',
+      data: data,
+    });
+  }
+
+  deleteTacticName(data){
+    return request({
+      url: '/' + this.uri + '/delete-tactic',
       method: 'post',
       data: data,
     });

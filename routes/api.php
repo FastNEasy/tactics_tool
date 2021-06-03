@@ -25,9 +25,11 @@ Route::group(['middleware' => 'api'], function () {//midleware izpildaas pirms u
         Route::post('save-tactic', 'App\Http\Controllers\TacticsController@saveTactic');
         Route::get('display-sport', 'App\Http\Controllers\SportsTypeController@getSportsTypes');
         Route::post('delete-sport', 'App\Http\Controllers\SportsTypeController@deleteSportsTypes');
+        Route::get('display-tactic-name', 'App\Http\Controllers\TacticsController@getTacticName');
+        Route::post('delete-tactic', 'App\Http\Controllers\TacticsController@deleteTacticName');
         //pievienot route
     });
     Route::apiResource('users', 'UserController');
     Route::get('users/{user}/permissions', 'UserController@permissions');
-
+    
 });

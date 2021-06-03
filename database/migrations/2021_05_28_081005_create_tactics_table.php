@@ -64,4 +64,6 @@ class CreateTacticsTable extends Migration
         Schema::dropIfExists('table_tactics');
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
+
+    
 }

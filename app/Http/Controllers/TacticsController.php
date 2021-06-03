@@ -34,10 +34,10 @@ class TacticsController extends Controller
             });
         }
         if (!Schema::hasTable($tableNameTactic)) {
-            Schema::create($tableNameTactic, function($table){
+            Schema::create($tableNameTactic, function($table) use($animTableName){
                 $table->increments('id');
                 $table->integer("id_player");
-                $table->foreignID("id_anim")->constrained('animation')->onUpdate('cascade')->onDelete('cascade');//nonemt sho
+                $table->foreignID("id_anim")->constrained($animTableName)->onUpdate('cascade')->onDelete('cascade');//nonemt sho
                 $table->float("player_pos_x");
                 $table->float("player_pos_y");
                 $table->timestamps();
@@ -48,6 +48,27 @@ class TacticsController extends Controller
             "saved_value" => $query,
             "status" => "okay",
         ]);
+
+        }
+        public function getTacticName(Request $request){
+            $params = (Object)$request->all(); 
+            // if(isset($params->id)){
+
+            // }
+            // else{
+                $query = tacticsModel::select('id','tactic_name')->get();
+            //}
+            return response()->json([
+                "data" => $query,
+            ]);
     }
 
+    public function deleteTacticName(Request $request){
+        $params = (Object)$request->all();
+        $query = tacticsModel::find($params->id)->delete();
+        // return response()->json([
+        //     "a" => $params,
+        // ]);
+        // alert("Deleted preset: $deletedSport");
+    }
 }
