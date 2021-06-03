@@ -1,14 +1,18 @@
 <template>
     <div id="create">
         <div class="addTactic">
-            <input v-model="tacticName" placeholder="Taktikas nosaukums" />
-            <label class="label_font" for="presetsid">Choose a sport!</label>
-            <select name="presets" id="presetsid">
-                <option>No sport assigned</option>
+
+            <label class="label_font" for="presetsid">Choose a sport!</label><br><br>
+            <select name="presets" id="presetsid" >
+                <option hidden value="" >No sport assigned </option>
                 <option v-for="(sport) in sports" :key="sport.id" v-bind:value="sport.id">{{ sport.sports_name }}</option>
-            </select>
+            </select><br><br>
             <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
-            <button @click="onTacticAdd()">add tactic</button>
+            <input id="tacticName" v-model="tacticName" placeholder="Taktikas nosaukums" required><br><br>
+            
+            <button class="saveButton" @click="onTacticAdd()">Add tactic</button>
+            <p id="saveButton"></p>
+        
         </div>
     </div>
 </template>
@@ -44,6 +48,7 @@
                     }).catch(error => {
                         console.log("Error-2", error);
                     });
+                    //document.getElementById("saveButton").innerHTML = "Tactic added";
                     console.log(`Tactic name: ${this.tacticName}`);
                 },
                 myFunction() {
@@ -56,8 +61,49 @@
 
 <style lang="scss" scoped>
     #create{
+        text-align: center;
+        padding-top:20px;
+        
         .label_font{
-            font-size: 12px;
+            font-size: 24px;
+        }
+        #tacticName{
+            width:200px; 
+            height: 40px;
+            font-size: 18px; 
+            border-radius:8px;
+        }
+        
+        #presetsid{
+            width:180px; 
+            height: 40px;
+            font-size: 18px;  
+            border-radius:8px;
+        }
+
+        
+
+        .saveButton {
+            background-color:#44c767;
+            border-radius:28px;
+            border:1px solid #18ab29;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:17px;
+            padding:16px 31px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #2f6627;
+        }
+
+        .saveButton:hover {
+            background-color:#5cbf2a;
+        }
+
+        .saveButton:active {
+            position:relative;
+            top:1px;
         }
     }
 </style>
