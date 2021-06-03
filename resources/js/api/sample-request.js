@@ -1,7 +1,5 @@
 import request from '@/utility/request';
 
-
-
 // import Resource from '@/api/resource';
 
 // class ExampleApi extends Resource {
@@ -33,35 +31,28 @@ class ExampleApi {
         data: data,
       });
   }
-  updateSportsType(data){
-    return request({
-      url: '/' + this.uri + '/update-sports-type',
-      /** For POST request params go under 'data' */
-      method: 'post',
-      data: data,
-    });
-}
-  saveBase64(data){
-    return request({
-      url: '/' + this.uri + '/save-base64',
-      /** For POST request params go under 'data' */
-      method: 'post',
-      data: data,
-    });
-}
+
   saveTactic(data){
     return request({
       url: '/' + this.uri + '/save-tactic',
-
       method: 'post',
       data: data,
     });
   }
-  getSportsInfo(data){
+
+  getTacticName(data){
     return request({
-      url: '/' + this.uri + '/display-sport',
+      url: '/' + this.uri + '/display-tactic-name',
       method: 'get',
-      params: data,
+      data: data,
+    });
+  }
+
+  deleteTacticName(data){
+    return request({
+      url: '/' + this.uri + '/delete-tactic',
+      method: 'post',
+      data: data,
     });
   }
 }

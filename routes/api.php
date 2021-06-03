@@ -23,12 +23,11 @@ Route::group(['middleware' => 'api'], function () {//midleware izpildaas pirms u
         // Route::get('do-request', 'SampleController@doEndpoint');
         Route::post('save-sports-type', 'App\Http\Controllers\SportsTypeController@saveSportsType');
         Route::post('save-tactic', 'App\Http\Controllers\TacticsController@saveTactic');
-        Route::get('display-sport', 'App\Http\Controllers\SportsTypeController@getSportsInfo');
-        Route::post('update-sports-type', 'App\Http\Controllers\SportsTypeController@updateSportsType');
-
+        Route::get('display-tactic-name', 'App\Http\Controllers\TacticsController@getTacticName');
+        Route::post('delete-tactic', 'App\Http\Controllers\TacticsController@deleteTacticName');
         //pievienot route
     });
     Route::apiResource('users', 'UserController');
     Route::get('users/{user}/permissions', 'UserController@permissions');
-
+    
 });

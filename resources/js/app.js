@@ -15,7 +15,7 @@
  import Edit from './components/Edit';
  import Create from './components/Create';
  import View from './components/View';
- import SportInfo from './components/SportInfo';
+
  
  /**
   * The following block of code may be used to automatically register your
@@ -43,8 +43,7 @@
   const routes = [
     { path: '/create', component: Create},
     { path: '/view', component: View },
-    { path: '/edit', component: Edit},
-    { path: '/sportinfo', component: SportInfo}
+    { path: '/edit', component: Edit },
   ]
   const router = new VueRouter({
     routes // short for `routes: routes`

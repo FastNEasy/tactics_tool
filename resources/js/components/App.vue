@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <div class="navigation">
       <ul>
         <li>
@@ -18,22 +17,15 @@
             <router-link to="/edit">Go to Edit</router-link>
           </div>
         </li>
-        <li>
-          <div class="gridItem">
-            <router-link to="/sportinfo">Go to sports info</router-link>
-          </div>
-        </li>
       </ul>
     </div>
     <div class="b">
       <router-view></router-view>
-
     </div>
   </div>
 </template>
 
 <script>
-
   import SampleRequest from '@/api/sample-request';
   import Cookies from 'js-cookie';
   const sampleRequest = new SampleRequest();
@@ -56,7 +48,6 @@
       },
     },
   };
-
 </script>
 <style lang="scss" scoped>
   #app{
@@ -91,10 +82,12 @@
       }
     }
     .b{// router view atradisies b
-      background: rgb(150,150,100);//vairaaak stilizet b lauku
+      
+      background: rgb(119, 119, 111);//vairaaak stilizet b lauku
     }
     .navigation, .b{
-      height: 20vh;
+      height: 100vh;
     }
   }
+
 </style>

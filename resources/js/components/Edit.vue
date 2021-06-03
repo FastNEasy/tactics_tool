@@ -3,8 +3,8 @@
         <div class="viewEdit">
             <div class="sportsName">
                 <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
-                <input v-model="sportsName" /> 
-                <input
+                <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport" /><br><br>
+                <input class="inputField"
                     type="file" 
                     name="uploadFieldName"  
                     @change="onchange($event.target)"
@@ -69,5 +69,26 @@
 </script>
 
 <style lang="scss" scoped>
-   
+   #edit{
+       .sportsNameInput{
+            width:30%;
+            height: 5vh;
+            font-size:20px;
+       }
+
+    .inputField{
+        background-color: green;
+        &input[type=file]::file-selector-button {
+            border: 2px solid #6c5ce7;
+            padding: .2em .4em;
+            border-radius: .2em;
+            background-color: #a29bfe;
+            transition: 1s;
+        }
+    }
+    input#file-upload-button{
+        color:green;
+        font-size:20px;
+    }
+   }
 </style>
