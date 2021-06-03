@@ -8,7 +8,7 @@ class SportsTypeController extends Controller
 {
     public function saveSportsType(Request $request){
         $params = (Object)$request->all();
-        $query = new sportsType();
+        $query = new SportsType();
         $query->sports_name = $params->sportsTypeName;
         $theBaseImg = explode(',', $params->baseImg);
         $query->field_picture = $theBaseImg[1];
@@ -22,9 +22,9 @@ class SportsTypeController extends Controller
     public function getSportsTypes(Request $request){
         $params = (Object)$request->all(); 
         if(isset($params->id)){
-            
+            $query = SportsType::find($params->id);  
         }else{
-            $query = sportsType::select('id','sports_name')->get();    
+            $query = SportsType::select('id','sports_name')->get();    
         }
         return response()->json([
             "data" => $query,
@@ -32,10 +32,32 @@ class SportsTypeController extends Controller
     }
     public function deleteSportsTypes(Request $request){
         $params = (Object)$request->all();
-        $query = sportsType::find($params->id)->delete();
+        $query = SportsType::find($params->id)->delete();
         // return response()->json([
         //     "a" => $params,
         // ]);
         // alert("Deleted preset: $deletedSport");
+    }
+    // public function getSportsInfo(Request $request){
+    //     $params = (Object)$request->all();
+    //     if(isset($params->id)){
+    //         $query = SportsType::find($params->id);   
+    //     }else{
+    //         //$query = SportsType::find($params->id);
+    //         $query = SportsType::select('id','sports_name')->get();   
+    //     }
+    //     return response()->json([
+    //         "data" => $query,
+    //        //"params"=>$params,     
+    //     ]);
+    //}
+    public function updateSportsType(Request $request){
+        $params = (Object)$request->all();
+        $theBaseImg = explode(',', $params->baseImg);
+        SportsType::where('id', $params->id)->update(['sports_name' => $params->sportsTypeName, 'field_picture' => $theBaseImg[1]]);
+        return response()->json([
+            "data" => $params,
+
+        ]);
     }
 }

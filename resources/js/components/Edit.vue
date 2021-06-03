@@ -4,14 +4,21 @@
             <div class="sportsName">
                 <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
                 <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport" /><br><br>
-                <input class="inputField"
+                <div class="file-input">
+                    <input
                     type="file" 
-                    name="uploadFieldName"  
+                    id="file"
+                    class="file"  
                     @change="onchange($event.target)"
                     accept="image/*"
-                />
+                    >
+                    <label for="file">Select Image</label><br><br>
+                </div>
+             
+                
+
                 <img id="imageHolder">
-                <button type="submit" @click="onSave()">save</button>
+                <button class="saveButton" type="submit" @click="onSave()">save</button><br><br>
             </div>
             <router-link class="button-link" to="/confsports">Return to list!</router-link>
         </div>
@@ -71,6 +78,8 @@
 
 <style lang="scss" scoped>
     #edit{
+        text-align: center;
+        padding-top:10%;
         .button-link {
             background-color: #5e645d;
             border: none;
@@ -92,19 +101,59 @@
             font-size:20px;
        }
 
-        .inputField{
-            background-color: green;
-            &input[type=file]::file-selector-button {
-                border: 2px solid #6c5ce7;
-                padding: .2em .4em;
-                border-radius: .2em;
-                background-color: #a29bfe;
-                transition: 1s;
-            }
+        .file {
+            opacity: 0;
+            width: 0.1px;
+            height: 0.1px;
+            position: absolute;
         }
-        input#file-upload-button{
-            color:green;
-            font-size:20px;
+        .file-input label {
+            display: block;
+            position: relative;
+            width: 200px;
+            height: 50px;
+            margin:0 auto;
+            border-radius: 25px;
+            background: linear-gradient(40deg, #636060, #73f579);
+            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform .2s ease-out;
+        }
+
+        .file-input label:hover{
+            background: linear-gradient(40deg, #929090, #97f39c);
+        }
+
+        .file-input label:active{
+            top: 1px;
+        }
+
+        .saveButton {
+            background-color:#44c767;
+            border-radius:28px;
+            border:1px solid #18ab29;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:17px;
+            padding:16px 31px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #2f6627;
+        }
+
+        .saveButton:hover {
+            background-color:#5cbf2a;
+        }
+
+        .saveButton:active {
+            position:relative;
+            top:1px;
         }
     }
 </style>
