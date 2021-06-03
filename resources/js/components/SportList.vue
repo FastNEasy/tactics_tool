@@ -4,14 +4,14 @@
                 <thead>
                     <tr id="headerT">
                         <th>Sport Type</th>
-                        <th><router-link class="buttonCreate" to="/edit">Create new!</router-link></th>
+                        <th><router-link class="buttonCreate" to="/createsport">Create new!</router-link></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(sport, index) in sports" :key="sport.id">
                         <td class="tpyeNameCell">{{ sport.sports_name }}</td>
                         <td class="tableButtonCell">
-                            <th><router-link class="button" :to="`/sportinfo/${sport.id}`" >Edit</router-link></th>
+                            <th><router-link class="button" :to="`/editsport/${sport.id}`" >Edit</router-link></th>
                             <th><button class="button" @click="removePreset(sport.id, index)">Delete</button></th>
                         </td>
                     </tr>
@@ -24,7 +24,7 @@
     import SampleRequest from '@/api/sample-request';
     const sampleRequest = new SampleRequest();
     export default {
-        name: 'ConfSports',
+        name: 'SportList',
         created(){
             this.getData();
          },

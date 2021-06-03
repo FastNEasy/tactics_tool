@@ -1,5 +1,5 @@
 <template>
-    <div id="view">
+    <div id="tacticlist">
         <h1 class ="tacticsHeading">Tactics Name</h1>
             <table id="tacticsNameTable">
                 <tbody>
@@ -23,13 +23,11 @@
     import Cookies from 'js-cookie';
     const sampleRequest = new SampleRequest();
         export default {
-
-            name: 'View',
+            name: 'TacticsList',
             created(){
                 this.getData();
                 this.user = JSON.parse(Cookies.get("UserObject"));
             },
-
             data(){
                 return{
                     tacticsName: {},
@@ -42,23 +40,23 @@
                     this.tacticsName = data;
                     console.log('Data:', data);
                 },
-
                 deleteTactic(id, index){
-                console.log("Removed sport is: ", id);
-                // post request kas padod taa elementa id, tad datu baaze ir jasamekle modelis::find(id)->delete
-                sampleRequest.deleteTacticName({id}).then(() => {
-                    this.tacticsName.splice(index, 1);
-                });
-            },
-                
+                    console.log("Removed tactic is: ", id);
+                    // post request kas padod taa elementa id, tad datu baaze ir jasamekle modelis::find(id)->delete
+                    sampleRequest.deleteTacticName({id}).then(() => {
+                        this.tacticsName.splice(index, 1);
+                    });
+                },
             }
-        }
+    }
+
 </script>
 
 <style lang="scss" scoped>
-    #view{
-        
-        
+    #tacticlist{
+        .text-view{
+            color: blueviolet;
+        }
 
         #tacticsNameTable{
             font-family: "Lucida Console", "Courier New", monospace;

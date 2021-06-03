@@ -12,11 +12,11 @@
  import Vue from 'vue';
  import VueRouter from 'vue-router';
  import App from './components/App';
- import Edit from './components/Edit';
- import Create from './components/Create';
- import View from './components/View'; 
- import ConfSports from './components/ConfSports';
- import SportInfo from './components/SportInfo';
+ import CreateSport from './components/CreateSport';
+ import CreateTactic from './components/CreateTactic';
+ import TacticList from './components/TacticList'; 
+ import SportList from './components/SportList';
+ import EditSport from './components/EditSport';
  import ViewTactic from './components/ViewTactic';
  import EditTactic from './components/EditTactic';
 
@@ -46,12 +46,12 @@
   * or customize the JavaScript scaffolding to fit your unique needs.
   */
   const routes = [
-    { path: '/create', component: Create},
-    { path: '/view', component: View },
-    { path: '/edit', component: Edit},
-    { path: '/confsports', component : ConfSports},
-    { path: '/sportinfo/:id', component: SportInfo},
-    { path: '/sportinfo', component: SportInfo},
+    { path: '/createtactic', component: CreateTactic},
+    { path: '/tacticlist', component: TacticList },
+    { path: '/createsport', component: CreateSport},
+    { path: '/sportlist', component : SportList},
+    { path: '/editsport/:id', component: EditSport},
+    // { path: '/sportinfo', component: SportInfo},
     { path: '/viewtactic', component: ViewTactic},
     { path: '/edittactic', component: EditTactic},
   ]
