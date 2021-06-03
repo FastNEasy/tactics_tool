@@ -1,53 +1,54 @@
 <template>
-    <div id="sportinfo">
+    <div id="edit">
         <div class="viewEdit">
             <div class="sportsName">
+                <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
                 <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport" /><br><br>
                 <div class="file-input">
                     <input
-                        type="file" 
-                        id="file"
-                        class="file"  
-                        @change="onchange($event.target)"
-                        accept="image/*"
+                    type="file" 
+                    id="file"
+                    class="file"  
+                    @change="onchange($event.target)"
+                    accept="image/*"
                     >
                     <label for="file">Select Image</label><br><br>
                 </div>
+             
+                
 
                 <img id="imageHolder">
-                  <button class="updateButton" type="submit" @click="onSave()">Update</button><br><br>
+                <router-link @click.native="onSave()" class="saveButton" to="/sportlist">Save</router-link>
             </div>
+            <router-link class="button-link" to="/sportlist">Return to list!</router-link>
         </div>
-        
     </div>
 </template>
 
 <script>
     import SampleRequest from '@/api/sample-request';
+    //import Cookies from 'js-cookie';
     const sampleRequest = new SampleRequest();
     export default {
+        name: 'CreateSport',
         created(){
             this.getData();
             // this.user = JSON.parse(Cookies.get("UserObject"));
             // console.log(this.user);
-            // console.log(this.$route.params.id);
         },
-         data(){
+        data(){
             return{
-                sports: {},
+                // user : null,
+                // animations: [{ animation: "" }],
+                // model: [{}],
                 sportsName: null,
                 base64Img: null,
-                id: this.$route.params.id, //pagaidam statisks 
             }
         },
-        methods:{
-            
-        async getData(){
-                console.log("Editing:",this.id);
-                const {data} = await sampleRequest.getSportsTypes({ id:this.id});
-                this.sportsName = data.sports_name;
-                this.sport = data;
-                console.log('Data:', data);  
+        methods: {
+            async getData(){
+                const data = await sampleRequest.doRequest();
+                console.log('Data:', data);
             },
             async onchange(data){
                 console.log(data.files);
@@ -63,30 +64,42 @@
                 this.base64Img = base64Img;
             },
             onSave(){
-                sampleRequest.updateSportsType({id: this.id, sportsTypeName: this.sportsName, baseImg: this.base64Img }).then(response => {
+                sampleRequest.saveSportsType({ sportsTypeName: this.sportsName, baseImg: this.base64Img }).then(response => {
                 console.log("Response received", response);
                 }).catch(error => {
                 console.log("Error",error);
                 }).finally(() => {});
                 console.log(`Sports Name: ${this.sportsName}`);
-                console.log(`Sports Pic: ${this.base64Img}`);
-                console.log(`Sports id: ${this.id}`);
+                // console.log(`Sports Pic: ${this.base64Img}`);
             },
-            
+
+            refreshPage(){
+                window.location.reload();
+            }, 
         },
     };
 </script>
 
 <style lang="scss" scoped>
-    #sportinfo{
+    #edit{
         text-align: center;
         padding-top:5%;
-
-        .text-view{
-            color: rgb(104, 250, 59);
+        .button-link {
+            background-color: #5e645d;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
         }
-
-        .sportsNameInput{
+        .button-link:hover {
+            background-color: rgb(160, 33, 33);
+        }
+       .sportsNameInput{
             width:30%;
             height: 5vh;
             font-size:20px;
@@ -124,7 +137,7 @@
             top: 1px;
         }
 
-        .updateButton {
+        .saveButton {
             background-color:#44c767;
             border-radius:28px;
             border:1px solid #18ab29;
@@ -138,14 +151,13 @@
             text-shadow:0px 1px 0px #2f6627;
         }
 
-        .updateButton:hover {
+        .saveButton:hover {
             background-color:#5cbf2a;
         }
 
-        .updateButton:active {
+        .saveButton:active {
             position:relative;
             top:1px;
         }
     }
-    
 </style>
