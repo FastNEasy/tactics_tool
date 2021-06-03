@@ -43,6 +43,7 @@
                 },
                 onTacticAdd(){//adding tactic to the table
                     this.presetID = document.getElementById("presetsid").value;
+                    document.getElementById().validity.valid
                     sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginId: this.user }).then(response => {
                         console.log("Response received-2", response);
                     }).catch(error => {
