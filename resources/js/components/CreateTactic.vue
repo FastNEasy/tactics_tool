@@ -8,10 +8,10 @@
                 <option v-for="(sport) in sports" :key="sport.id" v-bind:value="sport.id">{{ sport.sports_name }}</option>
             </select><br><br>
             <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
-            <input id="tacticName" v-model="tacticName" placeholder="Taktikas nosaukums" required><br><br>
+            <input id="tacticName" v-model="tacticName" placeholder="Tactics name" required><br><br>
             
             <button class="saveButton" @click="onTacticAdd()">Add tactic</button>
-            <p id="saveButton"></p>
+            <!-- <p id="saveButton"></p> -->
         
         </div>
     </div>
@@ -66,10 +66,10 @@
         padding-top:20px;
         
         .label_font{
-            font-size: 24px;
+            font-size: 18px;
         }
         #tacticName{
-            width:200px; 
+            width:30%; 
             height: 40px;
             font-size: 18px; 
             border-radius:8px;
