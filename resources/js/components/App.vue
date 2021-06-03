@@ -1,192 +1,100 @@
 <template>
   <div id="app">
-    <div class="a">
-      <div class="sportsName">
-        
-        <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
-        <!-- state managment  -->
-        <input v-model="sportsName" /> 
 
-        <button class="open-button" @click="onSave()">save</button>
-      </div>
-      <div class = "form-popup" id="myForm">
-        <div class="addTactic">
-          <input v-model="tacticName" placeholder="Taktikas nosaukums" />
-          <input type="number" v-model="presetID" placeholder="Speles laukums" />
-          <button @click="onTacticAdd()">add tactic</button>
-        </div>
-        <!-- padarit pogas pasleptas peec nospieshanas -->
-          <!-- <input type="file" id="inp" name="filename" accept="image/*" @change="onFileChange()" >
-          <input type="submit" name="Submit">
-          <p id="b64"></p>
-          <img id = "img" height="150"> -->
-
-        
-            <input
-              type="file" 
-              name="uploadFieldName"  
-              @change="onchange($event.target)"
-              accept="image/*"
-            >
-            <img id="imageHolder">
-
-         <!-- <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-        <h1>Upload images</h1>
-        <div class="dropbox">
-          <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-            <p v-if="isInitial">
-              Drag your file(s) here to begin<br> or click to browse
-            </p>
-            <p v-if="isSaving">
-              Uploading {{ fileCount }} files...
-            </p>
-        </div>
-      </form> -->
-        
-      </div>
-      <!-- izveidot jaunu lauku, kuraa iespejams pievienot animaciju(jauna click funkcija, kas izveido animacijas ) -->
-      <!-- izveidot iespeju pievienot/nonjemt speletajus un to koordinates fikset tabula ar pogu vai ko tml -->
+    <div class="navigation">
+      <ul>
+        <li>
+          <div class="gridItem">
+            <router-link to="/create">Create a Tactic</router-link>
+          </div>
+        </li>
+        <li>
+          <div class="gridItem">
+            <router-link to="/view">Go to all tactics</router-link>
+          </div>
+        </li>
+        <li>
+          <div class="gridItem">
+            <router-link to="/edit">Go to Edit</router-link>
+          </div>
+        </li>
+        <li>
+          <div class="gridItem">
+            <router-link to="/sportinfo">Go to sports info</router-link>
+          </div>
+        </li>
+      </ul>
     </div>
-    <div class="b"></div>
-    <div class="c"></div>
+    <div class="b">
+      <router-view></router-view>
+
+    </div>
   </div>
 </template>
 
 <script>
-import SampleRequest from '@/api/sample-request';
-import Cookies from 'js-cookie';
 
-const sampleRequest = new SampleRequest();
-
-export default {
-  name: 'App',
-  created(){
-    this.getData();
-
-    this.user = JSON.parse(Cookies.get("UserObject"));
-    console.log(this.user)
-
-  },
-
-  data(){
-    return{
-      count: 0,
-      user : null,
-      animations: [{ animation: "" }],
-      model: [{}],
-      sportsName: null,
-      base64Img:null,
-      tacticName: null,
-      theImage: null,
-      presetID: 1,//padariit so ka izveli, pectam
-      
-    }
-  },
-  methods: {
-    async getData(){
-      const data = await sampleRequest.doRequest();
-      console.log('Data:', data);
+  import SampleRequest from '@/api/sample-request';
+  import Cookies from 'js-cookie';
+  const sampleRequest = new SampleRequest();
+  export default {
+    name: 'App',
+    created(){
+      this.getData();
+      this.user = JSON.parse(Cookies.get("UserObject"));
+      console.log(this.user);
+      console.log(this.$route);
     },
-    //saving preset changes
-    onSave(){
-      // orderResource.store(data).then(response => {
-      //   }).catch(error => {
-      //     console.log(error);
-      //   }).finally(() => {
-      //     this.saving = false;
-
-      //   });
-    
-      document.getElementById("myForm").style.display = "block";
-
-      sampleRequest.saveSportsType({ sportsTypeName: this.sportsName}).then(response => {
-        console.log("Response received", response);
-      }).catch(error => {
-        console.log("Error",error);
-      }).finally(() => {
-        
-      });
-      console.log(`Sports Name: ${this.sportsName}`); 
-    },
-
-    //adding tactic to the table
-    onTacticAdd(){
-
-      sampleRequest.saveTactic({ nameTactic: this.tacticName, presetChoice: this.presetID, loginId: this.user }).then(response => {
-
-        console.log("Response received-2", response);
-      }).catch(error => {
-        console.log("Error-2", error);
-      });
-      console.log(`Tactic name: ${this.tacticName}`);
-    },
-    onClickAdd(){//revamp this for new button functions
-      this.animations.push({ animation: "" });
-      this.count++;
-    },
-    onClickRemove(index){//revamp this for new button functions
-      if(this.count > 0){
-        this.animations.splice(index, 1);
-        this.count--;
-      }else{
-        return;
+    data(){
+      return{
       }
     },
-    async onchange(data){
-      console.log(data.files);
-      var elem = document.getElementById("imageHolder");
-      const toBase64 = file => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      
-
-      });
-      const base64Img=await toBase64(data.files[0]);
-      console.log(base64Img);
-      elem.src=base64Img;
-      this.base64Img=base64Img;
+    methods: {
+      async getData(){
+        const data = await sampleRequest.doRequest();
+        console.log('Data:', data);
+      },
     },
-    
+  };
 
-  }
-//   upload(formData) {
-//     const url = `${BASE_URL}/photos/upload`;
-//     return axios.post(url, formData)
-//         // get data
-//         .then(x => x.data)
-//         // add url field
-//         .then(x => x.map(img => Object.assign({},
-//             img, { url: `${BASE_URL}/images/${img.id}` })));
-// },
-
-  
-}
-//export { upload }
 </script>
 <style lang="scss" scoped>
-#app{
+  #app{
     width: 100vw;
-   height: 100vh;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-  
-	.a{
-		background: rgb(150,150,150);
-    .inputData{
-      display:inline;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 200px 300px;
+    .navigation{
+      background: rgba(173, 159, 159, 0.925);
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 1fr;
+        background-color: rgba(173, 27, 27, 0.925);
+        li a {
+          display: grid;
+          grid-template-rows: 1fr 1fr;
+          text-align: center;
+          color: #000;
+          padding: 12.5px 16px;
+          text-decoration: none;
+        }
+        li a:hover:not(.active) {
+          background-color: rgba(212, 73, 73, 0.945);
+          color: white;
+        }
+        .router-link-exact-active {
+          background-color: rgb(0, 216, 65);
+        }
+      }
     }
-	}
-	.b{
-		background: rgb(120,120,120);
-	}
-	.c{
-		background: rgb(130,130,130);
-	}
-    .a, .b, .c{
-        height: 20vh;
+    .b{// router view atradisies b
+      background: rgb(150,150,100);//vairaaak stilizet b lauku
     }
-}
+    .navigation, .b{
+      height: 20vh;
+    }
+  }
 </style>

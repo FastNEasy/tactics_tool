@@ -33,6 +33,14 @@ class ExampleApi {
         data: data,
       });
   }
+  updateSportsType(data){
+    return request({
+      url: '/' + this.uri + '/update-sports-type',
+      /** For POST request params go under 'data' */
+      method: 'post',
+      data: data,
+    });
+}
   saveBase64(data){
     return request({
       url: '/' + this.uri + '/save-base64',
@@ -47,6 +55,13 @@ class ExampleApi {
 
       method: 'post',
       data: data,
+    });
+  }
+  getSportsInfo(data){
+    return request({
+      url: '/' + this.uri + '/display-sport',
+      method: 'get',
+      params: data,
     });
   }
 }
