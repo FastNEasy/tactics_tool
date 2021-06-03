@@ -44,7 +44,7 @@ class ExampleApi {
     return request({
       url: '/' + this.uri + '/display-sport',
       method: 'get',
-      data: data,
+      params: data,
     });
   }
 
@@ -52,7 +52,7 @@ class ExampleApi {
     return request({
       url: '/' + this.uri + '/display-tactic-name',
       method: 'get',
-      data: data,
+      params: data,
     });
   }
   deleteSportsTypes(data){
