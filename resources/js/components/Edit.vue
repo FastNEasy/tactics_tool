@@ -3,7 +3,7 @@
         <div class="viewEdit">
             <div class="sportsName">
                 <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
-                <input v-model="sportsName" /> 
+                <input v-model="sportsName" placeholder="Name of the sport" /> 
                 <input
                     type="file" 
                     name="uploadFieldName"  
@@ -11,8 +11,9 @@
                     accept="image/*"
                 />
                 <img id="imageHolder">
-                <button class="open-button" @click="onSave()">save</button>
+                <button type="submit" @click="onSave()">save</button>
             </div>
+            <router-link class="button-link" to="/confsports">Return to list!</router-link>
         </div>
     </div>
 </template>
@@ -62,12 +63,28 @@
                 console.log("Error",error);
                 }).finally(() => {});
                 console.log(`Sports Name: ${this.sportsName}`);
-                console.log(`Sports Pic: ${this.base64Img}`);
+                // console.log(`Sports Pic: ${this.base64Img}`);
             },
         },
     };
 </script>
 
 <style lang="scss" scoped>
-   
+    #edit{
+        .button-link {
+            background-color: #5e645d;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .button-link:hover {
+            background-color: rgb(160, 33, 33);
+        }
+   }
 </style>

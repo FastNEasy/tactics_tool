@@ -39,6 +39,21 @@ class ExampleApi {
       data: data,
     });
   }
+  
+  getSportsTypes(data){
+    return request({
+      url: '/' + this.uri + '/display-sport',
+      method: 'get',
+      data: data,
+    });
+  }
+  deleteSportsTypes(data){
+    return request({
+      url: '/' + this.uri + '/delete-sport',
+      method: 'post',
+      data: data,
+    });
+  }
 }
 
 export { ExampleApi as default };

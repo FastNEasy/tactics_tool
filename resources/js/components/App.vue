@@ -13,8 +13,13 @@
           </div>
         </li>
         <li>
-          <div class="gridItem">
+          <!-- <div class="gridItem">
             <router-link to="/edit">Go to Edit</router-link>
+          </div> -->
+        </li>
+        <li>
+          <div class="gridItem">
+            <router-link to="/confsports">Check all Sports</router-link>
           </div>
         </li>
       </ul>
@@ -49,6 +54,7 @@
     },
   };
 </script>
+
 <style lang="scss" scoped>
   #app{
     width: 100vw;
@@ -62,7 +68,6 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        width: 1fr;
         background-color: rgba(173, 27, 27, 0.925);
         li a {
           display: grid;
@@ -81,11 +86,11 @@
         }
       }
     }
-    .b{// router view atradisies b
+    .b {// router view atradisies b
       background: rgb(150,150,100);//vairaaak stilizet b lauku
     }
     .navigation, .b{
-      height: 20vh;
+      height: 100vh;
     }
   }
 </style>

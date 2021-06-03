@@ -23,6 +23,8 @@ Route::group(['middleware' => 'api'], function () {//midleware izpildaas pirms u
         // Route::get('do-request', 'SampleController@doEndpoint');
         Route::post('save-sports-type', 'App\Http\Controllers\SportsTypeController@saveSportsType');
         Route::post('save-tactic', 'App\Http\Controllers\TacticsController@saveTactic');
+        Route::get('display-sport', 'App\Http\Controllers\SportsTypeController@getSportsTypes');
+        Route::post('delete-sport', 'App\Http\Controllers\SportsTypeController@deleteSportsTypes');
         //pievienot route
     });
     Route::apiResource('users', 'UserController');
