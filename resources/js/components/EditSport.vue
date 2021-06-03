@@ -15,7 +15,7 @@
                 </div>
 
                 <img id="imageHolder">
-                  <button class="updateButton" type="submit" @click="onSave()">Update</button><br><br>
+                  <button class="updateButton" type="submit" @click="onSave(); updateAlert()">Update</button><br><br>
             </div>
         </div>
         
@@ -72,6 +72,10 @@
                 console.log(`Sports Name: ${this.sportsName}`);
                 console.log(`Sports Pic: ${this.base64Img}`);
                 console.log(`Sports id: ${this.id}`);
+            },
+
+            updateAlert(){
+                alert("The update was successful!");
             },
             
         },

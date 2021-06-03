@@ -10,7 +10,7 @@
             <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
             <input id="tacticName" v-model="tacticName" placeholder="Taktikas nosaukums" required><br><br>
             
-            <button class="saveButton" @click="onTacticAdd()">Add tactic</button>
+            <button class="saveButton" @click="onTacticAdd(); insertAlert()">Add tactic</button>
             <p id="saveButton"></p>
         
         </div>
@@ -53,6 +53,10 @@
                 },
                 myFunction() {
                     document.getElementById("myDropdown").classList.toggle("show");
+                },
+
+                insertAlert(){
+                    alert("Inserted Successfully!");
                 }
             },
 
