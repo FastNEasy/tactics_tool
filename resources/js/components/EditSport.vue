@@ -116,7 +116,6 @@
             cursor: pointer;
             transition: transform .2s ease-out;
         }
-
         .file-input label:hover{
             background: linear-gradient(40deg, #929090, #97f39c);
         }

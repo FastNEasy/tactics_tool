@@ -52,12 +52,12 @@ class TacticsController extends Controller
         }
         public function getTacticName(Request $request){
             $params = (Object)$request->all(); 
-            // if(isset($params->id)){
-
-            // }
-            // else{
+            if(isset($params->id)){
+                $query = tacticsModel::find($params->id);
+            }
+            else{
                 $query = tacticsModel::select('id','tactic_name')->get();
-            //}
+            }
             return response()->json([
                 "data" => $query,
             ]);

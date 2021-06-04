@@ -1,14 +1,14 @@
 <template>
     <div id="tacticlist">
-        <h1 class ="tacticsHeading">Tactics Name</h1>
+        <h1 class ="tacticsHeading">Created Tactics</h1>
             <table id="tacticsNameTable">
                 <tbody>
                     <tr v-for="(tactics,index) in tacticsName" :key="tactics.id">
-                        <td class="tacticsNameCell">{{ tactics.tactic_name}}</td>
+                        <td class="tacticsNameCell">{{ tactics.tactic_name }}</td>
                         <td class= "tableButtonCell">
                             <div class="buttons">
                                 <th><router-link class="button" to="/viewtactic">View</router-link></th>
-                                <th><router-link class="button" to="/edittactic">Edit</router-link></th>
+                                <th><router-link class="button" :to="`/edittactic/${tactics.id}`">Edit</router-link></th>
                                 <th><button class="button" @click="deleteTactic(tactics.id, index)">Delete</button></th>
                             </div>
                         </td>
@@ -18,7 +18,8 @@
     </div>
 </template>
 
-<script>        
+<script> 
+//create so that displays tactics preset name        
     import SampleRequest from '@/api/sample-request';
     import Cookies from 'js-cookie';
     const sampleRequest = new SampleRequest();

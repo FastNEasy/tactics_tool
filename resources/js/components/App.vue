@@ -31,6 +31,11 @@
 </template>
 
 <script>
+  //create new state, where after creating a tactic, you get redirected to canvas where the tactic drawing starts
+  //start some tactic drawing things
+  //maybe do some style a bit
+  //check out the three.js for drawing and animation
+  //small image in edit tactic to see it
   import SampleRequest from '@/api/sample-request';
   import Cookies from 'js-cookie';
   const sampleRequest = new SampleRequest();
