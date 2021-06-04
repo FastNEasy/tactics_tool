@@ -2,24 +2,31 @@
     <div id="sportinfo">
         <div class="viewEdit">
             <div class="sportsName">
-                <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport" /><br><br>
-                <img v-bind:src="image">
-                <div class="file-input">
-                    <input
-                        type="file" 
-                        id="file"
-                        class="file"  
-                        @change="onchange($event.target)"
-                        accept="image/*"
-                    >
-                    <label for="file">Select Image</label><br><br>
-                </div>
-
-                <img id="imageHolder">
-                  <button class="updateButton" type="submit" @click="onSave(); updateAlert()">Update</button><br><br>
+                <p v-if="errors.length">
+                    <b>Please fill all fields:</b>
+                    <ul>
+                        <li v-for="error in errors" v-bind:key="error.id">{{ error }}</li>
+                    </ul>
+                </p>
+                <form @submit="checkForm">
+                    <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport"/><br><br>
+                    <div class="file-input">
+                        <input
+                            type="file" 
+                            id="file"
+                            class="file"  
+                            @change="onchange($event.target)"
+                            accept="image/*"
+                        >
+                        <label for="file">Select Image</label><br><br>
+                    </div>
+                    <!-- <img id="imageHolder"> -->
+                    <button class="updateButton" type="submit" @click="onSave(); /*updateAlert();*/">Update</button><br><br>
+                </form>
             </div>
+            <router-link class="button-link" to="/sportlist">Return to list!</router-link>
         </div>
-        
+        <img class="updateImage" v-bind:src="image">
     </div>
 </template>
 
@@ -41,6 +48,7 @@
                 base64Img: null,
                 id: this.$route.params.id, //pagaidam statisks 
                 image: null,
+                errors:[],
             }
         },
         methods:{
@@ -78,9 +86,25 @@
                 console.log(`Sports id: ${this.id}`);
             },
 
-            updateAlert(){
-                alert("The update was successful!");
+            // updateAlert(){
+            //     alert("The update was successful!");
+            // },
+
+           checkForm(e){
+                if(this.sportsName&& this.base64Img){
+                    console.log("CHECK FORM FUNCTION CALLED");
+                }
+                this.errors = [];
+                if(!this.sportsName){
+                    this.errors.push("Name required.")
+                }
+                if(!this.base64Img){
+                    this.errors.push("picture required")
+                }
+                console.warn("errors",this.error)
+                e.preventDefault();
             },
+    
             
         },
     };
@@ -89,8 +113,7 @@
 <style lang="scss" scoped>
     #sportinfo{
         text-align: center;
-        padding-top:5%;
-
+        padding-top:1%;
         .text-view{
             color: rgb(104, 250, 59);
         }
@@ -106,6 +129,7 @@
             width: 0.1px;
             height: 0.1px;
             position: absolute;
+            margin-top:50%;
         }
         .file-input label {
             display: block;
@@ -124,6 +148,7 @@
             cursor: pointer;
             transition: transform .2s ease-out;
         }
+
         .file-input label:hover{
             background: linear-gradient(40deg, #929090, #97f39c);
         }
@@ -153,6 +178,27 @@
         .updateButton:active {
             position:relative;
             top:1px;
+        }
+
+        .updateImage{
+            margin-top:2%;
+            width:70%;
+        }
+
+        .button-link {
+            background-color: #5e645d;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .button-link:hover {
+            background-color: rgb(160, 33, 33);
         }
     }
     

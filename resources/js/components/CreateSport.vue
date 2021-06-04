@@ -2,24 +2,31 @@
     <div id="edit">
         <div class="viewEdit">
             <div class="sportsName">
-                <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
-                <input class="sportsNameInput" v-model="sportsName" placeholder="Sport name e.g Basketball" /><br><br>
-                <div class="file-input">
-                    <input
-                    type="file" 
-                    id="file"
-                    class="file"  
-                    @change="onchange($event.target)"
-                    accept="image/*"
-                    >
-                    <label for="file">Select Image</label><br><br>
-                </div>
-             
-                
-
+                <p v-if="errors.length">
+                    <b>Please fill all fields:</b>
+                    <ul>
+                        <li v-for="error in errors" v-bind:key="error.id">{{ error }}</li>
+                    </ul>
+                </p>
+                <!-- <form @submit="checkForm()">
+                parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
+                <form @submit="checkForm">
+                    <input class="sportsNameInput" v-model="sportsName" placeholder="Sport name e.g Basketball" /><br><br>
+                    <div class="file-input">
+                        <input
+                        type="file" 
+                        id="file"
+                        class="file"  
+                        @change="onchange($event.target)"
+                        accept="image/*"
+                        >
+                        <label for="file">Select Image</label><br><br>
+                    </div>
+                    <button type="submit" id="saveButton" @click="onSave();">Save</button>
+                </form>
                 <img id="imageHolder">
-                <router-link @click.native="onSave()" class="saveButton">Save</router-link>
-            </div>
+               <!-- <router-link @click.native="onSave()" class="saveButton">Save</router-link> -->
+            </div> 
             <router-link class="button-link" to="/sportlist">Return to list!</router-link>
         </div>
     </div>
@@ -43,6 +50,7 @@
                 // model: [{}],
                 sportsName: null,
                 base64Img: null,
+                errors: [],
             }
         },
         methods: {
@@ -72,6 +80,21 @@
                 console.log(`Sports Name: ${this.sportsName}`);
                 // console.log(`Sports Pic: ${this.base64Img}`);
             },
+
+            checkForm(e){
+                if(this.sportsName&& this.base64Img){
+                    console.log("CHECK FORM FUNCTION CALLED");
+                }
+                this.errors = [];
+                if(!this.sportsName){
+                    this.errors.push("Name required.")
+                }
+                if(!this.base64Img){
+                    this.errors.push("picture required")
+                }
+                console.warn("errors",this.error)
+                e.preventDefault();
+            },       
 
             // refreshPage(){
             //     window.location.reload();
@@ -137,7 +160,7 @@
             top: 1px;
         }
 
-        .saveButton {
+        #saveButton {
             background-color:#44c767;
             border-radius:28px;
             border:1px solid #18ab29;
@@ -151,13 +174,17 @@
             text-shadow:0px 1px 0px #2f6627;
         }
 
-        .saveButton:hover {
+        #saveButton:hover {
             background-color:#5cbf2a;
         }
 
-        .saveButton:active {
+        #saveButton:active {
             position:relative;
             top:1px;
+        }
+
+        #saveButton:disabled{
+            background-color:#90b97c;
         }
     }
 </style>

@@ -62,11 +62,11 @@
 
 <style lang="scss" scoped>
   #app{
-    width: 100vw;
+    width: auto;
     height: 100vh;
     display: grid;
-    grid-template-columns: 200px 1fr;
-    grid-template-rows: 200px 300px;
+    grid-template-columns: 15% 1fr;
+    //grid-template-rows: 100vh 300px;
     .navigation{
       background: rgba(173, 159, 159, 0.925);
       ul {
@@ -93,9 +93,10 @@
     }
     .b {// router view atradisies b
       background: rgb(150,150,100);//vairaaak stilizet b lauku
+     
     }
-    .navigation, .b{
-      height: 100vh;
+    .navigation{
+      height: 100%;
     }
   }
 
