@@ -50,7 +50,7 @@
                 console.log("Editing:",this.id);
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
                 this.sportsName = data.sports_name;
-                this.sport = data;
+                this.sports = data;
                 this.image = data.field_picture;
                 console.log('Data:', data);  
             },

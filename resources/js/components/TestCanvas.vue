@@ -10,30 +10,42 @@
     </div>
 </template>
 
-<script >
+<script>
+    import SampleRequest from '@/api/sample-request';
+    const sampleRequest = new SampleRequest();
     export default {
         name: 'TestCanvas',
         created() {
+            this.getData();
         },
         data() {
             return {
-                position: {
-                    x: 0,
-                    y: 0
-                },
-                //vueCanvas: null,
-                // radius: 50,
+                sports: {},
+                sportsName: null,
+                image: null,
                 xpoint: 0,
                 ypoint: 0,
                 counter: 0,
+                id: 23,
             }
         },
-        // mounted(){
-        //     var c = document.getElementById("canv");
-        //     var ctx = c.getContext("2d");    
-        //     this.vueCanvas = ctx;
-        // },
+        mounted(){
+            const canvas = document.getElementById("canv");
+            const context = canvas.getContext("2d");
+            const img = new Image();
+            img.src = this.image;
+            img.onload = () => {
+                context.drawImage(img, 0, 0)
+            };
+        },
         methods: { 
+            async getData(){
+                const {data} = await sampleRequest.getSportsTypes({ id:this.id});
+                this.sportsName = data.sports_name;
+                this.sports = data;
+                this.image = data.field_picture;
+                console.log('Data:', data.sports_name);
+            },
             updateCoordinates(event) {
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
