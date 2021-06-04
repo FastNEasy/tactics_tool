@@ -13,9 +13,9 @@
           </div>
         </li>
         <li>
-          <!-- <div class="gridItem">
-            <router-link to="/edit">Go to Edit</router-link>
-          </div> -->
+          <div class="gridItem">
+            <router-link to="/testcanvas">Canvas Test</router-link>
+          </div>
         </li>
         <li>
           <div class="gridItem">

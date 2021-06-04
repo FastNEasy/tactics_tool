@@ -16,7 +16,8 @@
                 </div>
 
                 <img id="imageHolder">
-                  <button class="updateButton" type="submit" @click="onSave(); updateAlert()">Update</button><br><br>
+                <button class="updateButton" type="submit" @click="onSave(); updateAlert()">Update</button><br><br>
+                <router-link class="updateButton" to="/sportlist">Return to list!</router-link>
             </div>
         </div>
         

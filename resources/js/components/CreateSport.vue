@@ -2,7 +2,6 @@
     <div id="edit">
         <div class="viewEdit">
             <div class="sportsName">
-                <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
                 <input class="sportsNameInput" v-model="sportsName" placeholder="Sport name e.g Basketball" /><br><br>
                 <div class="file-input">
                     <input
@@ -14,11 +13,8 @@
                     >
                     <label for="file">Select Image</label><br><br>
                 </div>
-             
-                
-
                 <img id="imageHolder">
-                <router-link @click.native="onSave()" class="saveButton">Save</router-link>
+                <button @click="onSave()" class="saveButton">Save</button>
             </div>
             <router-link class="button-link" to="/sportlist">Return to list!</router-link>
         </div>

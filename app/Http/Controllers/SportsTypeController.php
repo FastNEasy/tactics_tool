@@ -10,11 +10,7 @@ class SportsTypeController extends Controller
         $params = (Object)$request->all();
         $query = new SportsType();
         $query->sports_name = $params->sportsTypeName;
-<<<<<<< HEAD
         // $theBaseImg = explode(',', $params->baseImg);
-=======
-       //$theBaseImg = explode(',', $params->baseImg);
->>>>>>> 4253540ebdcbab67ca52b1974af44cd3efee46fc
         $query->field_picture = $params->baseImg;
         $query->save();
         return response()->json([

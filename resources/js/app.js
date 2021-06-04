@@ -19,6 +19,7 @@
  import EditSport from './components/EditSport';
  import ViewTactic from './components/ViewTactic';
  import EditTactic from './components/EditTactic';
+ import TestCanvas from './components/TestCanvas';
 
  //import VueFilename from './componets/VueFilename';
  
@@ -52,8 +53,9 @@
     { path: '/sportlist', component : SportList},
     { path: '/editsport/:id', component: EditSport},
     // { path: '/sportinfo', component: SportInfo},
-    { path: '/viewtactic', component: ViewTactic},
+    { path: '/viewtactic/:id', component: ViewTactic},
     { path: '/edittactic/:id', component: EditTactic},
+    { path: '/testcanvas', component: TestCanvas},
   ]
   const router = new VueRouter({
     routes // short for `routes: routes`
