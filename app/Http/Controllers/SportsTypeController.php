@@ -53,7 +53,7 @@ class SportsTypeController extends Controller
     //}
     public function updateSportsType(Request $request){
         $params = (Object)$request->all();
-        // $theBaseImg = explode(',', $params->baseImg);
+        //$theBaseImg = explode(',', $params->baseImg);
         SportsType::where('id', $params->id)->update(['sports_name' => $params->sportsTypeName, 'field_picture' => $params->baseImg]);
         return response()->json([
             "data" => $params,

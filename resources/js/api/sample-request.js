@@ -86,6 +86,13 @@ class ExampleApi {
       data: data,
     });
   }
+  // showSportsImage(data){
+  //   return request({
+  //     url: '/' + this.uri + '/show-image',
+  //     method: 'get',
+  //     params: data,
+  //   });
+  // }
   // getSportsInfo(data){
   //   return request({
   //     url: '/' + this.uri + '/display-sport',
