@@ -5,7 +5,8 @@
             <input class="tacticsName" v-model="tacticName" placeholder="Name of the sport"  /><br><br>
             <img :src="image">
             <img id="imageHolder">
-            <button class="updateButton" type="submit" @click=" onSave(); updateAlert()">Update</button><br><br>
+            <button class="updateButton" type="submit" @click=" updateAlert()">Update</button><br><br>
+            <!-- onSave(); -->
 
         </div>
     </div>
