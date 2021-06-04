@@ -3,6 +3,7 @@
         <h1 class ="tacticsHeading">Created Tactics</h1>
             <table id="tacticsNameTable">
                 <tbody>
+                    
                     <tr v-for="(tactics,index) in tacticsName" :key="tactics.id">
                         <td class="tacticsNameCell">{{ tactics.tactic_name }}</td>
                         <td class= "tableButtonCell">

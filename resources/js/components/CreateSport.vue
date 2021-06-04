@@ -73,9 +73,9 @@
                 // console.log(`Sports Pic: ${this.base64Img}`);
             },
 
-            refreshPage(){
-                window.location.reload();
-            }, 
+            // refreshPage(){
+            //     window.location.reload();
+            // }, 
         },
     };
 </script>
