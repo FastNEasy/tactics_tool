@@ -3,7 +3,7 @@
         <div class="viewEdit">
             <div class="sportsName">
                 <!-- parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
-                <input class="sportsNameInput" v-model="sportsName" placeholder="Name of the sport" /><br><br>
+                <input class="sportsNameInput" v-model="sportsName" placeholder="Sport name e.g Basketball" /><br><br>
                 <div class="file-input">
                     <input
                     type="file" 
@@ -18,7 +18,7 @@
                 
 
                 <img id="imageHolder">
-                <router-link @click.native="onSave()" class="saveButton" to="/sportlist">Save</router-link>
+                <router-link @click.native="onSave()" class="saveButton">Save</router-link>
             </div>
             <router-link class="button-link" to="/sportlist">Return to list!</router-link>
         </div>
@@ -73,9 +73,9 @@
                 // console.log(`Sports Pic: ${this.base64Img}`);
             },
 
-            refreshPage(){
-                window.location.reload();
-            }, 
+            // refreshPage(){
+            //     window.location.reload();
+            // }, 
         },
     };
 </script>

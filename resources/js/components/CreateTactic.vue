@@ -8,7 +8,7 @@
                 <option v-for="(sport) in sports" :key="sport.id" v-bind:value="sport.id">{{ sport.sports_name }}</option>
             </select><br><br>
             <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
-            <input id="tacticName" v-model="tacticName" placeholder="Taktikas nosaukums" required><br><br>
+            <input id="tacticName" v-model="tacticName" placeholder="Tactic name e.g Defense" required><br><br>
             
             <button class="saveButton" @click="onTacticAdd(); insertAlert()">Add tactic</button>
             <p id="saveButton"></p>

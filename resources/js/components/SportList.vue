@@ -70,14 +70,12 @@
             #headerT{
                 font-size: 20px;
             }
-            
             #sportsTypeTable td, #sportsTypeTable tr{
                 border-bottom: 0.5px solid black;
                 padding: 10px;
                 color:white;
                 font-weight: bold;
             }
-            
             // td, tr {
             //     padding: 10px;
             //     border-bottom: 0.5px solid black;

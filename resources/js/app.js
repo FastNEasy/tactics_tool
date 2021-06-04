@@ -53,7 +53,7 @@
     { path: '/editsport/:id', component: EditSport},
     // { path: '/sportinfo', component: SportInfo},
     { path: '/viewtactic', component: ViewTactic},
-    { path: '/edittactic', component: EditTactic},
+    { path: '/edittactic/:id', component: EditTactic},
   ]
   const router = new VueRouter({
     routes // short for `routes: routes`

@@ -10,8 +10,8 @@ class SportsTypeController extends Controller
         $params = (Object)$request->all();
         $query = new SportsType();
         $query->sports_name = $params->sportsTypeName;
-        $theBaseImg = explode(',', $params->baseImg);
-        $query->field_picture = $theBaseImg[1];
+       //$theBaseImg = explode(',', $params->baseImg);
+        $query->field_picture = $params->baseImg;
         $query->save();
         return response()->json([
             "data" => $params,
@@ -53,8 +53,8 @@ class SportsTypeController extends Controller
     //}
     public function updateSportsType(Request $request){
         $params = (Object)$request->all();
-        $theBaseImg = explode(',', $params->baseImg);
-        SportsType::where('id', $params->id)->update(['sports_name' => $params->sportsTypeName, 'field_picture' => $theBaseImg[1]]);
+        //$theBaseImg = explode(',', $params->baseImg);
+        SportsType::where('id', $params->id)->update(['sports_name' => $params->sportsTypeName, 'field_picture' => $params->baseImg]);
         return response()->json([
             "data" => $params,
 
