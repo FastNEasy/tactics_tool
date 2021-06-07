@@ -1,19 +1,24 @@
 <template>
     <div id="create">
         <div class="addTactic">
-
-            <label class="label_font" for="presetsid">Choose a sport!</label><br><br>
-            <select name="presets" id="presetsid" >
-                <option hidden value="" >No sport assigned </option>
-                <option v-for="(sport) in sports" :key="sport.id" v-bind:value="sport.id">{{ sport.sports_name }}</option>
-            </select><br><br>
-            <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
-            <input id="tacticName" v-model="tacticName" placeholder="Tactic name e.g Defense" required><br><br>
-            
-            <button class="saveButton" @click="onTacticAdd(); insertAlert()">Add tactic</button>
-            <p id="saveButton"></p>
-        
+            <p v-if="errors.length">
+                <b>Please fill all fields:</b>
+                <ul>
+                    <li v-for="error in errors" v-bind:key="error.id">{{ error }}</li>
+                </ul>
+            </p>
+            <form @submit="checkForm">
+                <label class="label_font" for="presetsid">Choose a sport!</label><br><br>
+                <select name="presets" id="presetsid" >                    <option hidden value="" >No sport assigned </option>
+                    <option v-for="(sport) in sports" :key="sport.id" v-bind:value="sport.id">{{ sport.sports_name }}</option>
+                </select><br><br>
+                <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
+                <input id="tacticName" v-model="tacticName" placeholder="Tactic name e.g Defense"><br><br>        
+                <button type="submit" class="saveButton" v-on:click.once="onTacticAdd(); /*insertAlert()*/">Add tactic</button>
+                <p id="saveButton"></p>
+            </form>   
         </div>
+        <!-- </form> -->
     </div>
 </template>
 
@@ -29,6 +34,7 @@
             },
             data(){
                 return{
+                    errors: [],
                     user : null,
                     //potenciali arii preset id, lai zinatu kadam sporta veidam taktika
                     sports: {},
@@ -51,13 +57,26 @@
                     //document.getElementById("saveButton").innerHTML = "Tactic added";
                     console.log(`Tactic name: ${this.tacticName}`);
                 },
-                myFunction() {
-                    document.getElementById("myDropdown").classList.toggle("show");
-                },
 
                 insertAlert(){
                     alert("Inserted Successfully!");
+                },
+
+                checkForm(e){
+                if(this.tacticName&& this.presetID){
+                    console.log("CHECK FORM FUNCTION CALLED");
                 }
+                this.errors = [];
+                if(!this.tacticName){
+                    this.errors.push("Name required.")
+                }
+                if(!this.presetID){
+                    this.errors.push("Choose a sport")
+                }
+                
+                console.warn("errors",this.error)
+                e.preventDefault();
+            },       
             },
 
         };
