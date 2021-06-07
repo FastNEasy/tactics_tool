@@ -53,10 +53,10 @@ class TacticsController extends Controller
         public function getTacticName(Request $request){
             $params = (Object)$request->all(); 
             if(isset($params->id)){
-                $query = tacticsModel::find($params->id);
+                $query = tacticsModel::with("sportsType")->find($params->id);
             }
             else{
-                $query = tacticsModel::select('id','tactic_name')->get();
+                $query = tacticsModel::with("sportsType")->select('id','tactic_name')->get();
             }
             return response()->json([
                 "data" => $query,
@@ -72,3 +72,8 @@ class TacticsController extends Controller
         // alert("Deleted preset: $deletedSport");
     }
 }
+// public function showSportsImage(Request $request){
+//     $params = (Object)$request->all();
+//     //$query = tacticsModel::find($params->id)->delete();
+// }
+//}
