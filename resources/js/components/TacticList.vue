@@ -8,7 +8,7 @@
                         <td class="tacticsNameCell">{{ tactics.tactic_name }}</td>
                         <td class= "tableButtonCell">
                             <div class="buttons">
-                                <th><router-link class="button" to="/viewtactic">View</router-link></th>
+                                <th><router-link class="button" :to="`/viewtactic/${tactics.id}`">View</router-link></th>
                                 <th><router-link class="button" :to="`/edittactic/${tactics.id}`">Edit</router-link></th>
                                 <th><button class="button" @click="deleteTactic(tactics.id, index)">Delete</button></th>
                             </div>

@@ -16,7 +16,8 @@
                 </div>
 
                 <img id="imageHolder">
-                  <button class="updateButton" type="submit" @click="onSave(); updateAlert()">Update</button><br><br>
+                <button class="updateButton" type="submit" @click="onSave(); updateAlert()">Update</button><br><br>
+                <router-link class="updateButton" to="/sportlist">Return to list!</router-link>
             </div>
         </div>
         
@@ -49,7 +50,7 @@
                 console.log("Editing:",this.id);
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
                 this.sportsName = data.sports_name;
-                this.sport = data;
+                this.sports = data;
                 this.image = data.field_picture;
                 console.log('Data:', data);  
             },
