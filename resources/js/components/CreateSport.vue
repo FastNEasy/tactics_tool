@@ -8,8 +8,6 @@
                         <li v-for="error in errors" v-bind:key="error.id">{{ error }}</li>
                     </ul>
                 </p>
-                <!-- <form @submit="checkForm()">
-                parveidot this par dropdown no datu bazes ar presetiem, kas pectam atveras talaak uz taktikas name -->
                 <form @submit="checkForm">
                     <input class="sportsNameInput" v-model="sportsName" placeholder="Sport name e.g Basketball" /><br><br>
                     <div class="file-input">
@@ -22,11 +20,11 @@
                         >
                         <label for="file">Select Image</label><br><br>
                     </div>
-                    <button type="submit" id="saveButton" @click="onSave();">Save</button>
+                    <button type="submit" id="saveButton" v-on:click.once="onSave();">Save</button>
                 </form>
                 <img id="imageHolder">
-               <!-- <router-link @click.native="onSave()" class="saveButton">Save</router-link> -->
-            </div> 
+                <!-- <button v-on:click.once="onSave()" class="saveButton">Save</button> -->
+            </div>
             <router-link class="button-link" to="/sportlist">Return to list!</router-link>
         </div>
     </div>

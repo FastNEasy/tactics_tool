@@ -14,7 +14,7 @@
                 </select><br><br>
                 <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
                 <input id="tacticName" v-model="tacticName" placeholder="Tactic name e.g Defense"><br><br>        
-                <button type="submit" class="saveButton" @click="onTacticAdd(); /*insertAlert()*/">Add tactic</button>
+                <button type="submit" class="saveButton" v-on:click.once="onTacticAdd(); /*insertAlert()*/">Add tactic</button>
                 <p id="saveButton"></p>
             </form>   
         </div>

@@ -5,11 +5,15 @@
         <div>
             <img id="picture" class="updateImage" v-bind:src="image">
             <!-- <button id="dragItem" draggable="true">You can drag me!</button> -->
-            <canvas v-on:mousemove="updateCoordinates" id="canv"></canvas>
-            <button @click="getBackground();">Draw item 0</button>
+            <canvas 
+                v-on:mousemove="updateCoordinates" 
+                v-on:mouseup="handleMouseUp" 
+                v-on:mousedown="handleMouseDown"
+                v-on:mouseout="handleMouseOut" 
+                id="canv" class="canvas-test" ></canvas>
             <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
         </div>
-        
+        <button v-on:click="drawItem(0, 0, 0)">Draw item 0</button>
     </div>
 </template>
 
@@ -33,10 +37,16 @@
                 ypoint: 0,
                 counter: 0,
                 id: 56,
-                src: null,
+                canvas: null,
+                context: null,
+                img: null,
             }
         },
-        
+        mounted(){
+            console.log("Izsaucas mounted");
+            this.context = document.getElementById("canv");
+            this.canvas = this.context.getContext('2d');
+        },
         methods: { 
             async getData(){
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
@@ -47,44 +57,38 @@
                 console.log(`Sports Pic: ${this.base64Img}`);
                 console.log(`Sports id: ${this.id}`);
             },
-
+            drawItem(index, x, y) {
+                console.log('args:', index, x, y);
+                this.img = new Image();
+                this.img.src = this.image;
+                console.log('this.image:', this.image);
+                this.img.onload = () => {
+                    console.log('this.ctx:', this.canvas);
+                    this.canvas.drawImage(this.img, x, y);
+                }
+            },
             updateCoordinates(event) {
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
-
-
-            getBackground(index,x,y){
-                //const context = canvas.getContext('2d');
-                this.img = new Image();
-                this.img.src = this.imgage;
-                console.log(`this image`,this.image);
-                this.img.onload = () => {
-                    this.canvas.drawImage(this.img,x,y);
-                };
+            draw() {
                 
             },
-            // drawRect() {
-            //     // clear canvas
-            //     // this.vueCanvas.clearRect(0, 0, 400, 200);
-            //     // draw rect
-            //     this.vueCanvas.beginPath();
-            //     if(this.counter%2 !=0){
-            //         this.vueCanvas.fillStyle = "#FF0000";
-            //     }else{
-            //         this.vueCanvas.fillStyle = "#7a7171";
-            //     }
-            //     if(this.radius<=0){
-            //         this.radius = 50;
-            //         this.xpoint-=15;
-            //         this.ypoint-=15;
-            //     }
-            //     this.vueCanvas.arc(this.xpoint, this.ypoint, this.radius, 0, 2 * Math.PI);
-            //     this.vueCanvas.fill();
-            //     this.radius-=5;
-            //     this.vueCanvas.stroke();
-            //     this.counter++;      
-            // },
+            handleMouseDown(e) {
+               
+            },
+            handleMouseUp(e) {
+
+            },
+            // also done dragging
+            handleMouseOut(e) {
+               
+            },
+            handleMouseMove(e) {
+               
+            },
+
+
         },
     };
 </script>
@@ -95,8 +99,8 @@
             padding: 0;
             margin: auto;
             display: block;
-            //width: 70%; 
-            //height: 680px; 
+            width: 2040px; 
+            height: 1680px; 
             border: 1px solid black;
             //background-color: #f1f1f1;
         }
