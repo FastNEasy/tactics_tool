@@ -10,7 +10,7 @@
             <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
             <input id="tacticName" v-model="tacticName" placeholder="Tactic name e.g Defense" required><br><br>
             
-            <button class="saveButton" @click="onTacticAdd(); insertAlert()">Add tactic</button>
+            <button class="saveButton" v-on:click.once="onTacticAdd(); insertAlert()">Add tactic</button>
             <p id="saveButton"></p>
         
         </div>

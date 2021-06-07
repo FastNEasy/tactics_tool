@@ -14,7 +14,7 @@
                     <label for="file">Select Image</label><br><br>
                 </div>
                 <img id="imageHolder">
-                <button @click="onSave()" class="saveButton">Save</button>
+                <button v-on:click.once="onSave()" class="saveButton">Save</button>
             </div>
             <router-link class="button-link" to="/sportlist">Return to list!</router-link>
         </div>
