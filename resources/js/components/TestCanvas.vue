@@ -3,10 +3,13 @@
         <!-- <canvas id="canv" class="canvas-test" ></canvas> -->
         <!-- <button @click="drawRect()">Add Rect</button> -->
         <div>
+            <img id="picture" class="updateImage" v-bind:src="image">
             <!-- <button id="dragItem" draggable="true">You can drag me!</button> -->
-            <canvas v-on:mousemove="updateCoordinates" id="canv" class="canvas-test" ></canvas>
+            <canvas v-on:mousemove="updateCoordinates" id="canv"></canvas>
+            <button @click="getBackground();">Draw item 0</button>
             <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
         </div>
+        
     </div>
 </template>
 
@@ -15,42 +18,52 @@
     const sampleRequest = new SampleRequest();
     export default {
         name: 'TestCanvas',
+        
+
         created() {
             this.getData();
+            //this.mounted();
         },
         data() {
             return {
                 sports: {},
-                sportsName: null,
+                //sportsName: null,
                 image: null,
                 xpoint: 0,
                 ypoint: 0,
                 counter: 0,
-                id: 23,
+                id: 56,
+                src: null,
             }
         },
-        mounted(){
-            const canvas = document.getElementById("canv");
-            const context = canvas.getContext("2d");
-            const img = new Image();
-            img.src = this.image;
-            img.onload = () => {
-                context.drawImage(img, 0, 0)
-            };
-        },
+        
         methods: { 
             async getData(){
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
-                this.sportsName = data.sports_name;
+                // this.sportsName = data.sports_name;
                 this.sports = data;
                 this.image = data.field_picture;
                 console.log('Data:', data.sports_name);
+                console.log(`Sports Pic: ${this.base64Img}`);
+                console.log(`Sports id: ${this.id}`);
             },
+
             updateCoordinates(event) {
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
 
+
+            getBackground(index,x,y){
+                //const context = canvas.getContext('2d');
+                this.img = new Image();
+                this.img.src = this.imgage;
+                console.log(`this image`,this.image);
+                this.img.onload = () => {
+                    this.canvas.drawImage(this.img,x,y);
+                };
+                
+            },
             // drawRect() {
             //     // clear canvas
             //     // this.vueCanvas.clearRect(0, 0, 400, 200);
@@ -78,14 +91,14 @@
 
 <style lang="scss" scoped>
     #canvasTest{
-        .canvas-test{
+        #canv{
             padding: 0;
             margin: auto;
             display: block;
-            width: 640px; 
-            height: 480px; 
+            //width: 70%; 
+            //height: 680px; 
             border: 1px solid black;
-            background-color: #f1f1f1;
+            //background-color: #f1f1f1;
         }
         #dragItem{
             width: 100px;
@@ -103,6 +116,12 @@
         #dragItem:hover {
             cursor: pointer;
             border-width: 20px;
+        }
+
+        #picture{
+            width:70%;
+            margin:auto;
+            display: block;
         }
     }
 
