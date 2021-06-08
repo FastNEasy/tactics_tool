@@ -12,16 +12,21 @@
                 id="canv" class="canvas-test" width="1000" height="700"></canvas>
             <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
         </div>
-        <button v-on:click="drawItem(0, 0, 0); ">Draw item 0</button>
+       
         
-        <div ref="draggableContainer" id="draggable-container">
-            <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
-        </div>
+        <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
+        <button v-on:click="saveCoords(xpoint, ypoint)">save</button>
         <button>SPAWN CIRCLES</button>
+        <div>
+            <div ref="draggableContainer" id="draggable-container">
+                <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+
     import SampleRequest from '@/api/sample-request';
     const sampleRequest = new SampleRequest();
     export default {
@@ -41,6 +46,12 @@
                 canvas: null,
                 context: null,
                 img: null,
+                gCanvasElement: null,
+                cordsArr:[],
+
+                circles:[],
+                currentCircleIndex:0,
+                
 
                 positions:{
                     clientX:undefined,
@@ -55,6 +66,8 @@
             this.context = document.getElementById("canv");
             this.canvas = this.context.getContext('2d');
         },
+       
+       
         methods: { 
             async getData(){
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
@@ -77,22 +90,20 @@
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
-            // draw() {
-                
-            // },
-            // handleMouseDown(e) {
-               
-            // },
-            // handleMouseUp(e) {
+           
+            getRelativeCoords(x, y) {
+                console.log('x ir', x);
+                console.log('y ir',y);
+                this.cordsArr.push({x,y})
+                //this.shout(this.cordsArr);
+              //  <button v-on:click="saveCoords()">SAVE Coordinates</button>
+            },
 
-            // },
-            // // also done dragging
-            // handleMouseOut(e) {
-               
-            // },
-            // handleMouseMove(e) {
-               
-            // },
+            saveCoords(x, y){
+                console.log('xxx ir', x);
+                console.log('y yy ir',y);
+                this.shout(this.cordsArr);
+            },
 
             dragMouseDown: function (event) {
                 event.preventDefault();
@@ -102,6 +113,7 @@
                 document.onmousemove = this.elementDrag;
                 document.onmouseup = this.closeDragElement;
             },
+            
             elementDrag: function (event) {
                 event.preventDefault();
                 this.positions.movementX = this.positions.clientX - event.clientX;
@@ -116,7 +128,28 @@
                 document.onmouseup = null;
                 document.onmousemove = null;
             },
-           
+    
+            
+            draw() {
+                
+            },
+            handleMouseDown(e) {
+               
+            },
+            handleMouseUp(e) {
+
+            },
+            // also done dragging
+            handleMouseOut(e) {
+               
+            },
+            handleMouseMove(e) {
+               
+            },
+
+            
+
+
         },
     };
 </script>
@@ -126,7 +159,8 @@
         .canvas-test{
             padding: 0;
             margin: auto;
-            display: block; 
+            display: block;
+             
             border: 1px solid black;
             //background-color: #f1f1f1;
         }
@@ -147,7 +181,6 @@
             cursor: pointer;
             border-width: 20px;
         }
-
         .circle{
             width:40px;
             height: 40px;
