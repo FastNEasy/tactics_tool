@@ -71,6 +71,15 @@ class TacticsController extends Controller
         // ]);
         // alert("Deleted preset: $deletedSport");
     }
+    public function updateTactics(Request $request){
+        $params = (Object)$request->all();
+        //$theBaseImg = explode(',', $params->baseImg);
+        tacticsModel::where('id', $params->id)->update(['tactic_name' => $params->tacticName]);
+        return response()->json([
+            "data" => $params,
+
+        ]);
+    }
 }
 // public function showSportsImage(Request $request){
 //     $params = (Object)$request->all();
