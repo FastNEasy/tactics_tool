@@ -9,7 +9,7 @@
                 v-on:mouseup="handleMouseUp" 
                 v-on:mousedown="handleMouseDown"
                 v-on:mouseout="handleMouseOut" 
-                id="canv" class="canvas-test" width =800px height=600px @click="getRelativeCoords(xpoint, ypoint)"></canvas >
+                id="canv" class="canvas-test" width =800px height=600px style="border:2px solid black" @click="getRelativeCoords(xpoint, ypoint)"></canvas >
             <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
            
            
@@ -93,12 +93,12 @@
               //  <button v-on:click="saveCoords()">SAVE Coordinates</button>
             },
 
-    saveCoords(x, y){
-        console.log('xxx ir', x);
-        console.log('y yy ir',y);
-        this.shout(this.cordsArr);
-    },
-    dragMouseDown: function (event) {
+            saveCoords(x, y){
+                console.log('xxx ir', x);
+                console.log('y yy ir',y);
+                this.shout(this.cordsArr);
+            },
+    dragMouseDown(event) {
                 event.preventDefault();
                 // get the mouse cursor position at startup:
                 this.positions.clientX = event.clientX;
@@ -106,7 +106,7 @@
                 document.onmousemove = this.elementDrag;
                 document.onmouseup = this.closeDragElement;
             },
-            elementDrag: function (event) {
+            elementDrag(event) {
                 event.preventDefault();
                 this.positions.movementX = this.positions.clientX - event.clientX;
                 this.positions.movementY = this.positions.clientY - event.clientY;
@@ -172,8 +172,8 @@
             border-width: 20px;
         }
         .circle{
-            width:40px;
-            height: 40px;
+            width:30px;
+            height: 30px;
             border-radius:50%;
             background-color:red;
         }
