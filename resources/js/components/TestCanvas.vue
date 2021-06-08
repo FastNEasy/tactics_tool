@@ -9,7 +9,7 @@
                 v-on:mouseup="handleMouseUp" 
                 v-on:mousedown="handleMouseDown"
                 v-on:mouseout="handleMouseOut" 
-                id="canv" class="canvas-test" width =800px height=600px @click="getRelativeCoords(xpoint, ypoint)"></canvas >
+                id="canv" class="canvas-test" width="1000" height="700"></canvas>
             <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
         </div>
         <button v-on:click="drawItem(0, 0, 0); ">Draw item 0</button>
@@ -41,14 +41,13 @@
                 canvas: null,
                 context: null,
                 img: null,
-                gCanvasElement: null,
 
                 positions:{
                     clientX:undefined,
                     clientY:undefined,
                     movementX: 0,
                     movementY: 0
-                }
+                },
             }
         },
         mounted(){
@@ -78,12 +77,6 @@
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
-            
-            getRelativeCoords(x, y) {
-                console.log('x ir', x);
-                console.log('y ir',y);
-            },
-            
             // draw() {
                 
             // },
