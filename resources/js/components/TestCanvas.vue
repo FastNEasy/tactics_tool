@@ -1,9 +1,6 @@
 <template>
     <div id="canvasTest">
-        <!-- <canvas id="canv" class="canvas-test" ></canvas> -->
-        <!-- <button @click="drawRect()">Add Rect</button> -->
-        <div>
-            <!-- <button id="dragItem" draggable="true">You can drag me!</button> -->
+        <!-- <div>
             <canvas
                 @mousemove="updateCoords" 
                 @mousedown="getCoords"
@@ -14,7 +11,46 @@
         <div ref="draggableContainer" id="draggable-container">
             <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
         </div>
-        <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
+        <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
+        <v-stage
+            ref="stage"
+            :config="configKonva"
+            @dragstart="handleDragstart"
+            @dragend="handleDragend"
+            @mousemove="testingCoords"
+        >
+            <v-layer ref="layer">
+                <v-image :config="{
+                    width: configKonva.width,
+                    height: configKonva.height,
+                    image: img,
+                    listening: false,
+                }"/>
+                <v-star
+                    v-for="item in list"
+                    :key="item.id"
+                    :config="{
+                        x: item.x,
+                        y: item.y,
+                        rotation: item.rotation,
+                        id: item.id,
+                        numPoints: 5,
+                        innerRadius: 30,
+                        outerRadius: 50, fill: '#89b717',
+                        opacity: 0.8,
+                        draggable: true,
+                        scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        scaleY: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        shadowColor: 'black',
+                        shadowBlur: 10,
+                        shadowOffsetX: dragItemId === item.id ? 15 : 5,
+                        shadowOffsetY: dragItemId === item.id ? 15 : 5,
+                        shadowOpacity: 0.6
+                    }"
+                ></v-star>
+            </v-layer>
+        </v-stage>
+        <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
     </div>
 </template>
 
@@ -35,10 +71,8 @@
                 ypoint: 0,
                 x1: 0,
                 y1: 0,
-                // x2: 0,
-                // y2: 0,
                 counter: 0,
-                id: 69,
+                id_preset: 28,
                 canvas: null,
                 context: null,
                 img: null,
@@ -50,22 +84,54 @@
                     movementX: 0,
                     movementY: 0
                 },
+                list: [],
+                dragItemId: null,
+                configKonva: {
+                    width: 1000,
+                    height: 500
+                },
             }
         },
         mounted(){//starts up with loading of the page
-            console.log("Izsaucas mounted");
-            this.canvas = document.getElementById("canv");
-            this.context = this.canvas.getContext('2d');
+            // console.log("Izsaucas mounted");
+            // this.canvas = document.getElementById("canv");
+            // this.context = this.canvas.getContext('2d');
+            for (let n = 0; n < 5; n++) {
+                this.list.push({
+                    id: Math.round(Math.random() * 10000).toString(),
+                    x: Math.random() * 1000,
+                    y: Math.random() * 500,
+                    rotation: Math.random() * 180,
+                    scale: 1
+                });
+            }
         },
        
        
         methods: { 
             async getData(){
-                const {data} = await sampleRequest.getSportsTypes({ id:this.id});
+                const {data} = await sampleRequest.getSportsTypes({ id:this.id_preset});
                 this.sportsName = data.sports_name;
                 this.sports = data;
                 this.image = data.field_picture;
                 console.log('Data:', data.sports_name);
+                this.img = new window.Image();
+                this.img.src = this.image;
+                this.img.onload = () => {
+                    // set image only when it is loaded
+                };
+            },
+            handleDragstart(e) {
+                // save drag element:
+                this.dragItemId = e.target.id();
+                // move current element to the top:
+                const item = this.list.find(i => i.id === this.dragItemId);
+                const index = this.list.indexOf(item);
+                this.list.splice(index, 1);
+                this.list.push(item);
+            },
+            handleDragend(e) {
+                this.dragItemId = null;
             },
             drawItem(index, x, y) {//draws the picture
                 console.log('args:', index, x, y);
@@ -73,8 +139,8 @@
                 this.img.src = this.image;
                 console.log('this.image:', this.image);
                 this.img.onload = () => {
-                    console.log('this.ctx:', this.canvas);
-                    this.canvas.drawImage(this.img, x, y);
+                    console.log('this.ctx:', this.context);
+                    this.context.drawImage(this.img, x, y);
                 }
             },
             drawLine(x1, y1, x2, y2) {
@@ -137,6 +203,18 @@
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
+            testingCoords(){
+                let stage = this.$refs.stage.getStage();
+                var pos = stage.getPointerPosition();
+                // console.log(pos);
+                // var stageAttrs = stage.attrs;
+                // console.log(stageAttrs);
+                var x = pos.x;
+                var y = pos.y;
+                this.xpoint = x;
+                this.ypoint = y;
+                // console.log("Coords: ",x,y);
+            }
             // handleMouseDown(e) {
                
             // },

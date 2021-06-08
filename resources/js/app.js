@@ -11,6 +11,7 @@
  
  import Vue from 'vue';
  import VueRouter from 'vue-router';
+ import VueKonva from 'vue-konva';
  import App from './components/App';
  import CreateSport from './components/CreateSport';
  import CreateTactic from './components/CreateTactic';
@@ -36,6 +37,7 @@
  
  // Vue.component('example-component', require('./components/ExampleComponent.vue').default);`
  Vue.use(VueRouter);
+ Vue.use(VueKonva);
  Vue.config.productionTip = false;
  Vue.config.devtools = true;
  Vue.config.debug = true;
