@@ -17,6 +17,7 @@
        
         
         <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
+        <button v-on:click="saveCoords(xpoint, ypoint)">save</button>
     </div>
 </template>
 
@@ -42,6 +43,7 @@
                 context: null,
                 img: null,
                 gCanvasElement: null,
+                cordsArr:[],
             }
         },
         mounted(){
@@ -74,11 +76,20 @@
                 this.ypoint = event.clientY;
             },
            
-     getRelativeCoords(x, y) {
-    console.log('x ir', x);
-    console.log('y ir',y);
+            getRelativeCoords(x, y) {
+                console.log('x ir', x);
+                console.log('y ir',y);
+                this.cordsArr.push({x,y})
+                //this.shout(this.cordsArr);
+              //  <button v-on:click="saveCoords()">SAVE Coordinates</button>
+            },
 
-},
+    saveCoords(x, y){
+        console.log('xxx ir', x);
+        console.log('y yy ir',y);
+        this.shout(this.cordsArr);
+    },
+    
             
             draw() {
                 
