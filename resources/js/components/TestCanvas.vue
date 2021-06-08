@@ -3,17 +3,21 @@
         <!-- <canvas id="canv" class="canvas-test" ></canvas> -->
         <!-- <button @click="drawRect()">Add Rect</button> -->
         <div>
-            <img id="picture" class="updateImage" v-bind:src="image">
             <!-- <button id="dragItem" draggable="true">You can drag me!</button> -->
             <canvas 
                 v-on:mousemove="updateCoordinates" 
                 v-on:mouseup="handleMouseUp" 
                 v-on:mousedown="handleMouseDown"
                 v-on:mouseout="handleMouseOut" 
-                id="canv" class="canvas-test" ></canvas>
+                id="canv" class="canvas-test" width="1000" height="700"></canvas>
             <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
         </div>
-        <button v-on:click="drawItem(0, 0, 0)">Draw item 0</button>
+        <button v-on:click="drawItem(0, 0, 0); ">Draw item 0</button>
+        
+        <div ref="draggableContainer" id="draggable-container">
+            <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
+        </div>
+        <button>SPAWN CIRCLES</button>
     </div>
 </template>
 
@@ -22,16 +26,13 @@
     const sampleRequest = new SampleRequest();
     export default {
         name: 'TestCanvas',
-        
-
         created() {
             this.getData();
-            //this.mounted();
         },
         data() {
             return {
                 sports: {},
-                //sportsName: null,
+                sportsName: null,
                 image: null,
                 xpoint: 0,
                 ypoint: 0,
@@ -40,6 +41,13 @@
                 canvas: null,
                 context: null,
                 img: null,
+
+                positions:{
+                    clientX:undefined,
+                    clientY:undefined,
+                    movementX: 0,
+                    movementY: 0
+                }
             }
         },
         mounted(){
@@ -50,12 +58,10 @@
         methods: { 
             async getData(){
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
-                // this.sportsName = data.sports_name;
+                this.sportsName = data.sports_name;
                 this.sports = data;
                 this.image = data.field_picture;
                 console.log('Data:', data.sports_name);
-                console.log(`Sports Pic: ${this.base64Img}`);
-                console.log(`Sports id: ${this.id}`);
             },
             drawItem(index, x, y) {
                 console.log('args:', index, x, y);
@@ -71,36 +77,56 @@
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
-            draw() {
+            // draw() {
                 
-            },
-            handleMouseDown(e) {
+            // },
+            // handleMouseDown(e) {
                
-            },
-            handleMouseUp(e) {
+            // },
+            // handleMouseUp(e) {
 
-            },
-            // also done dragging
-            handleMouseOut(e) {
+            // },
+            // // also done dragging
+            // handleMouseOut(e) {
                
-            },
-            handleMouseMove(e) {
+            // },
+            // handleMouseMove(e) {
                
+            // },
+
+            dragMouseDown: function (event) {
+                event.preventDefault();
+                // get the mouse cursor position at startup:
+                this.positions.clientX = event.clientX;
+                this.positions.clientY = event.clientY;
+                document.onmousemove = this.elementDrag;
+                document.onmouseup = this.closeDragElement;
             },
-
-
+            elementDrag: function (event) {
+                event.preventDefault();
+                this.positions.movementX = this.positions.clientX - event.clientX;
+                this.positions.movementY = this.positions.clientY - event.clientY;
+                this.positions.clientX = event.clientX;
+                this.positions.clientY = event.clientY;
+                // set the element's new position:
+                this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px';
+                this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
+            },
+            closeDragElement () {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            },
+           
         },
     };
 </script>
 
 <style lang="scss" scoped>
     #canvasTest{
-        #canv{
+        .canvas-test{
             padding: 0;
             margin: auto;
-            display: block;
-            width: 2040px; 
-            height: 1680px; 
+            display: block; 
             border: 1px solid black;
             //background-color: #f1f1f1;
         }
@@ -122,10 +148,19 @@
             border-width: 20px;
         }
 
-        #picture{
-            width:70%;
-            margin:auto;
-            display: block;
+        .circle{
+            width:40px;
+            height: 40px;
+            border-radius:50%;
+            background-color:red;
+        }
+
+        #draggable-container {
+            position: absolute;
+            z-index: 9;
+        }
+        #draggable-header {
+            z-index: 10;
         }
     }
 
