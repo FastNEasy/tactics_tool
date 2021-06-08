@@ -60,4 +60,5 @@ class SportsTypeController extends Controller
 
         ]);
     }
+   
 }

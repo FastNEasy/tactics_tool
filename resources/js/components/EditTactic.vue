@@ -5,8 +5,7 @@
             <input class="tacticsName" v-model="tacticName" placeholder="Name of the sport"  /><br><br>
             <img :src="image">
             <img id="imageHolder">
-            <button class="updateButton" type="submit" @click=" updateAlert()">Update</button><br><br>
-            <!-- onSave(); -->
+            <button class="updateButton" type="submit" @click=" onSave(); updateAlert()">Update</button><br><br>
 
         </div>
     </div>
@@ -31,6 +30,7 @@
                 sportsName: null,
                 base64Img: null,
                 presetID: null,
+                user : null,
                 
             }
         },
@@ -42,23 +42,28 @@
                 this.tactics = data;
                 this.tacticName = data.tactic_name;
                 this.presetID = data.id_presets;
+                this.userID = data.id_user;
                 //this.sportsName= data.sports_type;
                 this.image=data.sports_type.field_picture;
-                console.log('Data:', data);
+                console.log('USERid:', this.id_user);
+                console.log('Dattta:', data);
+                console.log('USERid:', data.id_user);
                 //console.log('sportsNAme: ',this.this.image);
                 // this.getFieldData(this.preid);
             },
              
-            onSave(){
-                sampleRequest.saveTactic({ tacticName: this.tacticName, presetChoice: this.presetID, loginId: this.user}).then(response => {
-                console.log("Response received", response);
-                }).catch(error => {
-                console.log("Error",error);
-                }).finally(() => {});
-                console.log(`Sports Name: ${this.tacticName}`);
-                console.log(`Sports Pic: ${this.presetID}`);
-                console.log(`Sports id: ${this.user}`);
-            },
+            onSave(){//adding tactic to the table
+                  //this.presetID = document.getElementById("presetsid").value;
+                    sampleRequest.updateTactics({ id:this.id, tacticName: this.tacticName }).then(response => {
+                        console.log("Response received-2", response);
+                    }).catch(error => {
+                        console.log("Error-2", error);
+                    });
+                    //document.getElementById("saveButton").innerHTML = "Tactic added";
+                    console.log(`Tactic name: ${this.tacticName}`);
+                     console.log(`preset   ${this.presetID}`);
+                     console.log(`user id: ${this.userID}`);
+                },
 
             updateAlert(){
                 alert("The update was successful!");

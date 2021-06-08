@@ -7,8 +7,12 @@
             <canvas
                 @mousemove="updateCoords" 
                 @mousedown="getCoords"
-                id="canv" class="canvas-test" width="1080" height="680" ></canvas>
+                id="canv" class="canvas-test" width="1080" height="680" >
+            </canvas>
             <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
+        </div>
+        <div ref="draggableContainer" id="draggable-container">
+            <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
         </div>
         <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
     </div>
@@ -34,13 +38,18 @@
                 // x2: 0,
                 // y2: 0,
                 counter: 0,
-                id: 23,
+                id: 69,
                 canvas: null,
                 context: null,
                 img: null,
-                firstSet: false,
                 drawIt: false,
                 coords: [],
+                positions:{
+                    clientX:undefined,
+                    clientY:undefined,
+                    movementX: 0,
+                    movementY: 0
+                },
             }
         },
         mounted(){//starts up with loading of the page
@@ -48,6 +57,8 @@
             this.canvas = document.getElementById("canv");
             this.context = this.canvas.getContext('2d');
         },
+       
+       
         methods: { 
             async getData(){
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
@@ -76,24 +87,28 @@
                 ctx.stroke();
                 ctx.closePath();
             },
-            draw() {
 
-                    // this.drawLine(this.x, this.y, event.offsetX, event.offsetY);
-                    // if(this.firstSet){
-                    //     this.x2 = event.clientX;
-                    //     this.y2 = event.clientY;
-                    //     this.drawIt = true;
-                    // }else{
-                    //     this.x1 = event.clientX - 1080;
-                    //     this.y1 = event.clientY - 680;
-                    //     this.firstSet = true;
-                    // }
-                    // if(this.drawIt){
-                this.drawLine(this.x1, this.y1, this.x2, this.y2);
-                        // this.firstSet = false;
-                        // this.x2 = this.x1;
-                        // this.y2 = this.y1;
-                    // }
+            dragMouseDown: function (event) {
+                event.preventDefault();
+                // get the mouse cursor position at startup:
+                this.positions.clientX = event.clientX;
+                this.positions.clientY = event.clientY;
+                document.onmousemove = this.elementDrag;
+                document.onmouseup = this.closeDragElement;
+            },
+            elementDrag: function (event) {
+                event.preventDefault();
+                this.positions.movementX = this.positions.clientX - event.clientX;
+                this.positions.movementY = this.positions.clientY - event.clientY;
+                this.positions.clientX = event.clientX;
+                this.positions.clientY = event.clientY;
+                // set the element's new position:
+                this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px';
+                this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
+            },
+            closeDragElement () {
+                document.onmouseup = null;
+                document.onmousemove = null;
             },
             getCoords(event){//translates coordinates for the canvas
                 this.x1 = event.clientX;
@@ -122,24 +137,6 @@
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
-            // beginDrawing(e) {
-            //     this.x = e.offsetX;
-            //     this.y = e.offsetY;
-            //     this.isDrawing = true;
-            // },
-            // stopDrawing(e) {
-            //     if (this.isDrawing) {
-            //         this.drawLine(this.x, this.y, e.offsetX, e.offsetY);
-            //         this.x = 0;
-            //         this.y = 0;
-            //         this.isDrawing = false;
-            //     }
-            // },
-            // draw() {
-            //     // this.coords.cordX=this.xpoint;
-            //     //     this.coords.cordY=this.ypoint;
-            //     //     this.replayCoords.push(this.coords);
-            // },
             // handleMouseDown(e) {
                
             // },
@@ -153,8 +150,6 @@
             // handleMouseMove(e) {
                
             // },
-
-
         },
     };
 </script>
@@ -184,6 +179,20 @@
         #dragItem:hover {
             cursor: pointer;
             border-width: 20px;
+        }
+        .circle{
+            width:40px;
+            height: 40px;
+            border-radius:50%;
+            background-color:red;
+        }
+
+        #draggable-container {
+            position: absolute;
+            z-index: 9;
+        }
+        #draggable-header {
+            z-index: 10;
         }
     }
 

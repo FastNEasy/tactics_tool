@@ -1,6 +1,8 @@
 <template>
     <div id="viewtactic">
         <h3>{{ tacticName }}</h3>
+        <img :src="image">
+        <!-- <img id="imageHolder"> -->
     </div>
 </template>
 
@@ -17,6 +19,9 @@
                 tactics: {},
                 id: this.$route.params.id,
                 tacticName: null,
+                presetID: null,
+                ser : null,
+                image: null,
             }
         },
         methods: {
@@ -26,6 +31,13 @@
                 this.tactics = data;
                 this.tacticName = data.tactic_name;
                 console.log('Data:', data);
+                this.presetID = data.id_presets;
+                this.userID = data.id_user;
+                //this.sportsName= data.sports_type;
+                this.image=data.sports_type.field_picture;
+                console.log('USERid:', this.id_user);
+                console.log('Dattta:', data);
+                console.log('USERid:', data.id_user);
             }
         },
     };
