@@ -60,6 +60,19 @@
   const router = new VueRouter({
     routes // short for `routes: routes`
   })
+  Vue.mixin({
+    methods: {
+      /** Console log an array or object without vue listeners. */
+      shout: val => console.log(JSON.parse(JSON.stringify(val))),
+      shoutout: function() {
+        const output = [];
+        for (const value of arguments) {
+          output.push(['object', 'array'].includes(typeof value) ? JSON.parse(JSON.stringify(value)) : value);
+        }
+        console.log.apply(console, output);
+      },
+    },
+  });
  new Vue({
    el: '#theApp',
    router,
