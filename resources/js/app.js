@@ -20,7 +20,7 @@
  import ViewTactic from './components/ViewTactic';
  import EditTactic from './components/EditTactic';
  import TestCanvas from './components/TestCanvas';
-
+ import VueKonva from './components/TestCanvas';
  //import VueFilename from './componets/VueFilename';
  
  /**
@@ -40,6 +40,7 @@
  Vue.config.devtools = true;
  Vue.config.debug = true;
  Vue.config.silent = false;
+ Vue.use(VueKonva);
  
  /**
   * Next, we will create a fresh Vue application instance and attach it to

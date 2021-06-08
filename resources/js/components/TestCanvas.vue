@@ -1,33 +1,219 @@
 <template>
     <div id="canvasTest">
+      
+         <v-stage ref="stage" :config="stageSize">
+    <v-layer ref="layer">
+      <v-rect
+        ref="rect"
+        :config="{
+          width: 50,
+          height: 50,
+          fill: 'green',
+          draggable: true,
+        }"
+      />
+      <v-regular-polygon
+        ref="hexagon"
+        :config="{
+          x: 200,
+          y: 200,
+          sides: 6,
+          radius: 20,
+          fill: 'red',
+          stroke: 'black',
+          strokeWidth: 4,
+        }"
+      />
+      
+    </v-layer>
+    
+  </v-stage>
+  <div id="buttons">
+      <input type="button" id="play" value="Play" />
+      <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
+
+      </div>
         <!-- <canvas id="canv" class="canvas-test" ></canvas> -->
         <!-- <button @click="drawRect()">Add Rect</button> -->
         <div>
             <!-- <button id="dragItem" draggable="true">You can drag me!</button> -->
-            <canvas 
-                v-on:mousemove="updateCoordinates" 
-                v-on:mouseup="handleMouseUp" 
-                v-on:mousedown="handleMouseDown"
-                v-on:mouseout="handleMouseOut" 
-                id="canv" class="canvas-test" width =800px height=600px style="border:2px solid black" @click="getRelativeCoords(xpoint, ypoint)"></canvas >
-            <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
-           
-           
+            <!-- <canvas
+                @mousemove="updateCoords" 
+                @mousedown="getCoords"
+                id="canv" class="canvas-test" width="1080" height="680" >
+            </canvas> -->
+            <!-- <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p> -->
         </div>
-       
-        
-        <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
-        <button v-on:click="saveCoords(xpoint, ypoint)">save</button>
-        <div ref="draggableContainer" id="draggable-container">
+        <!-- <div ref="draggableContainer" id="draggable-container">
             <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
-        </div>
+        </div> -->
+        <!-- <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button> -->
+       
     </div>
 </template>
 
 <script>
+    // import SampleRequest from '@/api/sample-request';
+    // import Vue from 'vue';
+    // import VueKonva from 'vue-konva'
 
-    import SampleRequest from '@/api/sample-request';
+    // Vue.use(VueKonva)
+    // const sampleRequest = new SampleRequest();
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
+    // export default {
+    //     name: 'TestCanvas',
+    //     created() {
+    //         this.getData();
+    //     },
+    //     data() {
+    //         return {
+    //             sports: {},
+    //             sportsName: null,
+    //             image: null,
+    //             xpoint: 0,
+    //             ypoint: 0,
+    //             x1: 0,
+    //             y1: 0,
+    //             // x2: 0,
+    //             // y2: 0,
+    //             counter: 0,
+    //             id: 69,
+    //             canvas: null,
+    //             context: null,
+    //             img: null,
+    //             drawIt: false,
+    //             coords: [],
+    //             positions:{
+    //                 clientX:undefined,
+    //                 clientY:undefined,
+    //                 movementX: 0,
+    //                 movementY: 0
+    //             },
+    //             stageSize: {
+    //             width: width,
+    //             height: height,
+    //   },
+    //         }
+    //     },
+    //     mounted(){//starts up with loading of the page
+    //         console.log("Izsaucas mounted");
+    //         this.canvas = document.getElementById("canv");
+    //         this.context = this.canvas.getContext('2d');
+    //        // changeSize(e) {
+    //   // to() is a method of `Konva.Node` instances
+    //     e.target.to({
+    //     scaleX: Math.random() + 0.8,
+    //     scaleY: Math.random() + 0.8,
+    //     duration: 0.2,
+    //   });
+    // //},
+    //     },
+       
+       
+    //     methods: { 
+    //         async getData(){
+    //             const {data} = await sampleRequest.getSportsTypes({ id:this.id});
+    //             this.sportsName = data.sports_name;
+    //             this.sports = data;
+    //             this.image = data.field_picture;
+    //             console.log('Data:', data.sports_name);
+    //         },
+    //         drawItem(index, x, y) {//draws the picture
+    //             console.log('args:', index, x, y);
+    //             this.img = new Image();
+    //             this.img.src = this.image;
+    //             console.log('this.image:', this.image);
+    //             this.img.onload = () => {
+    //                 console.log('this.ctx:', this.context);
+    //                 this.context.drawImage(this.img, x, y);
+    //             }
+    //         },
+    //         drawLine(x1, y1, x2, y2) {
+    //             let ctx = this.context;
+    //             ctx.beginPath();
+    //             ctx.strokeStyle = 'black';
+    //             ctx.lineWidth = 1;
+    //             ctx.moveTo(x1, y1);
+    //             ctx.lineTo(x2, y2);
+    //             ctx.stroke();
+    //             ctx.closePath();
+    //         },
+
+    //         dragMouseDown: function (event) {
+    //             event.preventDefault();
+    //             // get the mouse cursor position at startup:
+    //             this.positions.clientX = event.clientX;
+    //             this.positions.clientY = event.clientY;
+    //             document.onmousemove = this.elementDrag;
+    //             document.onmouseup = this.closeDragElement;
+    //         },
+    //         elementDrag(event) {
+    //             event.preventDefault();
+    //             this.positions.movementX = this.positions.clientX - event.clientX;
+    //             this.positions.movementY = this.positions.clientY - event.clientY;
+    //             this.positions.clientX = event.clientX;
+    //             this.positions.clientY = event.clientY;
+    //             // set the element's new position:
+    //             this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px';
+    //             this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
+    //         },
+    //         closeDragElement () {
+    //             document.onmouseup = null;
+    //             document.onmousemove = null;
+    //         },
+    //         getCoords(event){//translates coordinates for the canvas
+    //             this.x1 = event.clientX;
+    //             this.y1 = event.clientY;
+    //             this.shoutout("Gotten x and y: ",this.x1,this.y1);
+    //             var rect = event.target.getBoundingClientRect();
+    //             this.shout(rect);
+    //             this.translateCoords(rect, event.clientX, event.clientY);
+    //             this.coords.push({ x: this.x1, y: this.y1 });
+    //             this.counter++;
+    //             if(this.counter == 2){
+    //                 this.drawLine(this.coords[0].x,this.coords[0].y, this.coords[1].x,this.coords[1].y);
+    //                 this.counter = 0;
+    //                 this.shout(this.coords);
+    //                 this.coords.splice(0);
+    //             }
+    //         },
+    //         translateCoords(rect, x, y){
+    //             var factor = 1080 / rect.width;
+    //             this.shout(factor);
+    //             this.x1 = factor * (x - rect.left);
+    //             this.y1 = factor * (y - rect.top);
+    //             this.shoutout("New x and y: ",this.x1,this.y1);
+    //         },
+    //         updateCoords(event){
+    //             this.xpoint = event.clientX;
+    //             this.ypoint = event.clientY;
+    //         },
+    //         // handleMouseDown(e) {
+               
+    //         // },
+    //         // handleMouseUp(e) {
+
+    //         // },
+    //         // // also done dragging
+    //         // handleMouseOut(e) {
+               
+    //         // },
+    //         // handleMouseMove(e) {
+               
+    //         // },
+    //     },
+    // };
+    
+import Konva from "konva";
+import SampleRequest from '@/api/sample-request';
+import Vue from 'vue';
+import VueKonva from 'vue-konva'
+
+    Vue.use(VueKonva)
     const sampleRequest = new SampleRequest();
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     export default {
         name: 'TestCanvas',
         created() {
@@ -35,112 +221,80 @@
         },
         data() {
             return {
+            stageSize: {
+                width: width,
+                height: height,
+        },
+        
                 sports: {},
                 sportsName: null,
                 image: null,
                 xpoint: 0,
                 ypoint: 0,
+                x1: 0,
+                y1: 0,
+                // x2: 0,
+                // y2: 0,
                 counter: 0,
                 id: 69,
-                canvas: null,
-                context: null,
-                img: null,
-                gCanvasElement: null,
-                cordsArr:[],
-                positions:{
-                    clientX:undefined,
-                    clientY:undefined,
-                    movementX: 0,
-                    movementY: 0
-                },
-            }
-        },
-        mounted(){
-            console.log("Izsaucas mounted");
-            this.context = document.getElementById("canv");
-            this.canvas = this.context.getContext('2d');
-        },
-       
-       
-        methods: { 
-            async getData(){
+    };
+  },
+  methods: {
+       async getData(){
                 const {data} = await sampleRequest.getSportsTypes({ id:this.id});
                 this.sportsName = data.sports_name;
                 this.sports = data;
                 this.image = data.field_picture;
-                console.log('Data:', data.sports_name);
+                console.log('Data:', data);
             },
-            drawItem(index, x, y) {
+            drawItem(index, x, y) {//draws the picture
                 console.log('args:', index, x, y);
                 this.img = new Image();
+                //console.log('Data:', data);
                 this.img.src = this.image;
                 console.log('this.image:', this.image);
                 this.img.onload = () => {
-                    console.log('this.ctx:', this.canvas);
-                    this.canvas.drawImage(this.img, x, y);
+                    //console.log('this.ctx:', this.context);
+                    this.window(this.img);
                 }
             },
-            updateCoordinates(event) {
-                this.xpoint = event.clientX;
-                this.ypoint = event.clientY;
-            },
-           
-            getRelativeCoords(x, y) {
-                console.log('x ir', x);
-                console.log('y ir',y);
-                this.cordsArr.push({x,y})
-                //this.shout(this.cordsArr);
-              //  <button v-on:click="saveCoords()">SAVE Coordinates</button>
-            },
+    changeSize(e) {
+      // to() is a method of `Konva.Node` instances
+      e.target.to({
+        scaleX: Math.random() + 0.8,
+        scaleY: Math.random() + 0.8,
+        duration: 0.2,
+      });
+    },
+     created() {
+    const image = new window.Image();
+    console.log ('sss', this.data)
+    image.src = this.img.src;
+    image.onload = () => {
+      // set image only when it is loaded
+      this.image = image;
+    };
+    }
+  },
+  
+  mounted() {
+    const vm = this;
+    const amplitude = 100;
+    const period = 5000;
+    // in ms
+    const centerX = vm.$refs.stage.getNode().getWidth() / 2;
 
-            saveCoords(x, y){
-                console.log('xxx ir', x);
-                console.log('y yy ir',y);
-                this.shout(this.cordsArr);
-            },
-    dragMouseDown(event) {
-                event.preventDefault();
-                // get the mouse cursor position at startup:
-                this.positions.clientX = event.clientX;
-                this.positions.clientY = event.clientY;
-                document.onmousemove = this.elementDrag;
-                document.onmouseup = this.closeDragElement;
-            },
-            elementDrag(event) {
-                event.preventDefault();
-                this.positions.movementX = this.positions.clientX - event.clientX;
-                this.positions.movementY = this.positions.clientY - event.clientY;
-                this.positions.clientX = event.clientX;
-                this.positions.clientY = event.clientY;
-                // set the element's new position:
-                this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px';
-                this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
-            },
-            closeDragElement () {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            },
-    
-            
-            draw() {
-                
-            },
-            handleMouseDown(e) {
-               
-            },
-            handleMouseUp(e) {
+    const hexagon = this.$refs.hexagon.getNode();
 
-            },
-            // also done dragging
-            handleMouseOut(e) {
-               
-            },
-            handleMouseMove(e) {
-               
-            },
+    // example of Konva.Animation
+    const anim = new Konva.Animation(function (frame) {
+      hexagon.setX(
+        amplitude * Math.sin((frame.time * 2 * Math.PI) / period) + centerX
+      );
+    }, hexagon.getLayer());
 
-
-        },
+    anim.start();
+    },
     };
 </script>
 
@@ -150,7 +304,6 @@
             padding: 0;
             margin: auto;
             display: block;
-             
             border: 1px solid black;
             background-color: #f1f1f1;
         }
