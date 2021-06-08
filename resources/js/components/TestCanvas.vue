@@ -18,6 +18,9 @@
         
         <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
         <button v-on:click="saveCoords(xpoint, ypoint)">save</button>
+        <div ref="draggableContainer" id="draggable-container">
+            <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
+        </div>
     </div>
 </template>
 
@@ -44,6 +47,12 @@
                 img: null,
                 gCanvasElement: null,
                 cordsArr:[],
+                positions:{
+                    clientX:undefined,
+                    clientY:undefined,
+                    movementX: 0,
+                    movementY: 0
+                },
             }
         },
         mounted(){
@@ -89,6 +98,28 @@
         console.log('y yy ir',y);
         this.shout(this.cordsArr);
     },
+    dragMouseDown: function (event) {
+                event.preventDefault();
+                // get the mouse cursor position at startup:
+                this.positions.clientX = event.clientX;
+                this.positions.clientY = event.clientY;
+                document.onmousemove = this.elementDrag;
+                document.onmouseup = this.closeDragElement;
+            },
+            elementDrag: function (event) {
+                event.preventDefault();
+                this.positions.movementX = this.positions.clientX - event.clientX;
+                this.positions.movementY = this.positions.clientY - event.clientY;
+                this.positions.clientX = event.clientX;
+                this.positions.clientY = event.clientY;
+                // set the element's new position:
+                this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px';
+                this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
+            },
+            closeDragElement () {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            },
     
             
             draw() {
@@ -139,6 +170,20 @@
         #dragItem:hover {
             cursor: pointer;
             border-width: 20px;
+        }
+        .circle{
+            width:40px;
+            height: 40px;
+            border-radius:50%;
+            background-color:red;
+        }
+
+        #draggable-container {
+            position: absolute;
+            z-index: 9;
+        }
+        #draggable-header {
+            z-index: 10;
         }
     }
 
