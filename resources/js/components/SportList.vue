@@ -39,7 +39,7 @@
             async getData(){
                 const {data} = await sampleRequest.getSportsTypes();
                 this.sports = data;
-                console.log('Data:', this.sports);
+                this.shout(this.sports);
             },
             editPreset(sport){
                 console.log("Need edit sport is: ", sport.sports_name);

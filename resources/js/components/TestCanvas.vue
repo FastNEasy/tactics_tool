@@ -1,32 +1,26 @@
+/* eslint-disable no-unused-vars */
 <template>
     <div id="canvasTest">
         <!-- <canvas id="canv" class="canvas-test" ></canvas> -->
         <!-- <button @click="drawRect()">Add Rect</button> -->
-        <div>
-            <!-- <button id="dragItem" draggable="true">You can drag me!</button> -->
-            <canvas 
-                v-on:mousemove="updateCoordinates" 
-                v-on:mouseup="handleMouseUp" 
-                v-on:mousedown="handleMouseDown"
-                v-on:mouseout="handleMouseOut" 
-                id="canv" class="canvas-test" width="1000" height="700"></canvas>
-            <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
-        </div>
-       
-        
-        <button v-on:click="drawItem(0, 0, 100)">Draw item 0</button>
-        <button v-on:click="saveCoords(xpoint, ypoint)">save</button>
-        <button>SPAWN CIRCLES</button>
-        <div>
-            <div ref="draggableContainer" id="draggable-container">
-                <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
-            </div>
-        </div>
+        <v-stage
+            ref="stage" class="stage"
+            :config="configKonva"
+            @dragstart="handleDragstart"
+            @dragend="handleDragend">
+
+            <v-layer ref="layer">
+                
+                <v-circle v-for="item in list" :key="item.id" :config="configCircle"/>
+                
+            </v-layer>
+        </v-stage>
     </div>
 </template>
 
 <script>
-
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     import SampleRequest from '@/api/sample-request';
     const sampleRequest = new SampleRequest();
     export default {
@@ -41,30 +35,48 @@
                 image: null,
                 xpoint: 0,
                 ypoint: 0,
+                x1: 0,
+                y1: 0,
+                // x2: 0,
+                // y2: 0,
                 counter: 0,
                 id: 56,
-                canvas: null,
-                context: null,
                 img: null,
-                gCanvasElement: null,
-                cordsArr:[],
+                drawIt: false,
+                coords: [],
 
-                circles:[],
-                currentCircleIndex:0,
-                
 
-                positions:{
-                    clientX:undefined,
-                    clientY:undefined,
-                    movementX: 0,
-                    movementY: 0
+                list: [],
+                dragItemId: null,
+                configKonva: {
+                    width: 1000,
+                    height: height,
+                    
+                },
+                configCircle: {
+                    x: 40,
+                    y: 40,
+                    radius: 20,
+                    fill: "red",
+                    stroke: "black",
+                    strokeWidth: 4,
+                    draggable: true,
                 },
             }
         },
-        mounted(){
-            console.log("Izsaucas mounted");
-            this.context = document.getElementById("canv");
-            this.canvas = this.context.getContext('2d');
+        mounted(){//starts up with loading of the page
+            // console.log("Izsaucas mounted");
+            // this.canvas = document.getElementById("canv");
+            // this.context = this.canvas.getContext('2d');
+            for (let n = 0; n < 5; n++) {
+                this.list.push({
+                    id: Math.round(Math.random() * 10000).toString(),
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    rotation: Math.random() * 180,
+                    scale: Math.random()
+                });
+            }
         },
        
        
@@ -76,33 +88,25 @@
                 this.image = data.field_picture;
                 console.log('Data:', data.sports_name);
             },
-            drawItem(index, x, y) {
+            drawItem(index, x, y) {//draws the picture
                 console.log('args:', index, x, y);
                 this.img = new Image();
                 this.img.src = this.image;
                 console.log('this.image:', this.image);
                 this.img.onload = () => {
-                    console.log('this.ctx:', this.canvas);
-                    this.canvas.drawImage(this.img, x, y);
+                    console.log('this.ctx:', this.context);
+                    this.context.drawImage(this.img, x, y);
                 }
             },
-            updateCoordinates(event) {
-                this.xpoint = event.clientX;
-                this.ypoint = event.clientY;
-            },
-           
-            getRelativeCoords(x, y) {
-                console.log('x ir', x);
-                console.log('y ir',y);
-                this.cordsArr.push({x,y})
-                //this.shout(this.cordsArr);
-              //  <button v-on:click="saveCoords()">SAVE Coordinates</button>
-            },
-
-            saveCoords(x, y){
-                console.log('xxx ir', x);
-                console.log('y yy ir',y);
-                this.shout(this.cordsArr);
+            drawLine(x1, y1, x2, y2) {
+                let ctx = this.context;
+                ctx.beginPath();
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 1;
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.closePath();
             },
 
             dragMouseDown: function (event) {
@@ -128,28 +132,60 @@
                 document.onmouseup = null;
                 document.onmousemove = null;
             },
-    
-            
-            draw() {
-                
+            getCoords(event){//translates coordinates for the canvas
+                this.x1 = event.clientX;
+                this.y1 = event.clientY;
+                this.shoutout("Gotten x and y: ",this.x1,this.y1);
+                var rect = event.target.getBoundingClientRect();
+                this.shout(rect);
+                this.translateCoords(rect, event.clientX, event.clientY);
+                this.coords.push({ x: this.x1, y: this.y1 });
+                this.counter++;
+                if(this.counter == 2){
+                    this.drawLine(this.coords[0].x,this.coords[0].y, this.coords[1].x,this.coords[1].y);
+                    this.counter = 0;
+                    this.shout(this.coords);
+                    this.coords.splice(0);
+                }
             },
-            handleMouseDown(e) {
+            translateCoords(rect, x, y){
+                var factor = 1080 / rect.width;
+                this.shout(factor);
+                this.x1 = factor * (x - rect.left);
+                this.y1 = factor * (y - rect.top);
+                this.shoutout("New x and y: ",this.x1,this.y1);
+            },
+            updateCoords(event){
+                this.xpoint = event.clientX;
+                this.ypoint = event.clientY;
+            },
+            // handleMouseDown(e) {
                
-            },
-            handleMouseUp(e) {
+            // },
+            // handleMouseUp(e) {
 
-            },
-            // also done dragging
-            handleMouseOut(e) {
+            // },
+            // // also done dragging
+            // handleMouseOut(e) {
                
-            },
-            handleMouseMove(e) {
+            // },
+            // handleMouseMove(e) {
                
+            // },
+
+            handleDragstart(e) {
+                // save drag element:
+                this.dragItemId = e.target.id();
+                // move current element to the top:
+                const item = this.list.find(i => i.id === this.dragItemId);
+                const index = this.list.indexOf(item);
+                this.list.splice(index, 1);
+                this.list.push(item);
+                },
+            // eslint-disable-next-line no-unused-vars
+            handleDragend(e) {
+                this.dragItemId = null;
             },
-
-            
-
-
         },
     };
 </script>
@@ -160,7 +196,6 @@
             padding: 0;
             margin: auto;
             display: block;
-             
             border: 1px solid black;
             //background-color: #f1f1f1;
         }
@@ -181,19 +216,11 @@
             cursor: pointer;
             border-width: 20px;
         }
-        .circle{
-            width:40px;
-            height: 40px;
-            border-radius:50%;
-            background-color:red;
-        }
-
-        #draggable-container {
-            position: absolute;
-            z-index: 9;
-        }
-        #draggable-header {
-            z-index: 10;
+        // .stage{
+        //     background-color:blue;
+        // }
+        .layer{
+            background-color: rgb(23, 238, 23);
         }
     }
 
