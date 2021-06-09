@@ -12,7 +12,7 @@
             <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
         </div>
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
-        <v-stage
+        <v-stage class="stageYes"
             ref="stage"
             :config="configKonva"
             @dragstart="handleDragstart"
@@ -26,7 +26,7 @@
                     image: img,
                     listening: false,
                 }"/>
-                <v-star
+                <v-circle
                     v-for="item in list"
                     :key="item.id"
                     :config="{
@@ -34,9 +34,8 @@
                         y: item.y,
                         rotation: item.rotation,
                         id: item.id,
-                        numPoints: 5,
-                        innerRadius: 30,
-                        outerRadius: 50, fill: '#89b717',
+                        radius: 20,
+                        fill: '#89b717',
                         opacity: 0.8,
                         draggable: true,
                         scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
@@ -47,10 +46,12 @@
                         shadowOffsetY: dragItemId === item.id ? 15 : 5,
                         shadowOpacity: 0.6
                     }"
-                ></v-star>
+                ></v-circle>
             </v-layer>
         </v-stage>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
+        <button @click="addStar">Add a star!</button>
+        <button @click="removeStar">Remove a star</button>
     </div>
 </template>
 
@@ -90,21 +91,22 @@
                     width: 1000,
                     height: 500
                 },
+                count : 0,
             }
         },
         mounted(){//starts up with loading of the page
             // console.log("Izsaucas mounted");
             // this.canvas = document.getElementById("canv");
             // this.context = this.canvas.getContext('2d');
-            for (let n = 0; n < 5; n++) {
-                this.list.push({
-                    id: Math.round(Math.random() * 10000).toString(),
-                    x: Math.random() * 1000,
-                    y: Math.random() * 500,
-                    rotation: Math.random() * 180,
-                    scale: 1
-                });
-            }
+            // for (let n = 0; n < 5; n++) {
+            //     this.list.push({
+            //         id: Math.round(Math.random() * 10000).toString(),
+            //         x: Math.random() * 1000,
+            //         y: Math.random() * 500,
+            //         rotation: Math.random() * 180,
+            //         scale: 1
+            //     });
+            // }
         },
        
        
@@ -129,9 +131,36 @@
                 const index = this.list.indexOf(item);
                 this.list.splice(index, 1);
                 this.list.push(item);
+                this.shoutout("Drag started from ", item.x, item.y);
             },
             handleDragend(e) {
+                this.dragItemId = e.target.id();
+                const item = this.list.find(i => i.id == this.dragItemId);
+                item.x = e.target.x();
+                item.y = e.target.y();
+                this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
                 this.dragItemId = null;
+            },
+            addStar(e){
+                this.list.push({
+                    id: this.count.toString(),
+                    x: 175,
+                    y: 30,
+                    scale: 1
+                });
+                this.count++;
+                this.shoutout("List data ",this.list);
+                
+            },
+            removeStar(e){
+                const index = this.count-1;
+                if(index <0){ return; }
+                this.shoutout("Deleted: ",index);
+                this.list.splice(index, 1);
+                this.count--;
+                if(this.count <= 0){
+                    this.count = 0;
+                }
             },
             drawItem(index, x, y) {//draws the picture
                 console.log('args:', index, x, y);
@@ -271,6 +300,10 @@
         }
         #draggable-header {
             z-index: 10;
+        }
+        .stageYes{
+            margin-left: 10%;
+            margin-top: 10%;
         }
     }
 
