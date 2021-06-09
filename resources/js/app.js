@@ -11,6 +11,7 @@
  
  import Vue from 'vue';
  import VueRouter from 'vue-router';
+ import VueKonva from 'vue-konva';
  import App from './components/App';
  import CreateSport from './components/CreateSport';
  import CreateTactic from './components/CreateTactic';
@@ -20,7 +21,7 @@
  import ViewTactic from './components/ViewTactic';
  import EditTactic from './components/EditTactic';
  import TestCanvas from './components/TestCanvas';
- import VueKonva from './components/TestCanvas';
+ 
  //import VueFilename from './componets/VueFilename';
  
  /**
@@ -36,11 +37,12 @@
  
  // Vue.component('example-component', require('./components/ExampleComponent.vue').default);`
  Vue.use(VueRouter);
+ Vue.use(VueKonva);
  Vue.config.productionTip = false;
  Vue.config.devtools = true;
  Vue.config.debug = true;
  Vue.config.silent = false;
- Vue.use(VueKonva);
+ 
  
  /**
   * Next, we will create a fresh Vue application instance and attach it to
