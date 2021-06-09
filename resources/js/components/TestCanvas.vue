@@ -13,6 +13,16 @@
             <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
         </div>
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
+        <div class="buttonDiv">
+            <div class="Buttons">
+                <button class="button" @click="addHomePlayer">Add HOME player!</button>
+                <button class="button" @click="removeHomePlayer">Remove HOME player!</button>
+            </div>
+            <div class="Buttons">
+                <button class="button" @click="addAwayPlayer">Add AWAY player!</button>
+                <button class="button" @click="removeAwayPlayer">Remove AWAY player!</button>
+            </div>
+        </div>
         <v-stage class="stage"
             ref="stage"
             :config="configKonva"
@@ -29,14 +39,37 @@
                     listening: false,
                     fillEnabled: true,
                 }"/>
-                <v-circle v-for="item in list" :key="item.id" :config="{
-                    x: item.x,
-                    y: item.y,
-                    radius: 30,
-                    fill: 'gold',
-                    draggable:true,
+                <v-circle
+                    v-for="item in list"
+                    :key="item.id"
+                    :config="{
+                        x: item.x,
+                        y: item.y,
+                        rotation: item.rotation,
+                        id: item.id,
+                        radius: 20,
+                        fill: '#89b717',
+                        opacity: 0.8,
+                        draggable: true,
+                        scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        scaleY: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        shadowColor: 'black',
+                        shadowBlur: 10,
+                        shadowOffsetX: dragItemId === item.id ? 15 : 5,
+                        shadowOffsetY: dragItemId === item.id ? 15 : 5,
+                        shadowOpacity: 0.6,
+
+                        dragBoundFunc: function (pos){
+                            y1 =  pos.y < 10 ? 10 :pos.y && pos.y > 490 ? 490 :pos.y;
+                            x1 = pos.x < 0 ? 10 :pos.x && pos.x >990 ? 990 :pos.x;
+                            return{
+                                x: x1,
+                                y: y1,
+                                
+                            };
+                        },
                     }"
-                />
+                ></v-circle>
             </v-layer>
         </v-stage>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
@@ -44,8 +77,7 @@
 </template>
 
 <script>
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+
     import SampleRequest from '@/api/sample-request';
     const sampleRequest = new SampleRequest();
     export default {
@@ -75,26 +107,24 @@
                 dragItemId: null,
                 configKonva: {
                     width: 1000,
-                    height: 500,
-                    
-                    
+                    height: 500, 
                 },
-                
+                count : 0,
             }
         },
         mounted(){//starts up with loading of the page
             // console.log("Izsaucas mounted");
             // this.canvas = document.getElementById("canv");
             // this.context = this.canvas.getContext('2d');
-            for (let n = 0; n < 5; n++) {
-                this.list.push({
-                    id: Math.round(Math.random() * 10000).toString(),
-                    x: Math.random() * 1000,
-                    y: Math.random() * 500,
-                    rotation: Math.random() * 180,
-                    scale: 1
-                });
-            }
+            // for (let n = 0; n < 5; n++) {
+            //     this.list.push({
+            //         id: Math.round(Math.random() * 10000).toString(),
+            //         x: Math.random() * 1000,
+            //         y: Math.random() * 500,
+            //         rotation: Math.random() * 180,
+            //         scale: 1
+            //     });
+            // }
         },
        
        
@@ -119,20 +149,64 @@
                 const index = this.list.indexOf(item);
                 this.list.splice(index, 1);
                 this.list.push(item);
+                this.shoutout("Drag started from ", item.x, item.y);
             },
             handleDragend(e) {
+                this.dragItemId = e.target.id();
+                const item = this.list.find(i => i.id == this.dragItemId);
+                item.x = e.target.x();
+                item.y = e.target.y();
+                this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
                 this.dragItemId = null;
             },
-            drawItem(index, x, y) {//draws the picture
-                console.log('args:', index, x, y);
-                this.img = new Image();
-                this.img.src = this.image;
-                console.log('this.image:', this.image);
-                this.img.onload = () => {
-                    console.log('this.ctx:', this.context);
-                    this.context.drawImage(this.img, x, y);
+            // eslint-disable-next-line no-unused-vars
+            addHomePlayer(e){
+                this.list.push({
+                    id: this.count.toString(),
+                    x: 175,
+                    y: 30,
+                    scale: 1
+                });
+                this.count++;
+                this.shoutout("List data ",this.list);
+                
+            },
+            // eslint-disable-next-line no-unused-vars
+            removeHomePlayer(e){
+                const index = this.count-1;
+                if(index <0){ return; }
+                this.shoutout("Deleted: ",index);
+                this.list.splice(index, 1);
+                this.count--;
+                if(this.count <= 0){
+                    this.count = 0;
                 }
             },
+            
+            addAwayPlayer(e){
+                this.list.push({
+                    id: this.count.toString(),
+                    x: 600,
+                    y: 30,
+                    scale: 1
+                });
+                this.count++;
+                this.shoutout("List data ",this.list);
+                
+            },
+
+            removeAwayPlayer(e){
+                const index = this.count-1;
+                if(index <0){ return; }
+                this.shoutout("Deleted: ",index);
+                this.list.splice(index, 1);
+                this.count--;
+                if(this.count <= 0){
+                    this.count = 0;
+                }
+            },
+
+
             drawLine(x1, y1, x2, y2) {
                 let ctx = this.context;
                 ctx.beginPath();
@@ -144,29 +218,6 @@
                 ctx.closePath();
             },
 
-            dragMouseDown: function (event) {
-                event.preventDefault();
-                // get the mouse cursor position at startup:
-                this.positions.clientX = event.clientX;
-                this.positions.clientY = event.clientY;
-                document.onmousemove = this.elementDrag;
-                document.onmouseup = this.closeDragElement;
-            },
-            
-            elementDrag: function (event) {
-                event.preventDefault();
-                this.positions.movementX = this.positions.clientX - event.clientX;
-                this.positions.movementY = this.positions.clientY - event.clientY;
-                this.positions.clientX = event.clientX;
-                this.positions.clientY = event.clientY;
-                // set the element's new position:
-                this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px';
-                this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
-            },
-            closeDragElement () {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            },
             getCoords(event){//translates coordinates for the canvas
                 this.x1 = event.clientX;
                 this.y1 = event.clientY;
@@ -260,7 +311,40 @@
 
         .stage{
             margin-left:20%;
-            margin-top:10%;
+            margin-top:1%;
+        }
+
+        .buttonDiv{
+            display:table;
+            margin-top:2%;
+            margin-left:23%;
+        }
+
+        .Buttons{
+            display:table-cell;
+            width: 40%;
+        }
+
+        .button{
+            margin-top:20%;
+            display:inline-block;
+            padding:0.3em 1.2em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:2em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            font-weight:bold;
+            color:#FFFFFF;
+            background-color:#1db40f;
+            text-align:center;
+            transition: all 0.2s;
+        }
+
+        .button:hover{
+            background-color: #f44336;
+            color: white;
+            cursor: pointer;
         }
     }
 
