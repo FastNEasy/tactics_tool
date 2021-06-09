@@ -1,20 +1,45 @@
 /* eslint-disable no-unused-vars */
 <template>
     <div id="canvasTest">
-        <!-- <canvas id="canv" class="canvas-test" ></canvas> -->
-        <!-- <button @click="drawRect()">Add Rect</button> -->
-        <v-stage
-            ref="stage" class="stage"
+        <!-- <div>
+            <canvas
+                @mousemove="updateCoords" 
+                @mousedown="getCoords"
+                id="canv" class="canvas-test" width="1080" height="680" >
+            </canvas>
+            <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
+        </div>
+        <div ref="draggableContainer" id="draggable-container">
+            <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
+        </div>
+        <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
+        <v-stage class="stage"
+            ref="stage"
             :config="configKonva"
             @dragstart="handleDragstart"
-            @dragend="handleDragend">
+            @dragend="handleDragend"
+            @mousemove="testingCoords"
 
+        >
             <v-layer ref="layer">
-                
-                <v-circle v-for="item in list" :key="item.id" :config="configCircle"/>
-                
+                <v-image :config="{
+                    width: configKonva.width,
+                    height: configKonva.height,
+                    image: img,
+                    listening: false,
+                    fillEnabled: true,
+                }"/>
+                <v-circle v-for="item in list" :key="item.id" :config="{
+                    x: item.x,
+                    y: item.y,
+                    radius: 30,
+                    fill: 'gold',
+                    draggable:true,
+                    }"
+                />
             </v-layer>
         </v-stage>
+        <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
     </div>
 </template>
 
@@ -37,10 +62,10 @@
                 ypoint: 0,
                 x1: 0,
                 y1: 0,
-                // x2: 0,
-                // y2: 0,
                 counter: 0,
-                id: 56,
+                id_preset: 56,
+                canvas: null,
+                context: null,
                 img: null,
                 drawIt: false,
                 coords: [],
@@ -50,18 +75,11 @@
                 dragItemId: null,
                 configKonva: {
                     width: 1000,
-                    height: height,
+                    height: 500,
+                    
                     
                 },
-                configCircle: {
-                    x: 40,
-                    y: 40,
-                    radius: 20,
-                    fill: "red",
-                    stroke: "black",
-                    strokeWidth: 4,
-                    draggable: true,
-                },
+                
             }
         },
         mounted(){//starts up with loading of the page
@@ -71,10 +89,10 @@
             for (let n = 0; n < 5; n++) {
                 this.list.push({
                     id: Math.round(Math.random() * 10000).toString(),
-                    x: Math.random() * width,
-                    y: Math.random() * height,
+                    x: Math.random() * 1000,
+                    y: Math.random() * 500,
                     rotation: Math.random() * 180,
-                    scale: Math.random()
+                    scale: 1
                 });
             }
         },
@@ -82,11 +100,28 @@
        
         methods: { 
             async getData(){
-                const {data} = await sampleRequest.getSportsTypes({ id:this.id});
+                const {data} = await sampleRequest.getSportsTypes({ id:this.id_preset});
                 this.sportsName = data.sports_name;
                 this.sports = data;
                 this.image = data.field_picture;
                 console.log('Data:', data.sports_name);
+                this.img = new window.Image();
+                this.img.src = this.image;
+                this.img.onload = () => {
+                    // set image only when it is loaded
+                };
+            },
+            handleDragstart(e) {
+                // save drag element:
+                this.dragItemId = e.target.id();
+                // move current element to the top:
+                const item = this.list.find(i => i.id === this.dragItemId);
+                const index = this.list.indexOf(item);
+                this.list.splice(index, 1);
+                this.list.push(item);
+            },
+            handleDragend(e) {
+                this.dragItemId = null;
             },
             drawItem(index, x, y) {//draws the picture
                 console.log('args:', index, x, y);
@@ -159,6 +194,18 @@
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
             },
+            testingCoords(){
+                let stage = this.$refs.stage.getStage();
+                var pos = stage.getPointerPosition();
+                // console.log(pos);
+                // var stageAttrs = stage.attrs;
+                // console.log(stageAttrs);
+                var x = pos.x;
+                var y = pos.y;
+                this.xpoint = x;
+                this.ypoint = y;
+                // console.log("Coords: ",x,y);
+            },
             // handleMouseDown(e) {
                
             // },
@@ -173,19 +220,7 @@
                
             // },
 
-            handleDragstart(e) {
-                // save drag element:
-                this.dragItemId = e.target.id();
-                // move current element to the top:
-                const item = this.list.find(i => i.id === this.dragItemId);
-                const index = this.list.indexOf(item);
-                this.list.splice(index, 1);
-                this.list.push(item);
-                },
-            // eslint-disable-next-line no-unused-vars
-            handleDragend(e) {
-                this.dragItemId = null;
-            },
+
         },
     };
 </script>
@@ -221,6 +256,11 @@
         // }
         .layer{
             background-color: rgb(23, 238, 23);
+        }
+
+        .stage{
+            margin-left:20%;
+            margin-top:10%;
         }
     }
 
