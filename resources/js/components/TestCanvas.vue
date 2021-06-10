@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 <template>
+<!-- tatad, eror ir taja ka vienam ir list un otram list1, jaizdoma ka tur ielikt if, kurs pasaka kuru listu skatities(japadod kadam home vertiba).  
+un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  -->
     <div id="canvasTest">
         <!-- <div>
             <canvas
@@ -13,9 +15,7 @@
             <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
         </div>
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
-
-        <!-- ielikt klasi un pabidit no malam -->
-        <v-stage
+        <v-stage class="stageYes"
             ref="stage"
             :config="configKonva"
             @dragstart="handleDragstart"
@@ -29,7 +29,7 @@
                     image: img,
                     listening: false,
                 }"/>
-                <v-star
+                <v-circle
                     v-for="item in list"
                     :key="item.id"
                     :config="{
@@ -37,11 +37,8 @@
                         y: item.y,
                         rotation: item.rotation,
                         id: item.id,
-                        numPoints: 10,
-                        innerRadius: 20,
-                        outerRadius: 20, 
-                        name:'red',
-                        fill: '#ffffaa',
+                        radius: 20,
+                        fill: '#89fbcf',
                         opacity: 0.8,
                         draggable: true,
                         scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
@@ -50,13 +47,42 @@
                         shadowBlur: 10,
                         shadowOffsetX: dragItemId === item.id ? 15 : 5,
                         shadowOffsetY: dragItemId === item.id ? 15 : 5,
-                        shadowOpacity: 0.6
+                        shadowOpacity: 0.6,
+                        player: item.player,
                     }"
-                ></v-star>
+                    
+                ></v-circle>
+                 <v-circle
+                    v-for="item in list1"
+                    :key="item.id"
+                    :config="{
+                        x: item.x,
+                        y: item.y,
+                        rotation: item.rotation,
+                        id: item.id,
+                        radius: 20,
+                        fill: '#89baa7',
+                        opacity: 0.8,
+                        draggable: true,
+                        scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        scaleY: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        shadowColor: 'black',
+                        shadowBlur: 10,
+                        shadowOffsetX: dragItemId === item.id ? 15 : 5,
+                        shadowOffsetY: dragItemId === item.id ? 15 : 5,
+                        shadowOpacity: 0.6,
+                        player: item.player,
+                    }"
+                    
+                ></v-circle>
+               
             </v-layer>
         </v-stage>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
-        
+        <button @click="addHome">Add home players!</button>
+        <button @click="removeHome">Remove home Players</button>
+        <button @click="addAway">Add away players!</button>
+        <button @click="removeAway">Remove away players</button>
     </div>
 </template>
 
@@ -86,9 +112,9 @@
                 img: null,
                 drawIt: false,
                 coords: [],
-
-
+                list1: [],
                 list: [],
+                player: null,
                 dragItemId: null,
                 configKonva: {
                     width: 1000,
@@ -104,22 +130,22 @@
                     strokeWidth: 4,
                     draggable: true,
                 },
-                
+                count : 0,
             }
         },
         mounted(){//starts up with loading of the page
             // console.log("Izsaucas mounted");
             // this.canvas = document.getElementById("canv");
             // this.context = this.canvas.getContext('2d');
-            for (let n = 0; n < 5; n++) {
-                this.list.push({
-                    id: Math.round(Math.random() * 10000).toString(),
-                    x: Math.random() * 1000,
-                    y: Math.random() * 500,
-                    rotation: Math.random() * 180,
-                    scale: 1
-                });
-            }
+            // for (let n = 0; n < 5; n++) {
+            //     this.list.push({
+            //         id: Math.round(Math.random() * 10000).toString(),
+            //         x: Math.random() * 1000,
+            //         y: Math.random() * 500,
+            //         rotation: Math.random() * 180,
+            //         scale: 1
+            //     });
+            // }
         },
        
        
@@ -137,16 +163,111 @@
                 };
             },
             handleDragstart(e) {
-                // save drag element:
                 this.dragItemId = e.target.id();
                 // move current element to the top:
-                const item = this.list.find(i => i.id === this.dragItemId);
-                const index = this.list.indexOf(item);
-                this.list.splice(index, 1);
-                this.list.push(item);
+                const item = this.list1.find(i => i.id === this.dragItemId);
+                const index = this.list1.indexOf(item);
+                this.player = item.player;
+                console.log('player: ',this.player);
+                if(this.player === 'home'){
+                    this.list.splice(index, 1);
+                    this.list.push(item);
+                    this.shoutout("Drag started from ", item.x, item.y);
+                    this.player = null;
+                }else{
+                    const item = this.list1.find(i => i.id === this.dragItemId);
+                    const index = this.list1.indexOf(item);
+                    console.log("this is awway");
+                    this.list1.splice(index, 1);
+                    this.list1.push(item);
+                    this.shoutout("Drag started from ", item.x, item.y);
+                    this.player = null;
+                }
+                // save drag element:
+                
             },
+            // handleDragstartAway(e) {
+            //     // save drag element:
+            //     this.dragItemId = e.target.id();
+            //     // move current element to the top:
+            //     const item = this.list1.find(i => i.id === this.dragItemId);
+            //     const index1 = this.list1.indexOf(item);
+            //     this.list1.splice(index1, 1);
+            //     this.list1.push(item);
+            //     this.shoutout("Drag started from ", item.x, item.y);
+                
+            // },
             handleDragend(e) {
-                this.dragItemId = null;
+                this.dragItemId = e.target.id();
+                const item = this.list1.find(i => i.id == this.dragItemId);
+                this.player = item.player;
+                console.log('player: ',this.player);
+                if(this.player === 'home'){
+                    item.x = e.target.x();
+                    item.y = e.target.y();
+                    this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+                    this.dragItemId = null;
+                }else{
+                    this.dragItemId = e.target.id();
+                    const item = this.list1.find(i => i.id == this.dragItemId);
+                    item.x = e.target.x();
+                    item.y = e.target.y();
+                    this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+                    this.dragItemId = null;
+                }
+                
+            },
+            // handleDragendAway(e) {
+            //     this.dragItemId = e.target.id();
+            //     const item = this.list1.find(i => i.id == this.dragItemId);
+            //     item.x = e.target.x();
+            //     item.y = e.target.y();
+            //     this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+            //     this.dragItemId = null;
+            // },
+            addHome(e){
+                this.list.push({
+                    id: this.count.toString(),
+                    x: 175,
+                    y: 30,
+                    player: 'home',
+                    scale: 1,
+                });
+                this.count++;
+                this.shoutout("List data ",this.list);
+                
+            },
+            addAway(e){
+                this.list1.push({
+                    id: this.count.toString(),
+                    x: 825,
+                    y: 30,
+                    player: 'away',
+                    scale: 1,
+                });
+                this.count++;
+                this.shoutout("List1 data ",this.list1);
+                
+            },
+            removeHome(e){//japieliek klat player home or away
+                const index = this.count-1;
+                if(index <0){ return; }
+                this.shoutout("Deleted: ",index);
+                this.list.splice(index, 1);
+                this.count--;
+                if(this.count <= 0){
+                    this.count = 0;
+                }
+            },
+            removeAway(e){
+                const index = this.count-1;
+                if(index <0){ return; }
+                this.shoutout("Deleted: ",index);
+                this.list1.splice(index, 1);
+                this.count--;
+                if(this.count <= 0){
+                    this.count = 0;
+                }
             },
             drawItem(index, x, y) {//draws the picture
                 console.log('args:', index, x, y);
@@ -282,7 +403,10 @@
         .layer{
             background-color: rgb(23, 238, 23);
         }
-        
+        .stageYes{
+            margin-left: 10%;
+            margin-top: 10%;
+        }
     }
 
 </style>
