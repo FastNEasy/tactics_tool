@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <template>
     <div id="canvasTest">
         <!-- <div>
@@ -12,12 +13,23 @@
             <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
         </div>
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
-        <v-stage class="stageYes"
+        <div class="buttonDiv">
+            <div class="Buttons">
+                <button class="button" @click="addHomePlayer">Add HOME player!</button>
+                <button class="button" @click="removeHomePlayer">Remove HOME player!</button>
+            </div>
+            <div class="Buttons">
+                <!-- <button class="button" @click="addAwayPlayer">Add AWAY player!</button>
+                <button class="button" @click="removeAwayPlayer">Remove AWAY player!</button> -->
+            </div>
+        </div>
+        <v-stage class="stage"
             ref="stage"
             :config="configKonva"
             @dragstart="handleDragstart"
             @dragend="handleDragend"
             @mousemove="testingCoords"
+
         >
             <v-layer ref="layer">
                 <v-image :config="{
@@ -25,6 +37,7 @@
                     height: configKonva.height,
                     image: img,
                     listening: false,
+                    fillEnabled: true,
                 }"/>
                 <v-circle
                     v-for="item in list"
@@ -47,14 +60,23 @@
                         shadowOffsetY: dragItemId === item.id ? 15 : 5,
                         shadowOpacity: 0.6,
                         prevCords: item.preCords,
+                        dragBoundFunc: function (pos){
+                            y1 =  pos.y < 10 ? 10 :pos.y && pos.y > 490 ? 490 :pos.y;
+                            x1 = pos.x < 0 ? 10 :pos.x && pos.x >990 ? 990 :pos.x;
+                            return{
+                                x: x1,
+                                y: y1,
+                                
+                            };
+                        },
                     }"
                 ></v-circle>
             </v-layer>
         </v-stage>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
-        <button @click="addPlayer">Add a player</button>
+        <!-- <button @click="addPlayer">Add a player</button>
         <button @click="removePlayer">Remove a player</button>
-        <button @click="lockCords">Lock in Cords!</button>
+        <button @click="lockCords">Lock in Cords!</button> -->
         <button @click="replayAnim">Replay animation</button>
     </div>
 </template>
@@ -78,7 +100,7 @@
                 x1: 0,
                 y1: 0,
                 counter: 0,
-                id_preset: 28,
+                id_preset: 23,
                 canvas: null,
                 context: null,
                 img: null,
@@ -152,7 +174,7 @@
                 this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
                 this.dragItemId = null;
             },
-            addPlayer(e){//adds new player object at the top of the field
+            addHomePlayer(e){//adds new player object at the top of the field
                 if(this.count == 6){ return}
                 this.changeX += 40;
                 this.list.push({
@@ -165,7 +187,7 @@
                 this.count++;
                 this.shoutout("List data ",this.list);
             },
-            removePlayer(e){//removes last added player object
+            removeHomePlayer(e){//removes last added player object
                 var check = this.count-1;
                 if(check <0){ return; }
                 console.log("check: ",this.delItemId);
@@ -188,9 +210,42 @@
                     //just continue adding coords to the table
                     //pectam izveidojot animaciju, padot shos listus ,lai ar tiem darbotos
             },
+            // addAwayPlayer(e){
+            //     this.list.push({
+            //         id: this.count.toString(),
+            //         x: 600,
+            //         y: 30,
+            //         scale: 1
+            //     });
+            //     this.count++;
+            //     this.shoutout("List data ",this.list);
+                
+            // },
+
+            // removeAwayPlayer(e){
+            //     const index = this.count-1;
+            //     if(index <0){ return; }
+            //     this.shoutout("Deleted: ",index);
+            //     this.list.splice(index, 1);
+            //     this.count--;
+            //     if(this.count <= 0){
+            //         this.count = 0;
+            //     }
+            // },
+
+
+            drawLine(x1, y1, x2, y2) {
+                let ctx = this.context;
+                ctx.beginPath();
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 1;
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.closePath();
+            },
             replayAnim(){
                 const needed = this.list.find(i => i.id === this.delItemId);
-
                 console.log(needed);
                 let amplitute = 5;
                 var velocity = 5;
@@ -271,7 +326,7 @@
             margin: auto;
             display: block;
             border: 1px solid black;
-            background-color: #f1f1f1;
+            //background-color: #f1f1f1;
         }
         #dragItem{
             width: 100px;
@@ -290,23 +345,49 @@
             cursor: pointer;
             border-width: 20px;
         }
-        .circle{
-            width:40px;
-            height: 40px;
-            border-radius:50%;
-            background-color:red;
+        // .stage{
+        //     background-color:blue;
+        // }
+        .layer{
+            background-color: rgb(23, 238, 23);
         }
 
-        #draggable-container {
-            position: absolute;
-            z-index: 9;
+        .stage{
+            margin-left:20%;
+            margin-top:1%;
         }
-        #draggable-header {
-            z-index: 10;
+
+        .buttonDiv{
+            display:table;
+            margin-top:2%;
+            margin-left:23%;
         }
-        .stageYes{
-            margin-left: 10%;
-            margin-top: 10%;
+
+        .Buttons{
+            display:table-cell;
+            width: 40%;
+        }
+
+        .button{
+            margin-top:20%;
+            display:inline-block;
+            padding:0.3em 1.2em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:2em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            font-weight:bold;
+            color:#FFFFFF;
+            background-color:#1db40f;
+            text-align:center;
+            transition: all 0.2s;
+        }
+
+        .button:hover{
+            background-color: #f44336;
+            color: white;
+            cursor: pointer;
         }
     }
 
