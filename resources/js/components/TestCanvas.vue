@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 <template>
+<!-- tatad, eror ir taja ka vienam ir list un otram list1, jaizdoma ka tur ielikt if, kurs pasaka kuru listu skatities(japadod kadam home vertiba).  
+un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  -->
     <div id="canvasTest">
         <!-- <div>
             <canvas
@@ -15,13 +17,17 @@
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
         <div class="buttonDiv">
             <div class="Buttons">
-                <button class="button" @click="addHomePlayer">Add HOME player!</button>
-                <button class="button" @click="removeHomePlayer">Remove HOME player!</button>
+                <button class="button" @click="addHome(); coun=1">Add HOME player!</button>
+                <button class="button" @click="removeHome(); coun=1">Remove HOME player!</button>
             </div>
             <div class="Buttons">
-                <button class="button" @click="addAwayPlayer">Add AWAY player!</button>
-                <button class="button" @click="removeAwayPlayer">Remove AWAY player!</button>
+                <button class="button" @click="addAway(); coun=2">Add AWAY player!</button>
+                <button class="button" @click="removeAway(); coun=2">Remove AWAY player!</button>
             </div>
+            <!-- <div id="TestCanvas">
+                <button v-on:click="addHome(); coun=1;">Addd 1</button>
+                <p>The button above has been clicked {{ coun }} times.</p>
+            </div> -->
         </div>
         <v-stage class="stage"
             ref="stage"
@@ -48,7 +54,7 @@
                         rotation: item.rotation,
                         id: item.id,
                         radius: 20,
-                        fill: '#89b717',
+                        fill: '#89fbcf',
                         opacity: 0.8,
                         draggable: true,
                         scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
@@ -58,6 +64,7 @@
                         shadowOffsetX: dragItemId === item.id ? 15 : 5,
                         shadowOffsetY: dragItemId === item.id ? 15 : 5,
                         shadowOpacity: 0.6,
+                        player: item.player,
 
                         dragBoundFunc: function (pos){
                             y1 =  pos.y < 10 ? 10 :pos.y && pos.y > 490 ? 490 :pos.y;
@@ -69,7 +76,32 @@
                             };
                         },
                     }"
+                    
                 ></v-circle>
+                 <v-circle
+                    v-for="item in list1"
+                    :key="item.id"
+                    :config="{
+                        x: item.x,
+                        y: item.y,
+                        rotation: item.rotation,
+                        id: item.id,
+                        radius: 20,
+                        fill: '#89baa7',
+                        opacity: 0.8,
+                        draggable: true,
+                        scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        scaleY: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        shadowColor: 'black',
+                        shadowBlur: 10,
+                        shadowOffsetX: dragItemId === item.id ? 15 : 5,
+                        shadowOffsetY: dragItemId === item.id ? 15 : 5,
+                        shadowOpacity: 0.6,
+                        player: item.player,
+                    }"
+                    
+                ></v-circle>
+               
             </v-layer>
         </v-stage>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
@@ -77,10 +109,12 @@
 </template>
 
 <script>
-
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
     import SampleRequest from '@/api/sample-request';
     const sampleRequest = new SampleRequest();
     export default {
+        
         name: 'TestCanvas',
         created() {
             this.getData();
@@ -88,6 +122,7 @@
         data() {
             return {
                 sports: {},
+                coun: 0,
                 sportsName: null,
                 image: null,
                 xpoint: 0,
@@ -101,10 +136,11 @@
                 img: null,
                 drawIt: false,
                 coords: [],
-
-
+                list1: [],//atskirigs
                 list: [],
+                player: null,
                 dragItemId: null,
+                awayDragItemId: null,
                 configKonva: {
                     width: 1000,
                     height: 500, 
@@ -142,60 +178,103 @@
                 };
             },
             handleDragstart(e) {
-                // save drag element:
                 this.dragItemId = e.target.id();
+                console.log('playerrr: ',this.coun);
+                if(this.coun === 1){
                 // move current element to the top:
+                console.log("atpazina 1");
                 const item = this.list.find(i => i.id === this.dragItemId);
                 const index = this.list.indexOf(item);
-                this.list.splice(index, 1);
-                this.list.push(item);
-                this.shoutout("Drag started from ", item.x, item.y);
+                this.player = item.player;
+                console.log('player: ',this.player);
+                
+                    console.log("away the best");
+                    this.list.splice(index, 1);
+                    this.list.push(item);
+                    this.shoutout("Drag started from ", item.x, item.y);
+                    this.player = null;
+                }else{
+                    this.awayDragItemId = e.target.id();
+                    const item = this.list1.find(i => i.id === this.awayDragItemId);
+                    const index1 = this.list1.indexOf(item);
+                    console.log("this is home");
+                    this.list1.splice(index1, 1);
+                    this.list1.push(item);
+                    this.shoutout("Drag started from ", item.x, item.y);
+                    this.player = null;
+                }
+                // save drag element:
+                
             },
+            // handleDragstartAway(e) {
+            //     // save drag element:
+            //     this.dragItemId = e.target.id();
+            //     // move current element to the top:
+            //     const item = this.list1.find(i => i.id === this.dragItemId);
+            //     const index1 = this.list1.indexOf(item);
+            //     this.list1.splice(index1, 1);
+            //     this.list1.push(item);
+            //     this.shoutout("Drag started from ", item.x, item.y);
+                
+            // },
             handleDragend(e) {
                 this.dragItemId = e.target.id();
-                const item = this.list.find(i => i.id == this.dragItemId);
-                item.x = e.target.x();
-                item.y = e.target.y();
-                this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-                this.dragItemId = null;
+                if(this.coun === 1){
+                    console.log('plasadsdas: ',this.player);
+                    const item = this.list.find(i => i.id == this.dragItemId);
+                    this.player = item.player;
+                    console.log('player: ',this.player);
+                    item.x = e.target.x();
+                    item.y = e.target.y();
+                    this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+                    this.dragItemId = null;
+                }else{
+                    console.log('plasadsdasasdas: ',this.player);
+                    this.awayDragItemId = e.target.id();
+                    const item = this.list1.find(i => i.id == this.awayDragItemId);
+                    item.x = e.target.x();
+                    item.y = e.target.y();
+                    this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+                    this.awayDragItemId = null;
+                }
+                
             },
-            // eslint-disable-next-line no-unused-vars
-            addHomePlayer(e){
+            // handleDragendAway(e) {
+            //     this.dragItemId = e.target.id();
+            //     const item = this.list1.find(i => i.id == this.dragItemId);
+            //     item.x = e.target.x();
+            //     item.y = e.target.y();
+            //     this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+            //     this.dragItemId = null;
+            // },
+            addHome(e){
                 this.list.push({
                     id: this.count.toString(),
                     x: 175,
                     y: 30,
-                    scale: 1
+                    player: 'home',
+                    scale: 1,
                 });
                 this.count++;
                 this.shoutout("List data ",this.list);
+                //return 'home';
                 
             },
-            // eslint-disable-next-line no-unused-vars
-            removeHomePlayer(e){
-                const index = this.count-1;
-                if(index <0){ return; }
-                this.shoutout("Deleted: ",index);
-                this.list.splice(index, 1);
-                this.count--;
-                if(this.count <= 0){
-                    this.count = 0;
-                }
-            },
-            
-            addAwayPlayer(e){
-                this.list.push({
+            addAway(e){
+                this.list1.push({
                     id: this.count.toString(),
-                    x: 600,
+                    x: 825,
                     y: 30,
-                    scale: 1
+                    player: 'away',
+                    scale: 1,
+                    coun:1,
                 });
                 this.count++;
-                this.shoutout("List data ",this.list);
+                this.shoutout("List1 data ",this.list1);
+               // return 'away';
                 
             },
-
-            removeAwayPlayer(e){
+            removeHome(e){//japieliek klat player home or away
                 const index = this.count-1;
                 if(index <0){ return; }
                 this.shoutout("Deleted: ",index);
@@ -205,18 +284,39 @@
                     this.count = 0;
                 }
             },
-
-
-            drawLine(x1, y1, x2, y2) {
-                let ctx = this.context;
-                ctx.beginPath();
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 1;
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.closePath();
+            removeAway(e){
+                const index1 = this.count-1;
+                if(index1 <0){ return; }
+                this.shoutout("Deleted: ",index1);
+                this.list1.splice(index1, 1);
+                this.count--;
+                if(this.count <= 0){
+                    this.count = 0;
+                }
             },
+            drawItem(index, x, y) {//draws the picture
+                console.log('args:', index, x, y);
+                this.img = new Image();
+                this.img.src = this.image;
+                console.log('this.image:', this.image);
+                this.img.onload = () => {
+                    console.log('this.ctx:', this.context);
+                    this.context.drawImage(this.img, x, y);
+                }
+            },
+
+
+            // drawLine(x1, y1, x2, y2) {
+            //     let ctx = this.context;
+            //     ctx.beginPath();
+            //     ctx.strokeStyle = 'black';
+            //     ctx.lineWidth = 1;
+            //     ctx.moveTo(x1, y1);
+            //     ctx.lineTo(x2, y2);
+            //     ctx.stroke();
+            //     ctx.closePath();
+            // },
+
 
             getCoords(event){//translates coordinates for the canvas
                 this.x1 = event.clientX;
