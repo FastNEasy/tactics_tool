@@ -76,6 +76,8 @@
       },
     },
   });
+  
+
  new Vue({
    el: '#theApp',
    router,

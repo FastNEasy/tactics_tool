@@ -15,12 +15,27 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
         </div>
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
-        <v-stage class="stageYes"
+        <div class="buttonDiv">
+            <div class="Buttons">
+                <button class="button" @click="addHome(); coun=1">Add HOME player!</button>
+                <button class="button" @click="removeHome(); coun=1">Remove HOME player!</button>
+            </div>
+            <div class="Buttons">
+                <button class="button" @click="addAway(); coun=2">Add AWAY player!</button>
+                <!-- <button class="button" @click="removeAway(); coun=2">Remove AWAY player!</button> -->
+            </div>
+            <!-- <div id="TestCanvas">
+                <button v-on:click="addHome(); coun=1;">Addd 1</button>
+                <p>The button above has been clicked {{ coun }} times.</p>
+            </div> -->
+        </div>
+        <v-stage class="stage"
             ref="stage"
             :config="configKonva"
             @dragstart="handleDragstart"
             @dragend="handleDragend"
             @mousemove="testingCoords"
+
         >
             <v-layer ref="layer">
                 <v-image :config="{
@@ -28,6 +43,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     height: configKonva.height,
                     image: img,
                     listening: false,
+                    fillEnabled: true,
                 }"/>
                 <v-circle
                     v-for="item in list"
@@ -38,6 +54,10 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                         rotation: item.rotation,
                         id: item.id,
                         radius: 20,
+                        text: '1',
+                        //fill: getCollor(coun),
+                        stroke: item.stroke,
+                        strokeWidth: item.strokeWidth,
                         fill: '#89fbcf',
                         opacity: 0.8,
                         draggable: true,
@@ -49,6 +69,16 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                         shadowOffsetY: dragItemId === item.id ? 15 : 5,
                         shadowOpacity: 0.6,
                         player: item.player,
+                        coun:item.coun,
+                        dragBoundFunc: function (pos){
+                            y1 =  pos.y < 10 ? 10 :pos.y && pos.y > 490 ? 490 :pos.y;
+                            x1 = pos.x < 0 ? 10 :pos.x && pos.x >990 ? 990 :pos.x;
+                            return{
+                                x: x1,
+                                y: y1,
+                                
+                            };
+                        },
                     }"
                     
                 ></v-circle>
@@ -61,7 +91,10 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                         rotation: item.rotation,
                         id: item.id,
                         radius: 20,
-                        fill: '#89baa7',
+                        stroke: 'black',
+                        strokeWidth: 4,
+                        //fill: getCollor(coun),
+                        fill: '#fff445',
                         opacity: 0.8,
                         draggable: true,
                         scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
@@ -72,6 +105,16 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                         shadowOffsetY: dragItemId === item.id ? 15 : 5,
                         shadowOpacity: 0.6,
                         player: item.player,
+                        coun:item.coun,
+                        dragBoundFunc: function (pos){
+                            y1 =  pos.y < 10 ? 10 :pos.y && pos.y > 490 ? 490 :pos.y;
+                            x1 = pos.x < 0 ? 10 :pos.x && pos.x >990 ? 990 :pos.x;
+                            return{
+                                x: x1,
+                                y: y1,
+                                
+                            };
+                        },
                     }"
                     
                 ></v-circle>
@@ -79,19 +122,17 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             </v-layer>
         </v-stage>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
-        <button @click="addHome">Add home players!</button>
-        <button @click="removeHome">Remove home Players</button>
-        <button @click="addAway">Add away players!</button>
-        <button @click="removeAway">Remove away players</button>
     </div>
 </template>
 
 <script>
+//  fill: '#89fbcf',
     const width = window.innerWidth;
     const height = window.innerHeight;
     import SampleRequest from '@/api/sample-request';
     const sampleRequest = new SampleRequest();
     export default {
+        
         name: 'TestCanvas',
         created() {
             this.getData();
@@ -99,6 +140,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         data() {
             return {
                 sports: {},
+                coun: 0,
                 sportsName: null,
                 image: null,
                 xpoint: 0,
@@ -112,23 +154,13 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                 img: null,
                 drawIt: false,
                 coords: [],
-                list1: [],
+                list1: [],//atskirigs
                 list: [],
                 player: null,
                 dragItemId: null,
                 configKonva: {
                     width: 1000,
-                    height: 500,
-                    
-                },
-                configCircle: {//vai so mumns vispar vajag?
-                    x: 40,
-                    y: 40,
-                    radius: 20,
-                    fill: "red",
-                    stroke: "black",
-                    strokeWidth: 4,
-                    draggable: true,
+                    height: 500, 
                 },
                 count : 0,
             }
@@ -162,26 +194,39 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     // set image only when it is loaded
                 };
             },
+            getCollor(coun){
+                if (this.coun ===1) {
+                    return '#89fbcf';
+                }else{
+                    return '#b31117'
+                }
+            },
             handleDragstart(e) {
                 this.dragItemId = e.target.id();
+                console.log('playerrr: ',this.coun);
+                if(this.coun === 1){
                 // move current element to the top:
-                const item = this.list1.find(i => i.id === this.dragItemId);
-                const index = this.list1.indexOf(item);
+                console.log("atpazina 1");
+                const item = this.list.find(i => i.id === this.dragItemId);
+                const index = this.list.indexOf(item);
                 this.player = item.player;
                 console.log('player: ',this.player);
-                if(this.player === 'home'){
+                
+                    console.log("away the best");
                     this.list.splice(index, 1);
                     this.list.push(item);
                     this.shoutout("Drag started from ", item.x, item.y);
                     this.player = null;
+                    
                 }else{
                     const item = this.list1.find(i => i.id === this.dragItemId);
                     const index = this.list1.indexOf(item);
-                    console.log("this is awway");
+                    console.log("this is away", this.coun);
                     this.list1.splice(index, 1);
                     this.list1.push(item);
                     this.shoutout("Drag started from ", item.x, item.y);
                     this.player = null;
+                   
                 }
                 // save drag element:
                 
@@ -199,21 +244,29 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             // },
             handleDragend(e) {
                 this.dragItemId = e.target.id();
-                const item = this.list1.find(i => i.id == this.dragItemId);
+                console.log('sis ir pirms if end');
+                if(this.coun === 1){
+                    console.log('plasadsdas: ',this.coun);
+                const item = this.list.find(i => i.id == this.dragItemId);
+                console.log('plasadsdas: ',this.player);
                 this.player = item.player;
                 console.log('player: ',this.player);
-                if(this.player === 'home'){
+                
                     item.x = e.target.x();
                     item.y = e.target.y();
                     this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
                     this.dragItemId = null;
+                    //this.coun=0;
                 }else{
+                    console.log('das: ',this.coun);
                     this.dragItemId = e.target.id();
                     const item = this.list1.find(i => i.id == this.dragItemId);
                     item.x = e.target.x();
                     item.y = e.target.y();
                     this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
                     this.dragItemId = null;
+                    //this.coun=0;
+
                 }
                 
             },
@@ -232,9 +285,14 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     y: 30,
                     player: 'home',
                     scale: 1,
+                    coun:1,
+                    color: '#89fbcf',
+                    stroke: 'black',
+                    strokeWidth: 4,
                 });
                 this.count++;
                 this.shoutout("List data ",this.list);
+                //return 'home';
                 
             },
             addAway(e){
@@ -244,30 +302,69 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     y: 30,
                     player: 'away',
                     scale: 1,
+                    coun:2,
+                    color: '#b31117',
                 });
                 this.count++;
-                this.shoutout("List1 data ",this.list1);
+                this.shoutout("List data ",this.list);
+               // return 'away';
                 
             },
             removeHome(e){//japieliek klat player home or away
-                const index = this.count-1;
-                if(index <0){ return; }
+                // const index = this.count-1;
+                // if(index <0){ return; }
+                // this.shoutout("Deleted: ",index);
+                // this.list.splice(index, 1);
+                // this.count--;
+                // this.coun = 1;
+                // if(this.count <= 0){
+                //     this.count = 0;
+                // }
+                var check = this.count-1;
+                if(check <0){ return; }
+                console.log("check: ",this.delItemId);
+                const item = this.list.find(i => i.id === this.delItemId);
+                this.shoutout("Item: ",item);
+                const index = this.list.indexOf(item);
                 this.shoutout("Deleted: ",index);
                 this.list.splice(index, 1);
                 this.count--;
+                
+                this.changeX-=40;
                 if(this.count <= 0){
                     this.count = 0;
                 }
+                this.shoutout("List data ", this.list);
+                this.delItemId = null;
             },
+
             removeAway(e){
-                const index = this.count-1;
-                if(index <0){ return; }
+                // const index1 = this.count-1;
+                // if(index1 <0){ return; }
+                // this.shoutout("Deleted: ",index1);
+                // this.list.splice(index1, 1);
+                // this.count--;
+                // this.coun = 2;
+                // if(this.count <= 0){
+                //     this.count = 0;
+                // }
+
+                var check = this.count-1;
+                if(check <0){ return; }
+                console.log("check: ",this.delItemId);
+                const item = this.list.find(i => i.id === this.delItemId);
+                this.shoutout("Item: ",item);
+                const index = this.list.indexOf(item);
                 this.shoutout("Deleted: ",index);
                 this.list1.splice(index, 1);
                 this.count--;
+                //this.coun = 1;
+                this.changeX-=40;
                 if(this.count <= 0){
                     this.count = 0;
                 }
+                this.shoutout("List data ", this.list1);
+                this.delItemId = null;
             },
             drawItem(index, x, y) {//draws the picture
                 console.log('args:', index, x, y);
@@ -279,6 +376,8 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     this.context.drawImage(this.img, x, y);
                 }
             },
+
+
             drawLine(x1, y1, x2, y2) {
                 let ctx = this.context;
                 ctx.beginPath();
@@ -403,9 +502,43 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         .layer{
             background-color: rgb(23, 238, 23);
         }
-        .stageYes{
-            margin-left: 10%;
-            margin-top: 10%;
+
+        .stage{
+            margin-left:20%;
+            margin-top:1%;
+        }
+
+        .buttonDiv{
+            display:table;
+            margin-top:2%;
+            margin-left:23%;
+        }
+
+        .Buttons{
+            display:table-cell;
+            width: 40%;
+        }
+
+        .button{
+            margin-top:20%;
+            display:inline-block;
+            padding:0.3em 1.2em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:2em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            font-weight:bold;
+            color:#FFFFFF;
+            background-color:#1db40f;
+            text-align:center;
+            transition: all 0.2s;
+        }
+
+        .button:hover{
+            background-color: #f44336;
+            color: white;
+            cursor: pointer;
         }
     }
 
