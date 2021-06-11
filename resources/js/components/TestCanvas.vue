@@ -19,8 +19,8 @@
                 <button class="button" @click="removeHomePlayer">Remove HOME player!</button>
             </div>
             <div class="Buttons">
-                <!-- <button class="button" @click="addAwayPlayer">Add AWAY player!</button>
-                <button class="button" @click="removeAwayPlayer">Remove AWAY player!</button> -->
+                <button class="button" @click="addAwayPlayer">Add AWAY player!</button>
+                <button class="button" @click="removeAwayPlayer">Remove AWAY player!</button>
             </div>
         </div>
         <v-stage class="stage"
@@ -40,8 +40,7 @@
                     fillEnabled: true,
                 }"/>
                 <v-circle
-                    v-for="item in list"
-                    ref="circle"
+                    v-for="item in listHome"
                     :key="item.id"
                     :config="{
                         x: item.x,
@@ -52,21 +51,50 @@
                         fill: '#89b717',
                         opacity: 0.8,
                         draggable: true,
-                        scaleX: dragItemId === item.id ? item.scale * 1.2 : item.scale,
-                        scaleY: dragItemId === item.id ? item.scale * 1.2 : item.scale,
+                        scaleX: dragItemHomeId === item.id ? item.scale * 1.2 : item.scale,
+                        scaleY: dragItemHomeId === item.id ? item.scale * 1.2 : item.scale,
                         shadowColor: 'black',
                         shadowBlur: 10,
-                        shadowOffsetX: dragItemId === item.id ? 15 : 5,
-                        shadowOffsetY: dragItemId === item.id ? 15 : 5,
+                        shadowOffsetX: dragItemHomeId === item.id ? 15 : 5,
+                        shadowOffsetY: dragItemHomeId === item.id ? 15 : 5,
                         shadowOpacity: 0.6,
                         prevCords: item.preCords,
                         dragBoundFunc: function (pos){
-                            y1 =  pos.y < 10 ? 10 :pos.y && pos.y > 490 ? 490 :pos.y;
-                            x1 = pos.x < 0 ? 10 :pos.x && pos.x >990 ? 990 :pos.x;
+                            y1 =  pos.y < 20 ? 20 :pos.y && pos.y > 480 ? 480 :pos.y;
+                            x1 = pos.x < 20 ? 20 :pos.x && pos.x >980 ? 980 :pos.x;
                             return{
                                 x: x1,
                                 y: y1,
-                                
+                            };
+                        },
+                    }"
+                ></v-circle>
+                <v-circle
+                     v-for="item in listAway"
+                    :key="item.id"
+                    :config="{
+                        x: item.x,
+                        y: item.y,
+                        rotation: item.rotation,
+                        id: item.id,
+                        radius: 20,
+                        fill: 'red',
+                        opacity: 0.8,
+                        draggable: true,
+                        scaleX: dragItemAwayId === item.id ? item.scale * 1.2 : item.scale,
+                        scaleY: dragItemAwayId === item.id ? item.scale * 1.2 : item.scale,
+                        shadowColor: 'black',
+                        shadowBlur: 10,
+                        shadowOffsetX: dragItemAwayId === item.id ? 15 : 5,
+                        shadowOffsetY: dragItemAwayId === item.id ? 15 : 5,
+                        shadowOpacity: 0.6,
+                        prevCords: item.preCords,
+                        dragBoundFunc: function (pos){
+                            y1 =  pos.y < 20 ? 20 :pos.y && pos.y > 480 ? 480 :pos.y;
+                            x1 = pos.x < 20 ? 20 :pos.x && pos.x >980 ? 980 :pos.x;
+                            return{
+                                x: x1,
+                                y: y1,
                             };
                         },
                     }"
@@ -78,6 +106,8 @@
         <button @click="removePlayer">Remove a player</button>
         <button @click="lockCords">Lock in Cords!</button> -->
         <button @click="replayAnim">Replay animation</button>
+        <!-- <button @click="replaySteps">Play!</button> -->
+        <!-- <button @click="addPlayerHome">Add Player test2</button> -->
     </div>
 </template>
 
@@ -106,18 +136,26 @@
                 img: null,
                 drawIt: false,
                 // coords: [],
-                list: [],
-                dragItemId: null,
-                delItemId: null,
+                listHome: [],
+                listAway: [],
+                dragItemAwayId: null,
+                dragItemHomeId: null,
+                delItemHomeId: null,
+                delItemAwayId: null,
                 setItemCords: null,
                 configKonva: {
                     width: 1000,
                     height: 500,
                 },
                 count : 0,
-                changeX : 175,
+                changeHomeX : 175,
+                changeAwayX: 950,
                 iter: null,
                 lock: [],
+                setUp: 0,
+                count2: 0,
+                choiceId: null,
+                isPlaying: false,
             }
         },
         mounted(){//starts up with loading of the page
@@ -151,153 +189,179 @@
             },
             handleDragstart(e) {//starts to see which player is dragged and uses it respectivly
                 // save drag element:
-                this.dragItemId = e.target.id();
-                // move current element to the top:
-                const item = this.list.find(i => i.id === this.dragItemId);
-                const index = this.list.indexOf(item);
-                this.x1 = item.x;
-                this.y1 = item.y;
-                item.preCords.push({x: this.x1,y:this.y1})
-                // console.log(index);
-                this.list.splice(index, 1);
-                this.list.push(item);
-                this.shoutout("Drag started from ", item.x, item.y);
+                this.choiceId = e.target.id();
+                if(this.choiceId.includes('Home_')){
+                    this.shoutout("The chosen one is: ",this.choiceId);
+                    this.dragItemHomeId = e.target.id();
+                    // move current element to the top:
+                    const item = this.listHome.find(i => i.id === this.dragItemHomeId);
+                    const index = this.listHome.indexOf(item);
+                    this.x1 = item.x;
+                    this.y1 = item.y;
+                    this.shoutout(this.x1,this.y1);
+                    item.preCords.push({x: this.x1,y:this.y1});
+                    // console.log(index);
+                    this.listHome.splice(index, 1);
+                    this.listHome.push(item);
+                    this.shoutout("Drag started from ", item.x, item.y);
+                } else{
+                    this.dragItemAwayId = e.target.id();
+                    const item = this.listAway.find(i => i.id === this.dragItemAwayId);
+                    const index = this.listAway.indexOf(item);
+                    this.x1 = item.x;
+                    this.y1 = item.y;
+                    this.shoutout(this.x1,this.y1);
+                    item.preCords.push({x: this.x1, y: this.y1});
+                    this.listAway.splice(index, 1);
+                    this.listAway.push(item);
+                    this.shoutout("Drag started: ", item.x, item.y);
+                }
             },
             handleDragend(e) {//change the save coordinates of the player when the drag ends
-                this.dragItemId = e.target.id();//get the dragged player id
-                this.delItemId = this.dragItemId;
-                const item = this.list.find(i => i.id == this.dragItemId);
-                item.x = e.target.x();
-                item.y = e.target.y();
-                // item.preCords.splice(1,1);
-                this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
-                this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-                this.dragItemId = null;
+                this.choiceId = e.target.id();
+                if(this.choiceId.includes('Home_')){
+                    this.dragItemHomeId = e.target.id();//get the dragged player id
+                    this.delItemHomeId = this.dragItemHomeId;
+                    const item = this.listHome.find(i => i.id == this.dragItemHomeId);
+                    item.x = e.target.x();
+                    item.y = e.target.y();
+                    // item.preCords.splice(1,1);
+                    this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
+                    this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+                    this.dragItemHomeId = null;
+                }else{
+                    this.dragItemAwayId = e.target.id();
+                    this.delItemAwayId = this.dragItemAwayId;
+                    const item = this.listAway.find(i => i.id == this.dragItemAwayId);
+                    item.x = e.target.x();
+                    item.y = e.target.y();
+                    this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
+                    this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
+                    this.dragItemAwayId = null;
+                }
+                
             },
             addHomePlayer(e){//adds new player object at the top of the field
                 if(this.count == 6){ return}
-                this.changeX += 40;
-                this.list.push({
-                    id: this.count.toString(),
-                    x: this.changeX,
+                this.changeHomeX += 40;
+                this.listHome.push({
+                    id: 'Home_'+this.count.toString(),
+                    x: this.changeHomeX,
                     y: 30,
                     preCords: [],
                     scale: 1
                 });
                 this.count++;
-                this.shoutout("List data ",this.list);
+                this.shoutout("List data ",this.listHome);
             },
             removeHomePlayer(e){//removes last added player object
                 var check = this.count-1;
                 if(check <0){ return; }
-                console.log("check: ",this.delItemId);
-                const item = this.list.find(i => i.id === this.delItemId);
+                console.log("check: ",this.delItemHomeId);
+                const item = this.listHome.find(i => i.id === this.delItemHomeId);
                 this.shoutout("Item: ",item);
-                const index = this.list.indexOf(item);
+                const index = this.listHome.indexOf(item);
                 this.shoutout("Deleted: ",index);
-                this.list.splice(index, 1);
+                this.listHome.splice(index, 1);
                 this.count--;
-                this.changeX-=40;
+                this.changeHomeX-=40;
                 if(this.count <= 0){
                     this.count = 0;
                 }
-                this.shoutout("List data ", this.list);
-                this.delItemId = null;
+                this.shoutout("Home List data ", this.listHome);
+                this.delItemHomeId = null;
             },
-            lockCords(e){
                     //list.splice(start-1); nogrieziis visas koordinates iznemot pedejo
                     //ielikt listaa vecaas koordinates atbilstosham id, lai izveidotu pattern for animation
                     //just continue adding coords to the table
                     //pectam izveidojot animaciju, padot shos listus ,lai ar tiem darbotos
+
+            addAwayPlayer(e){
+                if(this.count2 == 6){ return; }
+                this.changeAwayX -= 40;
+                this.listAway.push({
+                    id: 'Away_'+this.count2.toString(),
+                    x: this.changeAwayX,
+                    y: 30,
+                    preCords: [],
+                    scale: 1
+                });
+                this.count2++;
+                this.shoutout("List data ",this.listAway);
             },
-            // addAwayPlayer(e){
-            //     this.list.push({
-            //         id: this.count.toString(),
-            //         x: 600,
-            //         y: 30,
-            //         scale: 1
-            //     });
-            //     this.count++;
-            //     this.shoutout("List data ",this.list);
-                
-            // },
 
-            // removeAwayPlayer(e){
-            //     const index = this.count-1;
-            //     if(index <0){ return; }
-            //     this.shoutout("Deleted: ",index);
-            //     this.list.splice(index, 1);
-            //     this.count--;
-            //     if(this.count <= 0){
-            //         this.count = 0;
-            //     }
-            // },
-
-
-            drawLine(x1, y1, x2, y2) {
-                let ctx = this.context;
-                ctx.beginPath();
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 1;
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.closePath();
+            removeAwayPlayer(e){
+                var check = this.count2-1;
+                if(check < 0){ return; }
+                console.log("check: ", this.delItemAwayId);
+                const item = this.listAway.find(i => i.id === this.delItemAwayId);
+                this.shoutout("Item: ", item);
+                const index = this.listAway.indexOf(item);
+                this.shoutout("Deleted: ",index);
+                this.listAway.splice(index, 1);
+                this.count2--;
+                this.changeAwayX+=40;
+                if(this.count2 <= 0){
+                    this.count2 = 0;
+                }
+                this.shoutout("Away List data: ", this.listAway);
+                this.delItemAwayId = null;
             },
             replayAnim(){
-                const needed = this.list.find(i => i.id === this.delItemId);
-                console.log(needed);
-                let amplitute = 5;
+                const moveHome = this.listHome.find(i => i.id === this.delItemHomeId);
+                const moveAway = this.listAway.find(i => i.id === this.delItemAwayId);
+                this.shoutout(moveHome);
+                this.shoutout(moveAway);
+                let amplitude = 5;
                 var velocity = 5;
                 var anim = new Konva.Animation(function (frame) {
-                    needed.x += (velocity * (50/ 1000))
-                    needed.y +=   amplitute * Math.sin((frame.time * 2 * Math.PI) / 1000) 
+                    if(moveHome.x == 980){ 
+                        moveHome.y +=   amplitude * Math.sin((frame.time * 2 * Math.PI) / 1000)
+                    }else{
+                        moveHome.x += (velocity * (50/ 1000));
+                        moveHome.y +=   amplitude * Math.sin((frame.time * 2 * Math.PI) / 1000)
+                    }
+                    if(moveAway.x == 20){
+                        moveAway.y += amplitude * Math.sin((frame.time * 2 * Math.PI) /1000)
+                    }else{
+                        moveAway.x -= (velocity * (50/1000));
+                        moveAway.y += amplitude * Math.sin((frame.time * 2 * Math.PI)/1000)
+                    }  
                 }, this.$refs.layer.getNode());
                 anim.start();
             },
-            // drawItem(index, x, y) {//draws the picture
-            //     console.log('args:', index, x, y);
-            //     this.img = new Image();
-            //     this.img.src = this.image;
-            //     console.log('this.image:', this.image);
-            //     this.img.onload = () => {
-            //         console.log('this.ctx:', this.context);
-            //         this.context.drawImage(this.img, x, y);
+            // replaySteps(){
+            //     const player = this.list.find(i => i.id === this.delItemId);
+            //     var boolcheck;
+            //     player.preCords.push({ x:player.x,y:player.y});
+            //     this.shoutout("current coords added: ",player.preCords);
+            //     this.shoutout("how many in the list?",player.preCords.length);
+            //     player.x = player.preCords[1].x;
+            //     player.y = player.preCords[1].y;
+            //     var diffX = player.preCords[2].x - player.x;
+            //     var diffY = player.preCords[2].y - player.y;
+            //     //diffX/((frame.time * 2)/1000)
+            //     // player.to(player.preCords[2].x,player.preCords[2].y);
+            //     var anim = new Konva.Animation(function (frame){
+            //         var xChange = diffX/(1000/1000);
+            //         var yChange = diffY/(1000/1000);
+            //         player.x += (xChange* (3/1000));
+            //         player.y += (yChange* (3/1000));
+                    
+            //     },this.$refs.layer.getNode());
+            //     anim.start();
+            //     if(boolcheck == false){
+            //          anim.stop();
             //     }
-            // },
-            // drawLine(x1, y1, x2, y2) {
-            //     let ctx = this.context;
-            //     ctx.beginPath();
-            //     ctx.strokeStyle = 'black';
-            //     ctx.lineWidth = 1;
-            //     ctx.moveTo(x1, y1);
-            //     ctx.lineTo(x2, y2);
-            //     ctx.stroke();
-            //     ctx.closePath();
-            // },
-
-            // getCoords(event){//translates coordinates for the canvas
-            //     this.x1 = event.clientX;
-            //     this.y1 = event.clientY;
-            //     this.shoutout("Gotten x and y: ",this.x1,this.y1);
-            //     var rect = event.target.getBoundingClientRect();
-            //     this.shout(rect);
-            //     this.translateCoords(rect, event.clientX, event.clientY);
-            //     this.coords.push({ x: this.x1, y: this.y1 });
-            //     this.counter++;
-            //     if(this.counter == 2){
-            //         this.drawLine(this.coords[0].x,this.coords[0].y, this.coords[1].x,this.coords[1].y);
-            //         this.counter = 0;
-            //         this.shout(this.coords);
-            //         this.coords.splice(0);
-            //     }
-            // },
-            // translateCoords(rect, x, y){
-            //     var factor = 1080 / rect.width;
-            //     this.shout(factor);
-            //     this.x1 = factor * (x - rect.left);
-            //     this.y1 = factor * (y - rect.top);
-            //     this.shoutout("New x and y: ",this.x1,this.y1);
+                // this.setUp++;
+                // const plNode = this.$refs.layer.getNode();
+                // plNode.to({
+                //     x: player.preCords[2].x,
+                //     y: player.preCords[2].y,
+                //     duration: 0.5,
+                //     onUpdate: () => console.log('props updated'),
+                //     onFinish: () => console.log('finished'),
+                // });
             // },
             updateCoords(event){
                 this.xpoint = event.clientX;
@@ -306,15 +370,42 @@
             testingCoords(){
                 let stage = this.$refs.stage.getStage();
                 var pos = stage.getPointerPosition();
-                // console.log(pos);
-                // var stageAttrs = stage.attrs;
-                // console.log(stageAttrs);
                 var x = pos.x;
                 var y = pos.y;
                 this.xpoint = x;
                 this.ypoint = y;
-                // console.log("Coords: ",x,y);
-            }
+            },
+            // addPlayerHome(){
+            //     if(this.count == 6){ return}
+            //     this.changeX += 40;
+            //     this.listHome.push({
+            //         id: this.count.toString(),
+            //         x: this.changeX,
+            //         y: 30,
+            //         preCords: [],
+            //         identify: 'HOME',
+            //         scale: 1
+            //     });
+            //     this.count++;
+            //     var circle = new Konva.Circle({
+            //         x: this.listHome.x,
+            //         y: this.listHome.y,
+            //         id: this.listHome.id,
+            //         radius: 20,
+            //         fill: '#89b717',
+            //         opacity: 0.8,
+            //         draggable: true,
+            //         scaleX: this.dragItemHomeId === this.listHome.id ? this.listHome.scale * 1.2 : this.listHome.scale,
+            //         scaleY: this.dragItemHomeId === this.listHome.id ? this.listHome.scale * 1.2 : this.listHome.scale,
+            //         shadowColor: 'black',
+            //         shadowBlur: 10,
+            //         shadowOffsetX: this.dragItemHomeId === this.listHome.id ? 15 : 5,
+            //         shadowOffsetY: this.dragItemHomeId === this.listHome.id ? 15 : 5,
+            //         shadowOpacity: 0.6,
+            //         prevCords: this.listHome.preCords,
+            //         identifyBy: this.listHome.identify,
+            //     });
+            // },
         },
     };
 </script>
