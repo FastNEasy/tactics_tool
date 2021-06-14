@@ -68,7 +68,7 @@
     grid-template-columns: 15% 1fr;
     //grid-template-rows: 100vh 300px;
     .navigation{
-      background: rgba(127, 128, 127, 0.925);//dd
+      background: rgba(172, 169, 169, 0.925);//dd
   //     margin: 0;
   //     padding: 0;
   //     width: 200px;

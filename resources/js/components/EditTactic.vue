@@ -16,7 +16,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         </div>
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
          <div id="viewtactic">
-                <h3>Tactic name is {{ tacticName }}</h3>
+                <h2>Tactic name is {{ tacticName }}</h2>
                 <!-- <img :src="image"> -->
                 <!-- <img id="imageHolder"> -->
         </div>
@@ -26,8 +26,8 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                 <button class="button" @click="removeHomePlayer(); coun=1">Remove HOME player!</button>
             </div>
             <div class="Buttons">
-                <button class="button" @click="addAwayPlayer">Add AWAY player!</button>
-                <button class="button" @click="removeAwayPlayer">Remove AWAY player!</button>
+                <button class="button" @click="addAwayPlayer()">Add AWAY player!</button>
+                <button class="button" @click="removeAwayPlayer()">Remove AWAY player!</button>
             </div>
             
             <!-- <div id="TestCanvas">
@@ -35,13 +35,15 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                 <p>The button above has been clicked {{ coun }} times.</p>
             </div> -->
         </div>
+        <div class= "courtKonvas">
+            <table class="Court" style="overflow-x:auto;" >
+        <tr>
+        <td>
         <v-stage class="stage"
             ref="stage"
             :config="configKonva"
             @dragstart="handleDragstart"
             @dragend="handleDragend"
-            
-
         >
             <v-layer ref="layer">
                 <v-image :config="{
@@ -118,6 +120,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                
             </v-layer>
         </v-stage>
+        </td>
+        </tr>
+        
+        </table>
+        </div>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
         <!-- <button @click="addPlayer">Add a player</button>
         <button @click="removePlayer">Remove a player</button>
@@ -418,6 +425,24 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                 this.xpoint = x;
                 this.ypoint = y;
             },
+            
+            // fitStageIntoParentContainer() {
+            //     var stage= new Konva.Stage({
+            //         container: 'container',
+            //         width: 1000,
+            //         height: 500,
+            //     })
+            //     var container = document.querySelector('#stage-parent');
+
+            //     // now we need to fit stage into parent
+            //     var containerWidth = container.offsetWidth;
+            //     // to do this we need to scale the stage
+            //     var scale = containerWidth / 1000;
+
+            //     stage.width(1000 * scale);
+            //     stage.height(500 * scale);
+            //     stage.scale({ x: scale, y: scale });
+            // },
             // addPlayerHome(){
             //     if(this.count == 6){ return}
             //     this.changeX += 40;
@@ -456,9 +481,26 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
 <style lang="scss" scoped>
     #canvasTest{
         #viewtactic{
-           padding-left: 5%; 
+           //padding-left: 5%; 
+           text-align: center;
         }
+        //padding:10%;
+        //margin: 0;
 
+        // table, th, td {
+        //     //border: 1px solid black;
+        //     //border-collapse: collapse;
+        //     // width: center;
+        //     //  width: 50%;
+        //     //  height: 2%
+        // }
+        table.Court {
+            margin-left: auto; 
+            margin-right: auto;
+        }
+        .courtKonvas{
+            width: 100%;
+        }
         // .stage{
         //     background-color:blue;
         // }
@@ -466,29 +508,31 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             background-color: rgb(23, 238, 23);
         }
 
-        .stage{
-            // margin-left:1%;
-            // margin-right:1%;
-            // margin-top:1%;  
-            width: 100%;
-            // border: solid 1px blue; 
-            padding-right: 5%;
-            padding-left: 1%;
-            padding-top: 10px;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
-            width: center;
-            //background-color: rgb(192, 192, 192);
+        // .stage{
+        //     // margin-left:1%;
+        //     // margin-right:1%;
+        //     // margin-top:1%;  
+        //     // width: 100%;
+        //     // // border: solid 1px blue; 
+        //     // padding-right: 5%;
+        //     // padding-left: 1%;
+        //     // padding-top: 10px;
+        //     // margin-left: auto;
+        //     // margin-right: auto;
+        //     // display: block;
+        //     // width: center;
+        //     //background-color: rgb(192, 192, 192);
             
              
-        }
+        // }
         
 
         .buttonDiv{
             display:table;
             margin-top:2%;
-            margin-left:23%;
+            //margin-left: auto;
+            margin:auto;
+            text-align: center;
         }
 
         .Buttons{
