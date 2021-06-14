@@ -150,7 +150,8 @@
             margin: 4px 2px;
         }
         .updateButton {
-            background-color:#1fc410;            border-radius:20px;
+            background-color:#1fc410;           
+            border-radius:20px;
             border:1px solid #057505;
             display: inline-block;
             cursor:pointer;
@@ -173,7 +174,7 @@
 
         
         .button-link {
-            background-color:#1fc410;            border-radius:20px;
+            background-color:#1fc410;            
             border:1px solid #057505;
             border-radius:20px;
             
