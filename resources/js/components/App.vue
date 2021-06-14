@@ -68,12 +68,19 @@
     grid-template-columns: 15% 1fr;
     //grid-template-rows: 100vh 300px;
     .navigation{
-      background: rgba(173, 159, 159, 0.925);
+      background: rgba(127, 128, 127, 0.925);//dd
+  //     margin: 0;
+  //     padding: 0;
+  //     width: 200px;
+  // //background-color: #f1f1f1;
+  //     position: fixed;
+  //     height: 100%;
+  //     overflow: auto;
       ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
-        background-color: rgba(173, 27, 27, 0.925);
+        background-color: rgba(172, 169, 169, 0.925);
         li a {
           display: grid;
           grid-template-rows: 1fr 1fr;
@@ -83,16 +90,17 @@
           text-decoration: none;
         }
         li a:hover:not(.active) {
-          background-color: rgba(212, 73, 73, 0.945);
+          background-color: rgb(25, 136, 30);
           color: white;
         }
         .router-link-exact-active {
-          background-color: rgb(0, 216, 65);
+          // background-color: rgb(130, 238, 108);
+          background-color:#3bc52f;
         }
       }
     }
     .b {// router view atradisies b
-      background: rgb(150,150,100);//vairaaak stilizet b lauku
+      background: rgb(211, 211, 211);//vairaaak stilizet b lauku
      
     }
     .navigation{
@@ -100,4 +108,59 @@
     }
   }
 
+
+// body {
+//   margin: 0;
+//   font-family: "Lato", sans-serif;
+// }
+
+// .sidebar {
+//   margin: 0;
+//   padding: 0;
+//   width: 200px;
+//   background-color: #f1f1f1;
+//   position: fixed;
+//   height: 100%;
+//   overflow: auto;
+// }
+
+// .sidebar a {
+//   display: block;
+//   color: black;
+//   padding: 16px;
+//   text-decoration: none;
+// }
+ 
+// .sidebar a.active {
+//   background-color: #04AA6D;
+//   color: white;
+// }
+
+// .sidebar a:hover:not(.active) {
+//   background-color: #555;
+//   color: white;
+// }
+
+// div.content {
+//   margin-left: 200px;
+//   padding: 1px 16px;
+//   height: 1000px;
+// }
+
+// @media screen and (max-width: 700px) {
+//   .sidebar {
+//     width: 100%;
+//     height: auto;
+//     position: relative;
+//   }
+//   .sidebar a {float: left;}
+//   div.content {margin-left: 0;}
+// }
+
+// @media screen and (max-width: 400px) {
+//   .sidebar a {
+//     text-align: center;
+//     float: none;
+//   }
+// }
 </style>
