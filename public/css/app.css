@@ -5,20 +5,6 @@ body {
   font-family: 'Arial';
 }
 
-#app .buttonCreate {
-  background-color: #1fc410;
-  border: none;
-  color: white;
-  padding: 10px 24px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 2em;
-}
-
 #app .nav-it-und {
   background-color: rgba(202, 195, 195, 0.678) !important;
   display: flex;
@@ -66,6 +52,20 @@ body {
 
 #app .container {
   background-color: rgba(202, 195, 195, 0.678);
+}
+
+.buttonCreate {
+  background-color: #1fc410;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 2em;
 }
 
 .card-body {
@@ -133,17 +133,23 @@ label.form-check-label {
 }
 
 .button {
-  background-color: #4CAF50;
-  /* Green */
+  background-color: #1fc410;
   border: none;
   color: white;
-  padding: 16px 32px;
+  padding: 10px 24px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 20px;
   margin: 4px 2px;
-  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 2em;
+  font-family: Arial;
+}
+
+.button:hover {
+  background-color: #19881e;
+  color: white;
   cursor: pointer;
 }
 

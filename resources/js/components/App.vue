@@ -22,6 +22,23 @@
             <router-link to="/sportlist">Check all Sports</router-link>
           </div>
         </li>
+        <li>
+          <div class="gridItem">
+           <!-- <div class="nav-item">
+          
+           <a class="nav-link" href="{{ route('logout') }}"
+            onclick="event.preventDefault();
+            document.getElementById('logout-form').submit();">
+              {{ __('Logout') }}
+             </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+             @csrf
+            </form>
+            
+            </div>  -->
+          </div>
+        </li>
       </ul>
     </div>
     <div class="b">
