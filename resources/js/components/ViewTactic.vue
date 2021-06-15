@@ -1,29 +1,16 @@
 /* eslint-disable no-unused-vars */
 <template>
-<!-- tatad, eror ir taja ka vienam ir list un otram list1, jaizdoma ka tur ielikt if, kurs pasaka kuru listu skatities(japadod kadam home vertiba).  
-un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  -->
+
     <div id="canvasTest">
-        <!-- <div>
-            <canvas
-                @mousemove="updateCoords" 
-                @mousedown="getCoords"
-                id="canv" class="canvas-test" width="1080" height="680" >
-            </canvas>
-            <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
-        </div>
-        <div ref="draggableContainer" id="draggable-container">
-            <div id="circle" class="circle" @mousedown="dragMouseDown"></div>    
-        </div>
-        <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
+       
         <div id="viewtactic">
             <h2>Tactic name is {{ tacticName }}</h2>
-            <!-- <img :src="image"> -->
-            <!-- <img id="imageHolder"> -->
+            
         </div>
         <div class="buttonDiv">
             <div class="Buttons">
-                <button class="button" @click="addHomePlayer();addHomeItemToTable(); coun=1">Add HOME player!</button>
-                <button class="button" @click="removeHomePlayer(); removeHomeItemFromTable(); coun=1">Remove HOME player!</button>
+                <button class="button" @click="addHomePlayer(); addHomeItemToTable(); coun=1">Add home player!</button>
+                <button class="button" @click="removeHomeItemFromTable(); removeHomePlayer(); coun=1">Remove home player!</button>
             </div>
 
             <div class="Buttons">
@@ -34,13 +21,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             </div>
 
             <div class="Buttons">
-                <button class="button" @click="addAwayPlayer(); addAwayItemToTable();">Add AWAY player!</button>
-                <button class="button" @click="removeAwayPlayer(); removeAwayItemFromTable();">Remove AWAY player!</button>
+                <button class="button" @click="addAwayPlayer(); addAwayItemToTable();">Add away player!</button>
+                <button class="button" @click="removeAwayItemFromTable(); removeAwayPlayer();">Remove away player!</button>
             </div>
-            <!-- <div id="TestCanvas">
-                <button v-on:click="addHome(); coun=1;">Addd 1</button>
-                <p>The button above has been clicked {{ coun }} times.</p>
-            </div> -->
+           
+           
         </div>
     
         <div class="fieldAndInputs">
@@ -172,44 +157,37 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     <tr>
                         <th>ID</th>
                         <th>Action time</th>
-                        <th>Save Button</th>
+                        <th>Save</th>
                     </tr>
                     <tr v-for="item in homeTableData" :key="item.id">
                         <td class= "IdCell">{{item.id}}</td>
                         <td class= "inputCell">
-                            <!-- <label>action time</label> -->
-                            <input type="text" class="inputField" />
+                            <input type="text" class="inputField">
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
                     </tr>
                     <tr v-for="item in awayTableData" :key="item.id">
                         <td class= "IdCell">{{item.id}}</td>
                         <td class= "inputCell">
-                            <!-- <label>action time</label> -->
                             <input type="text" class="inputField">  
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
                     </tr>
                 </table>
             </div>
-            <!-- <div id="TestCanvas">
-                <button v-on:click="addHome(); coun=1;">Addd 1</button>
-                <p>The button above has been clicked {{ coun }} times.</p>
-            </div> -->
+           
         </div>
-        <!-- <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p> -->
-        <!-- <button @click="addPlayer">Add a player</button>
-        <button @click="removePlayer">Remove a player</button>
-        <button @click="lockCords">Lock in Cords!</button> -->
-        <button @click="replayAnim">Replay animation</button>
-        <!-- <button @click="replaySteps">Play!</button> -->
-        <!-- <button @click="addPlayerHome">Add Player test2</button> -->
+         <div class= "Buttons">
+                <button class="button">Save start coordinates</button>
+                <button class = "button" @click="replayAnim">Replay animation</button>
+        </div>
+        
+        
     </div>
 </template>
 
 <script>
-    // const width = window.innerWidth;
-    // const height = window.innerHeight;
+    
     import Konva from "konva";
     import SampleRequest from '@/api/sample-request';
     const sampleRequest = new SampleRequest();
@@ -304,10 +282,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                 this.userID = data.id_user;
                 this.image=data.sports_type.field_picture;
                 
-                //const {data} = await sampleRequest.getSportsTypes({ id:this.id_preset});
-                //this.sportsName = data.sports_name;
-                //this.sports = data;
-                //this.image = data.field_picture;
+                
                 console.log('Data:', data.tactics_name);
                 this.img = new window.Image();
                 this.img.src = this.image;
@@ -394,10 +369,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             },
 
             addHomePlayer(){//adds new player object at the top of the field
+                var count1 = this.homeCount+1;
                 if(this.homeCount == 6){return;}
                 this.changeHomeX += 40;
                 this.listHome.push({
-                    id: 'Home_'+this.homeCount.toString(),
+                    id: 'Home_'+count1.toString(),
                     x: this.changeHomeX,
                     y: 30,
                     preCords: [],
@@ -424,16 +400,14 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                 this.shoutout("Home List data ", this.listHome);
                 this.delItemHomeId = null;
             },
-                    //list.splice(start-1); nogrieziis visas koordinates iznemot pedejo
-                    //ielikt listaa vecaas koordinates atbilstosham id, lai izveidotu pattern for animation
-                    //just continue adding coords to the table
-                    //pectam izveidojot animaciju, padot shos listus ,lai ar tiem darbotos
+                   
 
             addAwayPlayer(){
+                var count1 = this.awayCount+1; //skaita away player
                 if(this.awayCount == 6){ return; }
                 this.changeAwayX -= 40;
                 this.listAway.push({
-                    id: 'Away_'+this.awayCount.toString(),
+                    id: 'Away_'+count1.toString(),
                     x: this.changeAwayX,
                     y: 30,
                     preCords: [],
@@ -524,48 +498,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                         moveAway.x -= (velocity * (50/1000));
                         moveAway.y += amplitude * Math.sin((frame.time * 2 * Math.PI)/1000)
                     }
-                    // if(moveBall.x == 20){
-                    //     moveBall.y += amplitude * Math.sin((frame.time * 2 * Math.PI) /1000)
-                    // }else{
-                    //     moveBall.x -= (velocity * (50/1000));
-                    //     moveBall.y += amplitude * Math.sin((frame.time * 2 * Math.PI)/1000)
-                    // }
+                   
                 }, this.$refs.layer.getNode());
                 anim.start();
             },
-            // replaySteps(){
-            //     const player = this.list.find(i => i.id === this.delItemId);
-            //     var boolcheck;
-            //     player.preCords.push({ x:player.x,y:player.y});
-            //     this.shoutout("current coords added: ",player.preCords);
-            //     this.shoutout("how many in the list?",player.preCords.length);
-            //     player.x = player.preCords[1].x;
-            //     player.y = player.preCords[1].y;
-            //     var diffX = player.preCords[2].x - player.x;
-            //     var diffY = player.preCords[2].y - player.y;
-            //     //diffX/((frame.time * 2)/1000)
-            //     // player.to(player.preCords[2].x,player.preCords[2].y);
-            //     var anim = new Konva.Animation(function (frame){
-            //         var xChange = diffX/(1000/1000);
-            //         var yChange = diffY/(1000/1000);
-            //         player.x += (xChange* (3/1000));
-            //         player.y += (yChange* (3/1000));
-                    
-            //     },this.$refs.layer.getNode());
-            //     anim.start();
-            //     if(boolcheck == false){
-            //          anim.stop();
-            //     }
-                // this.setUp++;
-                // const plNode = this.$refs.layer.getNode();
-                // plNode.to({
-                //     x: player.preCords[2].x,
-                //     y: player.preCords[2].y,
-                //     duration: 0.5,
-                //     onUpdate: () => console.log('props updated'),
-                //     onFinish: () => console.log('finished'),
-                // });
-            // },
+           
             updateCoords(event){
                 this.xpoint = event.clientX;
                 this.ypoint = event.clientY;
@@ -640,38 +577,6 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             },
 
 
-
-            // addPlayerHome(){
-            //     if(this.homeCount == 6){ return}
-            //     this.changeX += 40;
-            //     this.listHome.push({
-            //         id: this.homeCount.toString(),
-            //         x: this.changeX,
-            //         y: 30,
-            //         preCords: [],
-            //         identify: 'HOME',
-            //         scale: 1
-            //     });
-            //     this.homeCount++;
-            //     var circle = new Konva.Circle({
-            //         x: this.listHome.x,
-            //         y: this.listHome.y,
-            //         id: this.listHome.id,
-            //         radius: 20,
-            //         fill: '#89b717',
-            //         opacity: 0.8,
-            //         draggable: true,
-            //         scaleX: this.dragItemHomeId === this.listHome.id ? this.listHome.scale * 1.2 : this.listHome.scale,
-            //         scaleY: this.dragItemHomeId === this.listHome.id ? this.listHome.scale * 1.2 : this.listHome.scale,
-            //         shadowColor: 'black',
-            //         shadowBlur: 10,
-            //         shadowOffsetX: this.dragItemHomeId === this.listHome.id ? 15 : 5,
-            //         shadowOffsetY: this.dragItemHomeId === this.listHome.id ? 15 : 5,
-            //         shadowOpacity: 0.6,
-            //         prevCords: this.listHome.preCords,
-            //         identifyBy: this.listHome.identify,
-            //     });
-            // },
         },
     };
 </script>
@@ -702,6 +607,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             
         }
 
+        // .Buttons{
+        //     display:table-cell;
+        //     float:left;
+        //     margin-left:1%;
+        // }
         .Buttons{
             display:table-cell;
             margin-left: 20%;
@@ -749,7 +659,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             left: 0;
             right: 0;
             bottom: 0;
-             background-color: #868585;//ball butten off color
+            background-color: rgb(173, 173, 173);
             -webkit-transition: .4s;
             transition: .4s;
         }
@@ -793,11 +703,12 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             display: flex;
             margin-left:3%;
             margin-top:1%;
+            //height: 525px;
         }
 
         .field{
             flex: 1;
-            border: 2px solid rgb(0, 0, 0);
+           
             margin-right: 20px;
         }
 
@@ -805,6 +716,10 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             flex:1;
             border: 2px solid rgb(0, 0, 0);
             float:left;
+  
+            margin-right: 2%;
+            //overflow-y: auto;
+            
         }
 
 
@@ -822,6 +737,8 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         table, th, td {
            // border: 1px solid black;
             height: 40px;
+            // padding-right: 50px;
+            margin-right: 2%;
         }
 
         table{
@@ -846,13 +763,14 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         .inputField{
             width:30%;
             height: 30px;
-            float:center;
+            float:center; 
             margin-right: 5%;
+            //margin-left: 25%;
         }
 
+      
 
 
 
-
-        }
+    }
 </style>

@@ -9,8 +9,8 @@
         </div>
         <div class="buttonDiv">
             <div class="Buttons">
-                <button class="button" @click="addHomePlayer();addHomeItemToTable(); coun=1">Add HOME player!</button>
-                <button class="button" @click="removeHomePlayer(); removeHomeItemFromTable(); coun=1">Remove HOME player!</button>
+                <button class="button" @click="addHomePlayer(); addHomeItemToTable(); coun=1">Add HOME player!</button>
+                <button class="button" @click="removeHomeItemFromTable(); removeHomePlayer(); coun=1">Remove HOME player!</button>
             </div>
 
             <div class="Buttons">
@@ -22,7 +22,10 @@
 
             <div class="Buttons">
                 <button class="button" @click="addAwayPlayer(); addAwayItemToTable();">Add AWAY player!</button>
-                <button class="button" @click="removeAwayPlayer(); removeAwayItemFromTable();">Remove AWAY player!</button>
+                <button class="button" @click="removeAwayItemFromTable(); removeAwayPlayer();">Remove AWAY player!</button>
+            </div>
+            <div class= "saveStartCords">
+                <button class="button">Save start coordinates</button>
             </div>
            
         </div>
@@ -156,20 +159,18 @@
                     <tr>
                         <th>ID</th>
                         <th>Action time</th>
-                        <th>Save Button</th>
+                        <th>Save</th>
                     </tr>
                     <tr v-for="item in homeTableData" :key="item.id">
                         <td class= "IdCell">{{item.id}}</td>
                         <td class= "inputCell">
-                            <!-- <label>action time</label> -->
-                            <input type="text" class="inputField" />
+                            <input type="text" class="inputField">
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
                     </tr>
                     <tr v-for="item in awayTableData" :key="item.id">
                         <td class= "IdCell">{{item.id}}</td>
                         <td class= "inputCell">
-                            <!-- <label>action time</label> -->
                             <input type="text" class="inputField">  
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
@@ -367,10 +368,11 @@
             },
 
             addHomePlayer(){//adds new player object at the top of the field
+                var count1 = this.homeCount+1;
                 if(this.homeCount == 6){return;}
                 this.changeHomeX += 40;
                 this.listHome.push({
-                    id: 'Home_'+this.homeCount.toString(),
+                    id: 'Home_'+count1.toString(),
                     x: this.changeHomeX,
                     y: 30,
                     preCords: [],
@@ -400,10 +402,11 @@
                    
 
             addAwayPlayer(){
+                var count1 = this.awayCount+1; //skaita away player
                 if(this.awayCount == 6){ return; }
                 this.changeAwayX -= 40;
                 this.listAway.push({
-                    id: 'Away_'+this.awayCount.toString(),
+                    id: 'Away_'+count1.toString(),
                     x: this.changeAwayX,
                     y: 30,
                     preCords: [],
@@ -595,17 +598,17 @@
         }
 
         .buttonDiv{
-            width:70%;
+            width:100%;
             display:table;
             margin-top:2%;
-            margin-left:1%;
             text-align: center;
             
         }
 
         .Buttons{
             display:table-cell;
-            margin-left: 20%;
+            float:left;
+            margin-left:4%;
         }
 
         .button{
@@ -694,6 +697,7 @@
             display: flex;
             margin-left:3%;
             margin-top:1%;
+            height: 525px;
         }
 
         .field{
@@ -707,7 +711,9 @@
             border: 2px solid rgb(0, 0, 0);
             float:left;
            //padding-right:1%;
-            margin-right: 2%;
+           // margin-right: 2%;
+            overflow-y: auto;
+            
         }
 
 
@@ -749,15 +755,19 @@
         }
 
         .inputField{
-            width:30%;
+            width:50%;
             height: 30px;
-            float:center;
-            margin-right: 5%;
+            // float:center; //mos vajag
+            // margin-right: 5%;
+            margin-left: 25%;
+        }
+
+        .saveStartCords{
+            float:right;
+            margin-right: 7%;
         }
 
 
 
-
-
-        }
+    }
 </style>
