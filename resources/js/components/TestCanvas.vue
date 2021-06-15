@@ -17,8 +17,8 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         <button v-on:click.once="drawItem(0, 0, 130)">Draw item 0</button> -->
         <div class="buttonDiv">
             <div class="Buttons">
-                <button class="button" @click="addHomePlayer();addHomeItemToTable(); coun=1">Add HOME player!</button>
-                <button class="button" @click="removeHomePlayer(); removeHomeItemFromTable(); coun=1">Remove HOME player!</button>
+                <button class="button" @click="addHomePlayer(); addHomeItemToTable(); coun=1">Add HOME player!</button>
+                <button class="button" @click="removeHomeItemFromTable(); removeHomePlayer(); coun=1">Remove HOME player!</button>
             </div>
 
             <div class="Buttons">
@@ -30,12 +30,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
 
             <div class="Buttons">
                 <button class="button" @click="addAwayPlayer(); addAwayItemToTable();">Add AWAY player!</button>
-                <button class="button" @click="removeAwayPlayer(); removeAwayItemFromTable();">Remove AWAY player!</button>
+                <button class="button" @click="removeAwayItemFromTable(); removeAwayPlayer();">Remove AWAY player!</button>
             </div>
-            <!-- <div id="TestCanvas">
-                <button v-on:click="addHome(); coun=1;">Addd 1</button>
-                <p>The button above has been clicked {{ coun }} times.</p>
-            </div> -->
+            <div class= "saveStartCords">
+                <button class="button">Save start coordinates</button>
+            </div>
         </div>
 
         <div class="fieldAndInputs">
@@ -159,12 +158,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     <tr>
                         <th>ID</th>
                         <th>Action time</th>
-                        <th>Save Button</th>
+                        <th>Save</th>
                     </tr>
                     <tr v-for="item in homeTableData" :key="item.id">
                         <td class= "IdCell">{{item.id}}</td>
                         <td class= "inputCell">
-                            <label>action time</label>
                             <input type="text" class="inputField">
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
@@ -172,7 +170,6 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     <tr v-for="item in awayTableData" :key="item.id">
                         <td class= "IdCell">{{item.id}}</td>
                         <td class= "inputCell">
-                            <label>action time</label>
                             <input type="text" class="inputField">  
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
@@ -366,10 +363,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             },
 
             addHomePlayer(){//adds new player object at the top of the field
+                var count1 = this.homeCount+1;
                 if(this.homeCount == 6){return;}
                 this.changeHomeX += 40;
                 this.listHome.push({
-                    id: 'Home_'+this.homeCount.toString(),
+                    id: 'Home_'+count1.toString(),
                     x: this.changeHomeX,
                     y: 30,
                     preCords: [],
@@ -402,10 +400,11 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     //pectam izveidojot animaciju, padot shos listus ,lai ar tiem darbotos
 
             addAwayPlayer(){
+                var count1 = this.awayCount+1; //skaita away player
                 if(this.awayCount == 6){ return; }
                 this.changeAwayX -= 40;
                 this.listAway.push({
-                    id: 'Away_'+this.awayCount.toString(),
+                    id: 'Away_'+count1.toString(),
                     x: this.changeAwayX,
                     y: 30,
                     preCords: [],
@@ -664,17 +663,17 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         }
 
         .buttonDiv{
-            width:70%;
+            width:100%;
             display:table;
             margin-top:2%;
-            margin-left:1%;
             text-align: center;
             
         }
 
         .Buttons{
             display:table-cell;
-            margin-left: 20%;
+            float:left;
+            margin-left:4%;
         }
 
         .button{
@@ -763,6 +762,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             display: flex;
             margin-left:3%;
             margin-top:1%;
+            height: 525px;
         }
 
         .field{
@@ -775,6 +775,8 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             flex:1;
             border: 2px solid rgb(0, 0, 0);
             float:left;
+            overflow-y: auto;
+            
         }
 
 
@@ -803,9 +805,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             width:20%;
          }
         
-        .inputCell{
-            width: 50%;
-        }
+        
 
         .saveButton{
             width:30%;
@@ -813,15 +813,17 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
         }
 
         .inputField{
-            width:30%;
+            width:50%;
             height: 30px;
+            margin-left: 25%;
+        }
+
+        .saveStartCords{
             float:right;
-            margin-right: 5%;
+            margin-right: 7%;
         }
 
 
 
-
-
-        }
+    }
 </style>
