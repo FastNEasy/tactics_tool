@@ -7,15 +7,18 @@
                     <li v-for="error in errors" v-bind:key="error.id">{{ error }}</li>
                 </ul>
             </p>
-            <form @submit="checkForm">
+            <form @submit="checkForm" action="/action_page.php">
+                <!-- action= "http://localhost:3000/#/tacticlist" method="POST" -->
                 <label class="label_font" for="presetsid">Choose a sport!</label><br><br>
                 <select name="presets" id="presetsid" >                    <option hidden value="" >No sport assigned </option>
                     <option v-for="(sport) in sports" :key="sport.id" v-bind:value="sport.id">{{ sport.sports_name }}</option>
                 </select><br><br>
                 <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
                 <input id="tacticName" v-model="tacticName" placeholder="Tactic name e.g Defense"><br><br>        
-                <button type="submit" class="saveButton" v-on:click.once="onTacticAdd(); /*insertAlert()*/">Add tactic</button>
+                <button type="submit" id="saveButton" class="saveButton" v-on:click.once=" onTacticAdd(); toAllTactics()" >Add tactic name</button><br> <br>
+                <!-- <router-link class="saveButton" v-on:click.once="onTacticAdd();" to="/tacticlist" >To all tactics!</router-link> -->
                 <p id="saveButton"></p>
+                
             </form>   
         </div>
         <!-- </form> -->
@@ -59,7 +62,12 @@
                 },
 
                 insertAlert(){
-                    alert("Inserted Successfully!");
+                    alert("Inserted Successfully! Tactic is available in all tactic list.");
+                },
+                toAllTactics(){
+                    console.log('sss');
+                    location.href = "#/tacticlist/";
+                    
                 },
 
                 checkForm(e){

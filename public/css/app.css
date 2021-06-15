@@ -6,10 +6,10 @@ body {
 }
 
 #app .nav-it-und {
-  background-color: rgba(202, 195, 195, 0.678) !important;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  background-color: lightgray !important;
+  position: fixed;
+  right: 10px;
+  top: 5px;
 }
 
 #app .nav-it-und a {
@@ -23,15 +23,15 @@ body {
 }
 
 #app .nav-it-und .nav-item:hover {
-  background-color: rgba(131, 131, 131, 0.856);
+  background-color: lightgray;
 }
 
 #app .nav-it-und a:hover {
-  background-color: rgba(131, 131, 131, 0.856);
+  background-color: lightgray;
 }
 
 #app .nav-it-und .nav-link:hover {
-  background-color: rgba(131, 131, 131, 0.856);
+  background-color: lightgray;
 }
 
 #app .nav-it-und .nav-link {

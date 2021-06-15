@@ -22,23 +22,6 @@
             <router-link to="/sportlist">Check all Sports</router-link>
           </div>
         </li>
-        <li>
-          <div class="gridItem">
-           <!-- <div class="nav-item">
-          
-           <a class="nav-link" href="{{ route('logout') }}"
-            onclick="event.preventDefault();
-            document.getElementById('logout-form').submit();">
-              {{ __('Logout') }}
-             </a>
-
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-             @csrf
-            </form>
-            
-            </div>  -->
-          </div>
-        </li>
       </ul>
     </div>
     <div class="b">
@@ -48,11 +31,7 @@
 </template>
 
 <script>
-  //create new state, where after creating a tactic, you get redirected to canvas where the tactic drawing starts
-  //start some tactic drawing things
-  //maybe do some style a bit
-  //check out the three.js for drawing and animation
-  //small image in edit tactic to see it
+  
   import SampleRequest from '@/api/sample-request';
   import Cookies from 'js-cookie';
   const sampleRequest = new SampleRequest();
@@ -82,17 +61,11 @@
     width: auto;
     height: 100vh;
     display: grid;
-    grid-template-columns: 15% 1fr;
+    grid-template-columns: 10% 1fr;
     //grid-template-rows: 100vh 300px;
     .navigation{
       background: rgba(172, 169, 169, 0.925);//dd
-  //     margin: 0;
-  //     padding: 0;
-  //     width: 200px;
-  // //background-color: #f1f1f1;
-  //     position: fixed;
-  //     height: 100%;
-  //     overflow: auto;
+  
       ul {
         list-style-type: none;
         margin: 0;
@@ -126,58 +99,5 @@
   }
 
 
-// body {
-//   margin: 0;
-//   font-family: "Lato", sans-serif;
-// }
 
-// .sidebar {
-//   margin: 0;
-//   padding: 0;
-//   width: 200px;
-//   background-color: #f1f1f1;
-//   position: fixed;
-//   height: 100%;
-//   overflow: auto;
-// }
-
-// .sidebar a {
-//   display: block;
-//   color: black;
-//   padding: 16px;
-//   text-decoration: none;
-// }
- 
-// .sidebar a.active {
-//   background-color: #04AA6D;
-//   color: white;
-// }
-
-// .sidebar a:hover:not(.active) {
-//   background-color: #555;
-//   color: white;
-// }
-
-// div.content {
-//   margin-left: 200px;
-//   padding: 1px 16px;
-//   height: 1000px;
-// }
-
-// @media screen and (max-width: 700px) {
-//   .sidebar {
-//     width: 100%;
-//     height: auto;
-//     position: relative;
-//   }
-//   .sidebar a {float: left;}
-//   div.content {margin-left: 0;}
-// }
-
-// @media screen and (max-width: 400px) {
-//   .sidebar a {
-//     text-align: center;
-//     float: none;
-//   }
-// }
 </style>

@@ -26,10 +26,10 @@ body
     // }
     
     .nav-it-und{
-        background-color: rgba(202, 195, 195, 0.678) !important;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+        background-color: rgb(211, 211, 211) !important;//chagne color to headbar
+        position:fixed;
+        right:10px;
+        top:5px;
         a{
             display: block;
             overflow: hidden;
@@ -42,13 +42,13 @@ body
         
         
         .nav-item:hover{
-            background-color: rgba(131, 131, 131, 0.856);
+            background-color: rgb(211, 211, 211);
         }
         a:hover {
-            background-color: rgba(131, 131, 131, 0.856);
+            background-color: rgb(211, 211, 211);
         }
         .nav-link:hover{
-            background-color: rgba(131, 131, 131, 0.856);
+            background-color: rgb(211, 211, 211);
         }
         .nav-link{
             margin: 5px;
