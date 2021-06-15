@@ -179,6 +179,10 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
                     </tr>
                 </table>
             </div>
+            <!-- <div id="TestCanvas">
+                <button v-on:click="addHome(); coun=1;">Addd 1</button>
+                <p>The button above has been clicked {{ coun }} times.</p>
+            </div> -->
         </div>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
         <!-- <button @click="addPlayer">Add a player</button>
@@ -681,7 +685,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             border-radius:2em;
             box-sizing: border-box;
             text-decoration:none;
-            font-family:'Roboto',sans-serif;
+            font-family:Arial;
             font-weight:bold;
             color:#FFFFFF;
             background-color:#1db40f;

@@ -104,21 +104,27 @@
 <style lang="scss" scoped>
     #edit{
         text-align: center;
-        padding-top:5%;
-        .button-link {
-            background-color: #5e645d;
-            border: none;
+        padding-top:50px;
+        .button-link {//return to list
+            background-color:#1fc410;
+            border:1px solid #1b9429;
+            //border: none;
             color: white;
             padding: 10px 24px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 20px;
-            margin: 4px 2px;
+            //margin: 4px 2px;
             cursor: pointer;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 5px;
+            
+            
         }
         .button-link:hover {
-            background-color: rgb(160, 33, 33);
+            background-color: rgb(25, 136, 30);
         }
        .sportsNameInput{
             width:30%;
@@ -132,15 +138,16 @@
             height: 0.1px;
             position: absolute;
         }
-        .file-input label {
+        .file-input label { //select image
             display: block;
             position: relative;
             width: 200px;
             height: 50px;
-            margin:0 auto;
+            margin:auto;
             border-radius: 25px;
-            background: linear-gradient(40deg, #636060, #73f579);
-            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+            background-color:#1fc410;
+            border:1px solid #1b9429;
+           // box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -148,32 +155,36 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform .2s ease-out;
+            margin-bottom: 5px;
+            
         }
 
         .file-input label:hover{
-            background: linear-gradient(40deg, #929090, #97f39c);
+            background-color: rgb(25, 136, 30);
         }
 
         .file-input label:active{
             top: 1px;
         }
 
-        #saveButton {
-            background-color:#44c767;
-            border-radius:28px;
-            border:1px solid #18ab29;
+        #saveButton {//save butenn
+            background-color:#1fc410;
+            border-radius:25px;
+            border:1px solid #1b9429;
             display:inline-block;
             cursor:pointer;
             color:#ffffff;
             font-family:Arial;
-            font-size:17px;
-            padding:16px 31px;
+            font-size:20px;
+            padding:10px 24px;
             text-decoration:none;
-            text-shadow:0px 1px 0px #2f6627;
+            font-weight: bold;
+            margin-bottom: 15px;
+            //text-shadow:0px 1px 0px #2f6627;
         }
 
         #saveButton:hover {
-            background-color:#5cbf2a;
+            background-color: rgb(25, 136, 30);
         }
 
         #saveButton:active {

@@ -85,11 +85,13 @@
 <style lang="scss" scoped>
     #create{
         text-align: center;
-        padding-top:20px;
+        padding-top:50px;
         
         .label_font{
             font-size: 24px;
+            
         }
+       
         #tacticName{
             width:200px; 
             height: 40px;
@@ -102,26 +104,28 @@
             height: 40px;
             font-size: 18px;  
             border-radius:8px;
+            //background-color:#d6d6d6;
         }
 
         
 
-        .saveButton {
-            background-color:#44c767;
+        .saveButton { //add tactic
+            background-color:#1fc410;
             border-radius:28px;
-            border:1px solid #18ab29;
+            border:1px solid #1b972a;
             display:inline-block;
             cursor:pointer;
             color:#ffffff;
             font-family:Arial;
+            font-weight: bold;
             font-size:17px;
             padding:16px 31px;
             text-decoration:none;
-            text-shadow:0px 1px 0px #2f6627;
+            //text-shadow:0px 1px 0px #2f6627;
         }
 
         .saveButton:hover {
-            background-color:#5cbf2a;
+                background-color: rgb(27, 155, 34);
         }
 
         .saveButton:active {
