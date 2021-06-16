@@ -155,6 +155,7 @@ un erors ir taja, ka peivono klat un nonem un atkal vieno klat, tad duble id  --
             </div>
             <div class="inputs">
                 <table class="actionTimeTable">
+                    
                     <tr>
                         <th>ID</th>
                         <th>Action time</th>

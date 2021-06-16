@@ -30,6 +30,7 @@ body
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
+        
         a{
             display: block;
             overflow: hidden;
@@ -91,6 +92,14 @@ body
 .form-control{//textfield lielumi
     width: 30%;
     padding: 20px 20px;
+    margin: 8px 0; 
+    box-sizing: border-box;
+    font-size:20px;
+}
+
+.regist-form-control{
+    width:50%;
+    padding: 15px 20px;
     margin: 8px 0; 
     box-sizing: border-box;
     font-size:20px;

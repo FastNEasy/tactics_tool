@@ -80,6 +80,14 @@ body {
   font-size: 20px;
 }
 
+.regist-form-control {
+  width: 50%;
+  padding: 15px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  font-size: 20px;
+}
+
 .form-control::-moz-placeholder {
   font-size: 20px;
 }
