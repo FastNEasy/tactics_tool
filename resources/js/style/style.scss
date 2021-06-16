@@ -27,7 +27,8 @@ body
     
     .nav-it-und{
         background-color: rgb(211, 211, 211) !important;//chagne color to headbar
-        position:fixed;
+        position:absolute;
+        border-radius:5%;
         right:10px;
         top:5px;
         a{
@@ -38,6 +39,7 @@ body
             padding: 14px 16px;
             max-block-size: 100%;
             text-decoration: none;
+            border-radius:5%;
         }
         
         
@@ -45,10 +47,10 @@ body
             background-color: rgb(211, 211, 211);
         }
         a:hover {
-            background-color: rgb(211, 211, 211);
+            background-color: rgb(156, 154, 154);
         }
         .nav-link:hover{
-            background-color: rgb(211, 211, 211);
+            background-color: rgb(128, 126, 126);
         }
         .nav-link{
             margin: 5px;
