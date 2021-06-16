@@ -30,9 +30,9 @@
                 </button> -->
                 
                 <div class="nav-it-und" id="navbarSupportedContent">
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <!-- <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
-                    </a>
+                    </a> -->
                     <!-- Left Side Of Navbar -->
 
                     <!-- Right Side Of Navbar -->
@@ -51,17 +51,17 @@
                                 </div>
                             @endif
                         @else
-                            <div class="nav-item">
+                            <!-- <div class="nav-item">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
                                 
-                            </div>
+                            </div> -->
                             <div class="nav-item">
                                 <div class="nav-item" aria-labelledby="navbarDropdown">
                                     <a class="nav-link" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                            document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -81,7 +81,7 @@
                 <div style="display:none">
                     {{setcookie("UserObject", json_encode(Auth::user()), time()+3600, "/", "localhost:3000")}}
                 </div> 
-                <h1>HELLO THERE CAPTAIN</h1>
+                <!-- <h1>HELLO THERE CAPTAIN</h1> -->
                 <div id="theApp">
                     <app>
                     </app>

@@ -37,9 +37,7 @@
          name: 'EditSport',
         created(){
             this.getData();
-            // this.user = JSON.parse(Cookies.get("UserObject"));
-            // console.log(this.user);
-            // console.log(this.$route.params.id);
+            
         },
          data(){
             return{
