@@ -22,10 +22,21 @@
             <router-link to="/sportlist">Check all Sports</router-link>
           </div>
         </li>
+       <li>
+          <div class="gridItem">
+           <!-- <li> -->
+            <a v-on:click="onLogout()" >Logout</a>
+            <!-- </li>  -->
+            <!-- <a id="logout-link" href="#" @click.prevent="logout">Logout</a> -->
+          <!-- <button type="submit" class="btn btn-{{onLogout()}}"> </button> -->
+          <!-- <button type="submit" :class="`btn btn-${onLogout}`"> </button> -->
+          </div>
+        </li>
       </ul>
     </div>
     <div class="b">
       <router-view></router-view>
+      
     </div>
   </div>
 </template>
@@ -43,6 +54,9 @@
       console.log(this.user);
       console.log(this.$route);
     },
+    // props: [
+    //     'onLogout'
+    // ],
     data(){
       return{
       }
@@ -52,6 +66,12 @@
         const data = await sampleRequest.doRequest();
         console.log('Data:', data);
       },
+      onLogout(){
+        console.log('test');
+        this.$emit('logout()');
+        document.getElementById("logout-form").submit();
+        
+      }
     },
   };
 </script>
@@ -78,6 +98,7 @@
           color: #000;
           padding: 12.5px 16px;
           text-decoration: none;
+          cursor: pointer;
         }
         li a:hover:not(.active) {
           background-color: rgb(25, 136, 30);
@@ -85,6 +106,7 @@
         }
         .router-link-exact-active {
           // background-color: rgb(130, 238, 108);
+          cursor: pointer;
           background-color:#3bc52f;
         }
       }

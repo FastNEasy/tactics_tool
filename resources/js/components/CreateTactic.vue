@@ -15,7 +15,8 @@
                 </select><br><br>
                 <!-- <input type="number" v-model="presetID" placeholder="Sporta veids" /> -->
                 <input id="tacticName" v-model="tacticName" placeholder="Tactic name e.g Defense"><br><br>        
-                <button type="submit" id="saveButton" class="saveButton" v-on:click.once=" onTacticAdd(); toAllTactics()" >Add tactic name</button><br> <br>
+                  <!-- <button type="submit" class="saveButton" @click="onTacticAdd(); /*insertAlert()*/">Add tactic</button> -->
+                <button type="submit" id="saveButton" class="saveButton" @click="onTacticAdd(); " >Add tactic name</button><br> <br> 
                 <!-- <router-link class="saveButton" v-on:click.once="onTacticAdd();" to="/tacticlist" >To all tactics!</router-link> -->
                 <p id="saveButton"></p>
                 
@@ -64,23 +65,21 @@
                 insertAlert(){
                     alert("Inserted Successfully! Tactic is available in all tactic list.");
                 },
-                toAllTactics(){
-                    console.log('sss');
-                    location.href = "#/tacticlist/";
-                    
-                },
+                
 
                 checkForm(e){
                 if(this.tacticName&& this.presetID){
                     console.log("CHECK FORM FUNCTION CALLED");
                 }
                 this.errors = [];
-                if(!this.tacticName){
-                    this.errors.push("Name required.")
-                }
                 if(!this.presetID){
                     this.errors.push("Choose a sport")
+                }else if(!this.tacticName){
+                    this.errors.push("Name required.")
+                }else{
+                    location.href = "#/tacticlist/";
                 }
+                
                 
                 console.warn("errors",this.error)
                 e.preventDefault();

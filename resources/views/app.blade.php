@@ -57,7 +57,7 @@
                                 </a>
                                 
                             </div> -->
-                            <div class="nav-item">
+                            <!-- <div class="nav-item">
                                 <div class="nav-item" aria-labelledby="navbarDropdown">
                                     <a class="nav-link" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -69,7 +69,7 @@
                                         @csrf
                                     </form>
                                 </div>
-                            </div>
+                            </div> -->
                         @endguest
                     <!-- </ul> -->
                 </div>
@@ -81,10 +81,25 @@
                 <div style="display:none">
                     {{setcookie("UserObject", json_encode(Auth::user()), time()+3600, "/", "localhost:3000")}}
                 </div> 
+                
+                <div class="nav-item1">
+                    <div class="nav-item" aria-labelledby="navbarDropdown">
+                        <a class="nav-link" id= "onLogout" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </div>
+                
                 <!-- <h1>HELLO THERE CAPTAIN</h1> -->
                 <div id="theApp">
-                    <app>
-                    </app>
+                    <!-- <app @logout()="{{ route('logout') }}">
+                
+                    </app> -->
                 </div>
                 
             @else
@@ -93,6 +108,16 @@
             @endif 
         </main>
     </div>
+    <!-- <script>
+        function onLogout(){
+          document.getElementById('logout-form').submit();
+          console.log('saad');
+                            
+
+                       
+                 
+} -->
+    </script>
     <script src="{{ mix('js/vendor.js') }}"></script>
     <script src="{{ mix('js/manifest.js') }}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
@@ -100,6 +125,29 @@
 <style>
 .no-margin-where-the-hell-is-it-coming-from{
     margin: 0 !important;
+
 }
+
+    .nav-item1 {
+        
+    /* background-color:rgba(172, 169, 169, 0.925); */
+    /* color: red; */
+    /* border: none; */
+    /* color: black; */
+    /* padding: 10px 24px; */
+    /* text-align: center; */
+    /* text-decoration: none; */
+    /* display: inline-block; */
+    /* font-size: 20px; */
+    /* margin: 4px 2px; */
+    /* width: 7.2%; */
+    /* cursor: pointer; */
+    /* grid-template-columns: 10% 1fr; */
+    /* border-radius:2em; */
+}
+.nav-item1:hover:not(.active) {
+    background-color: rgb(25, 136, 30);
+    color: white;
+    }
 </style>
 </html>
