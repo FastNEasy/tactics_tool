@@ -75,9 +75,11 @@
         <!-- <button @click="addPlayer">Add a player</button>
         <button @click="removePlayer">Remove a player</button>
         <button @click="lockCords">Lock in Cords!</button> -->
-        <button @click="animInit">Test!</button>
+        <button @click="animInit">Play!</button>
+        <button @click="animPause">Pause!</button>
+        <button @click="animContinue">Continue!</button>
         <div class= "saveStartCords">
-            <button class="button" @click="setCords">Save start coordinates</button>
+            <button class="button" @click="setCords">Save player position!</button>
         </div>
         <!-- <button @click="addPlayerHome">Add Player test2</button> -->  
     </div>
@@ -162,6 +164,7 @@
                 userInput: {
                     animDuration: null,
                 },
+                tween: null,
             }
         },
         mounted(){},
@@ -522,6 +525,7 @@
                 return text;
             },
             animInit(e){
+                if(this.handledPlayersHome.length < 1){ return; }
                 for (const idplayer of this.handledPlayersHome) {
                     var i = 1;
                     const item = this.listHome.find(i => i.id === idplayer);
@@ -532,6 +536,7 @@
                     });
                     this.animPlay(item, player.circ, i);
                 }
+                if(this.handledPlayersAway.length < 1){ return; }
                 for(const idplayer2 of this.handledPlayersAway){
                     var j = 1;
                     const item2 = this.listAway.find(i => i.id === idplayer2);
@@ -545,7 +550,7 @@
                 return;
             },
             animPlay(item,player,i){
-                var tween = new Konva.Tween({
+                this.tween = new Konva.Tween({
                     node: player,
                     duration: 1,
                     x: item.preCords[i].x,
@@ -563,7 +568,13 @@
                         }
                     },
                 });
-                tween.play();
+                this.tween.play();
+            },
+            animPause(){
+                this.tween.pause();
+            },
+            animContinue(){
+                this.tween.play();
             },
             checkBoxAddRemoveBall(){
                 var check = document.getElementById("checkbox");
