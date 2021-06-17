@@ -37,9 +37,7 @@
          name: 'EditSport',
         created(){
             this.getData();
-            // this.user = JSON.parse(Cookies.get("UserObject"));
-            // console.log(this.user);
-            // console.log(this.$route.params.id);
+            
         },
          data(){
             return{
@@ -115,7 +113,7 @@
         text-align: center;
         padding-top:1%;
         .text-view{
-            color: rgb(104, 250, 59);
+            color: rgb(85, 85, 85);
         }
 
         .sportsNameInput{
@@ -132,73 +130,82 @@
             margin-top:50%;
         }
         .file-input label {
-            display: block;
-            position: relative;
-            width: 200px;
-            height: 50px;
-            margin:0 auto;
-            border-radius: 25px;
-            background: linear-gradient(40deg, #636060, #73f579);
-            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform .2s ease-out;
+            display: inline-block;
+            //position: relative;
+            // width: 200px;
+            // height: 50px;
+            // margin:0 auto;
+            border-radius: 20px;
+            background-color:#1fc410;            //box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+            border:1px solid #057505;
+            cursor:pointer;
+            color: white;
+            font-family:Arial;
+            font-size: 22px;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration:none;
+            margin: 4px 2px;
+        }
+        .updateButton {
+            background-color:#1fc410;           
+            border-radius:20px;
+            border:1px solid #057505;
+            display: inline-block;
+            cursor:pointer;
+            color: white;
+            font-family:Arial;
+            font-size: 22px;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration:none;
+            margin: 4px 2px;
         }
 
         .file-input label:hover{
-            background: linear-gradient(40deg, #929090, #97f39c);
+                background-color: rgb(25, 136, 30);
         }
 
-        .file-input label:active{
-            top: 1px;
-        }
+        // .file-input label:active{
+        //     top: 1px;
+        // }
 
-        .updateButton {
-            background-color:#44c767;
-            border-radius:28px;
-            border:1px solid #18ab29;
-            display:inline-block;
+        
+        .button-link {
+            background-color:#1fc410;            
+            border:1px solid #057505;
+            border-radius:20px;
+            
+            display: inline-block;
             cursor:pointer;
-            color:#ffffff;
+            color: white;
             font-family:Arial;
-            font-size:17px;
-            padding:16px 31px;
+            font-size: 22px;
+            padding: 10px 24px;
+            text-align: center;
             text-decoration:none;
-            text-shadow:0px 1px 0px #2f6627;
+            margin: 4px 2px;
+            
         }
 
         .updateButton:hover {
-            background-color:#5cbf2a;
+           // background-color:#585858;
+                background-color: rgb(25, 136, 30);
         }
 
-        .updateButton:active {
-            position:relative;
-            top:1px;
-        }
+        // .updateButton:active {
+        //     position:relative;
+        //     top:1px;
+        // }
 
         .updateImage{
             margin-top:2%;
             width:70%;
         }
 
-        .button-link {
-            background-color: #5e645d;
-            border: none;
-            color: white;
-            padding: 10px 24px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
+        
         .button-link:hover {
-            background-color: rgb(160, 33, 33);
+                background-color: rgb(25, 136, 30);
         }
     }
     

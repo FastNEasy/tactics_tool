@@ -1,12 +1,17 @@
 <template>
     <div id="confsports">
+        <h1 class ="tacticsHeading">
+           
+            Sport Type 
+            <router-link class="buttonCreate" to="/createsport">Create new!</router-link>
+        </h1>
             <table id="sportsTypeTable">
-                <thead>
+                <!-- <thead>
                     <tr id="headerT">
                         <th>Sport Type</th>
                         <th><router-link class="buttonCreate" to="/createsport">Create new!</router-link></th>
                     </tr>
-                </thead>
+                </thead> -->
                 <tbody>
                     <tr v-for="(sport, index) in sports" :key="sport.id">
                         <td class="tpyeNameCell">{{ sport.sports_name }}</td>
@@ -57,18 +62,20 @@
 
 <style lang="scss" scoped>
     #confsports{  
-          
+            .tacticsHeading{
+                text-align: center;
+            }
             #sportsTypeTable{
-                font-family: "Lucida Console", "Courier New", monospace;
+                font-family: Arial;
                 border-collapse: collapse;
                 width: 60%;
-                background: gray;
+                background: rgb(170, 168, 168);
                 border-collapse: collapse;
                 border: 1px solid black;
                 margin:0 auto;
             }
             #headerT{
-                font-size: 20px;
+                font-size: 30px;
             }
             #sportsTypeTable td, #sportsTypeTable tr{
                 border-bottom: 0.5px solid black;
@@ -82,9 +89,9 @@
             //     color: white;
             //     text-align: right;
             // }
-            tr:hover {
-                background-color: #7a7171;
-                color: rgb(80, 67, 67)
+            tr:hover { 
+                background-color: #818181;
+                color: rgb(105, 105, 105)
             }
             
             .tpyeNameCell{
@@ -104,15 +111,15 @@
                 border-radius:2em;
                 box-sizing: border-box;
                 text-decoration:none;
-                font-family:'Roboto',sans-serif;
+                font-family:Arial;
                 font-weight:bold;
                 color:#FFFFFF;
-                background-color:#1db40f;
+                background-color:#1fc410;
                 text-align:center;
                 transition: all 0.2s;
             }
             .button:hover {
-                background-color: #f44336;
+                background-color: rgb(25, 136, 30);
                 color: white;
                 cursor: pointer;
             }
@@ -123,24 +130,25 @@
                 text-decoration: none;
             }
             .button-table:hover {
-                background-color: rgb(160, 33, 33);
+                background-color: rgb(25, 136, 30);
                 color: white;
                 cursor: pointer;
             }
-            .buttonCreate{
-                background-color: #1db40f;
-                border: none;
-                color: white;
-                padding: 10px 24px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 20px;
-                margin: 4px 2px;
-                cursor: pointer;
-            }
+            // .buttonCreate{//create new
+            //     background-color:#1fc410;
+            //     border: none;
+            //     color: white;
+            //     padding: 10px 24px;
+            //     text-align: center;
+            //     text-decoration: none;
+            //     display: inline-block;
+            //     font-size: 20px;
+            //     margin: 4px 2px;
+            //     cursor: pointer;
+            //     border-radius:2em;
+            // }
             .buttonCreate:hover {
-                background-color: rgb(160, 33, 33);
+                background-color: rgb(25, 136, 30);
                 color: white;
                 cursor: pointer;
             }

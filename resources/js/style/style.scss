@@ -9,11 +9,28 @@ body
 
 #app{
     // background-color: yellowgreen !important;
+    
+    // .loginButton{
+    //     background-color:#1fc410;
+    //     // border: none;
+    //     // color: white;
+    //     // padding: 10px 24px;
+    //     // text-align: center;
+    //     // text-decoration: none;
+    //     // display: inline-block;
+    //     // font-size: 20px;
+    //     // margin: 4px 2px;
+    //     // cursor: pointer;
+    //     // border-radius:2em;
+
+    // }
+    
     .nav-it-und{
-        background-color: rgba(202, 195, 195, 0.678) !important;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+        background-color: rgb(211, 211, 211) !important;//chagne color to headbar
+        position:absolute;
+        border-radius:5%;
+        right:10px;
+        top:5px;
         a{
             display: block;
             overflow: hidden;
@@ -22,15 +39,18 @@ body
             padding: 14px 16px;
             max-block-size: 100%;
             text-decoration: none;
+            border-radius:5%;
         }
+        
+        
         .nav-item:hover{
-            background-color: rgba(219, 82, 82, 0.856);
+            background-color: rgb(211, 211, 211);
         }
         a:hover {
-            background-color: rgba(219, 82, 82, 0.856);
+            background-color: rgb(156, 154, 154);
         }
         .nav-link:hover{
-            background-color: rgba(219, 82, 82, 0.856);
+            background-color: rgb(128, 126, 126);
         }
         .nav-link{
             margin: 5px;
@@ -63,7 +83,20 @@ body
 //     border: 1px solid rgba(0,0,0,0.1);  
 //     margin-top:15%
 // }
-
+.buttonCreate{//create new
+    background-color:#1fc410;
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius:2em;
+    
+}
 
 
 .card-body{ //padding no augsas
@@ -73,6 +106,14 @@ body
 .form-control{//textfield lielumi
     width: 30%;
     padding: 20px 20px;
+    margin: 8px 0; 
+    box-sizing: border-box;
+    font-size:20px;
+}
+
+.regist-form-control{
+    width:50%;
+    padding: 15px 20px;
     margin: 8px 0; 
     box-sizing: border-box;
     font-size:20px;
@@ -96,7 +137,7 @@ body
 
 label{ //register page label centra
     //margin-left:35%;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:Arial;
     font-size:20px;
 }
 
@@ -125,19 +166,30 @@ label.form-check-label{
 
 
 .button{
-    background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
+//background-color: #4CAF50; /* Green */
+background-color:#1fc410;
+border: none;
+color: white;
+padding: 10px 24px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 20px;
+margin: 4px 2px;
+cursor: pointer;
+border-radius:2em;
+font-family:Arial;
 
 }
+.button:hover{
+    background-color: rgb(25, 136, 30);
+    color: white;
+    cursor: pointer;
+}
+::selection {
+    color: rgb(218, 216, 216);
+    background: rgb(119, 118, 118);
+    }
 .check{
     display: inline-block;
     text-align: center;
@@ -154,7 +206,7 @@ label.form-check-label{
 	box-sizing:content-box;
 	padding: 1%;
 	margin: 3% auto 0;
-    border: 3pt solid #f79d9d;
+    border: 3pt solid #7e7e7e;
     text-align: center;
 }
 

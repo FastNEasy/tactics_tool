@@ -31,11 +31,7 @@
 </template>
 
 <script>
-  //create new state, where after creating a tactic, you get redirected to canvas where the tactic drawing starts
-  //start some tactic drawing things
-  //maybe do some style a bit
-  //check out the three.js for drawing and animation
-  //small image in edit tactic to see it
+  
   import SampleRequest from '@/api/sample-request';
   import Cookies from 'js-cookie';
   const sampleRequest = new SampleRequest();
@@ -65,15 +61,16 @@
     width: auto;
     height: 100vh;
     display: grid;
-    grid-template-columns: 15% 1fr;
+    grid-template-columns: 10% 1fr;
     //grid-template-rows: 100vh 300px;
     .navigation{
-      background: rgba(173, 159, 159, 0.925);
+      background: rgba(172, 169, 169, 0.925);//dd
+  
       ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
-        background-color: rgba(173, 27, 27, 0.925);
+        background-color: rgba(172, 169, 169, 0.925);
         li a {
           display: grid;
           grid-template-rows: 1fr 1fr;
@@ -83,21 +80,24 @@
           text-decoration: none;
         }
         li a:hover:not(.active) {
-          background-color: rgba(212, 73, 73, 0.945);
+          background-color: rgb(25, 136, 30);
           color: white;
         }
         .router-link-exact-active {
-          background-color: rgb(0, 216, 65);
+          // background-color: rgb(130, 238, 108);
+          background-color:#3bc52f;
         }
       }
     }
     .b {// router view atradisies b
-      background: rgb(150,150,100);//vairaaak stilizet b lauku
+      background: rgb(211, 211, 211);//vairaaak stilizet b lauku
      
     }
     .navigation{
       height: 100%;
     }
   }
+
+
 
 </style>
