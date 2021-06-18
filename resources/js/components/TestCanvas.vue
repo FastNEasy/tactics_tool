@@ -94,10 +94,11 @@
         <!-- <button @click="addPlayer">Add a player</button>
         <button @click="removePlayer">Remove a player</button>
         <button @click="lockCords">Lock in Cords!</button> -->
-        <button @click="animInit">Test!</button>
-        
+        <button @click="animInit">Play!</button>
+        <button @click="animPause">Pause!</button>
+        <button @click="animContinue">Continue!</button>
         <div class= "saveStartCords">
-            <button class="button" @click="setCords">Save start coordinates</button>
+            <button class="button" @click="setCords">Save player position!</button>
         </div>
         <!-- <button @click="addPlayerHome">Add Player test2</button> -->  
     </div>
@@ -125,11 +126,11 @@
                 x1: 0,
                 y1: 0,
                 counter: 0,
-<<<<<<< HEAD
+
                 id_preset: 56,
-=======
-                id_preset: 69,
->>>>>>> b1d10031f3c86ccf784ce6eea6c7abc06b581bd6
+
+
+
                 canvas: null,
                 context: null,
                 img: null,
@@ -187,6 +188,7 @@
                     animDuration: null,
                     userComment:null,
                 },
+                tweens: [],
             }
         },
         mounted(){},
@@ -547,6 +549,7 @@
                 return text;
             },
             animInit(e){
+                if(this.handledPlayersHome.length < 1){ return; }
                 for (const idplayer of this.handledPlayersHome) {
                     var i = 1;
                     const item = this.listHome.find(i => i.id === idplayer);
@@ -557,6 +560,7 @@
                     });
                     this.animPlay(item, player.circ, i);
                 }
+                if(this.handledPlayersAway.length < 1){ return; }
                 for(const idplayer2 of this.handledPlayersAway){
                     var j = 1;
                     const item2 = this.listAway.find(i => i.id === idplayer2);
@@ -604,10 +608,19 @@
                     },
                     
                 });
+                this.tweens.push(tween);
                 tween.play();
             },
-
-
+            animPause(){
+                for (const tween of this.tweens) {
+                    tween.pause();
+                }
+            },
+            animContinue(){
+               for (const tween of this.tweens) {
+                    tween.play();
+                }
+            },
             checkBoxAddRemoveBall(){
                 var check = document.getElementById("checkbox");
                 if(check.checked == true){

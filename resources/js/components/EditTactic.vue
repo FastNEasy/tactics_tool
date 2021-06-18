@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
 <template>
 
-    <div id="canvasTest">
+    <div id="edittactic">
        
         <div id="viewtactic">
             <h2>Tactic name is {{ tacticName }}</h2>
-            
         </div>
         <div class="buttonDiv">
             <div class="Buttons">
@@ -63,7 +62,8 @@
                     <tr>
                         <td class= "IdCell">Action time (sec)</td>
                         <td class= "inputCell">
-                            <input type="text" class="inputField" v-model="userInput.animDuration">
+                            <input type="number" min="1" max="10" class="inputField"
+                             placeholder="action time (secs)" v-model="userInput.animDuration">
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
                     </tr>
@@ -72,15 +72,12 @@
            
         </div>
         <!-- <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p> -->
-        <!-- <button @click="addPlayer">Add a player</button>
-        <button @click="removePlayer">Remove a player</button>
-        <button @click="lockCords">Lock in Cords!</button> -->
-       
         <div class= "saveStartCords">
-             <button class= "button" @click="animInit">Play animation!</button>
-            <button class="button" @click="setCords">Save start coordinates</button>
+            <button class= "button" @click="animInit">Start animation!</button>
+            <button class= "button" @click="animPlay">Play!</button>
+            <button class= "button" @click="animPause">Pause!</button>
+            <button class="button" @click="setCords">Save player/s position!</button>
         </div>
-        <!-- <button @click="addPlayerHome">Add Player test2</button> -->  
     </div>
 </template>
 
@@ -91,7 +88,7 @@
     const sampleRequest = new SampleRequest();
     export default {
         
-        name: 'TestCanvas',
+        name: 'EditTactic',
         created() {
             this.getData();
         },
@@ -106,7 +103,7 @@
                 x1: 0,
                 y1: 0,
                 counter: 0,
-                //id_preset: 69,
+                // id_preset: 23,
                 canvas: null,
                 context: null,
                 img: null,
@@ -163,30 +160,12 @@
                 userInput: {
                     animDuration: null,
                 },
+                tweens: [],
             }
         },
         mounted(){},
         methods: { 
-            // SITA METODE IES EDITTACTIC LAI IELADETU BILDi
-            // async getData(){ 
-            // console.log("Editing:",this.id);
-            //     const {data} = await sampleRequest.getTacticName({id:this.id});
-            //     this.tactics = data;
-            //     this.tacticName = data.tactic_name;
-            //     console.log('Data:', data);
-            //     this.presetID = data.id_presets;
-            //     this.userID = data.id_user;
-            //     this.image=data.sports_type.field_picture;
-                
-                
-            //     console.log('Data:', data.tactics_name);
-            //     this.img = new window.Image();
-            //     this.img.src = this.image;
-            //     this.img.onload = () => {
-            //         // set image only when it is loaded
-            //     };
-            // },
-            async getData(){
+            async getData(){//gets basic data and dynamic photo id from database
                 const {data} = await sampleRequest.getTacticName({id:this.id});
                 this.tactics = data;
                 this.tacticName = data.tactic_name;
@@ -311,7 +290,7 @@
                     this.dragItemBallId = null;
                 }
             },
-            setCords(e){//sets coordinates where you place them
+            setCords(e){//sets coordinates where you place them(multiple ones, that have been moved)
                 this.shoutout(this.handledPlayersHome.length);
                 if(this.handledPlayersHome.length > 0){
                     for (const playerId of this.handledPlayersHome) {
@@ -375,8 +354,8 @@
                     y: item.y,
                     id: item.id,
                     radius: 20,
-                    fill: '#89b717',
-                    opacity: 0.8,
+                    fill: 'yellow',
+                    opacity: 0.9,
                     draggable: true,
                     scaleX: this.dragItemHomeId === item.id ? item.scale * 1.2 : item.scale,
                     scaleY: this.dragItemHomeId === item.id ? item.scale * 1.2 : item.scale,
@@ -425,7 +404,7 @@
                     id: item.id,
                     radius: 20,
                     fill: 'red',
-                    opacity: 0.8,
+                    opacity: 0.9,
                     draggable: true,
                     scaleX: this.dragItemAwayId === item.id ? item.scale * 1.2 : item.scale,
                     scaleY: this.dragItemAwayId === item.id ? item.scale * 1.2 : item.scale,
@@ -528,6 +507,7 @@
                 return text;
             },
             animInit(e){
+                if(this.handledPlayersHome.length < 1){ return; }
                 for (const idplayer of this.handledPlayersHome) {
                     var i = 1;
                     const item = this.listHome.find(i => i.id === idplayer);
@@ -536,8 +516,9 @@
                         x: item.preCords[0].x,
                         y: item.preCords[0].y,
                     });
-                    this.animPlay(item, player.circ, i);
+                    this.animStart(item, player.circ, i);
                 }
+                if(this.handledPlayersAway.length < 1){ return; }
                 for(const idplayer2 of this.handledPlayersAway){
                     var j = 1;
                     const item2 = this.listAway.find(i => i.id === idplayer2);
@@ -546,14 +527,14 @@
                         x: item2.preCords[0].x,
                         y: item2.preCords[0].y,
                     });
-                    this.animPlay(item2, player2.circ, j);
+                    this.animStart(item2, player2.circ, j);
                 }
                 return;
             },
-            animPlay(item,player,i){
+            animStart(item,player,i){
                 var tween = new Konva.Tween({
                     node: player,
-                    duration: 1,
+                    duration: this.setAnimationDuration(),
                     x: item.preCords[i].x,
                     y: item.preCords[i].y,
                     onUpdate: () => console.log("first tween updated"),
@@ -565,11 +546,23 @@
                                 y: item.preCords[i].y,
                             });
                             i++;
-                            this.animPlay(item,player,i);
+                            this.animStart(item,player,i);
                         }
                     },
                 });
+                this.tweens.push(tween);
                 tween.play();
+            },
+            animPause(){
+                for (const tween of this.tweens) {
+                    this.shoutout(tween);
+                    tween.pause();
+                }
+            },
+            animPlay(){
+               for (const tween of this.tweens) {
+                    tween.play();
+                }
             },
             checkBoxAddRemoveBall(){
                 var check = document.getElementById("checkbox");
@@ -654,6 +647,21 @@
                 }else{
                     return;
                 }
+            },
+
+
+            setAnimationDuration(){
+                if(this.userInput.animDuration === null){
+                    console.log("TUKSS INPUT FIELD");
+                    this.userInput.animDuration = 1;
+                    console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
+                    return this.userInput.animDuration;
+                }
+                else{
+                    console.log("NETUKSS INPUT FIELD");
+                    return this.userInput.animDuration;
+                }
+                
             },
             // handleDragend(e) {//change the save coordinates of the player when the drag ends
             //     this.choiceId = e.target.id();
@@ -818,7 +826,7 @@
 </script>
 
 <style lang="scss" scoped>
-    #canvasTest{
+    #edittactic{
         
         #viewtactic{
             text-align: center;
