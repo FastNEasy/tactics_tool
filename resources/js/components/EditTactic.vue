@@ -161,6 +161,8 @@
                     animDuration: null,
                 },
                 tweens: [],
+                precordsCount: 0,
+                unitedBallCount: 0, //test for counting time right
             }
         },
         mounted(){},
@@ -304,13 +306,14 @@
                             y: item.y,
                         });
                         this.shoutout("current coords added: ",item.preCords);
+                        this.precordsCount = item.preCords.length ;
+                        this.shoutout("ITEMS PRECORD COUNT", this.precordsCount);
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of home players: ", this.handledPlayersHome);
                     }
                     this.shoutout("All Home players on the page coords set!");
                 }else{
                     this.shoutout("None moved objects found");
-                    return;
                 }
                 if(this.handledPlayersAway.length > 0){
                    for (const playerId of this.handledPlayersAway) {
@@ -324,13 +327,13 @@
                             y: item.y,
                         });
                         this.shoutout("current coords added: ",item.preCords);
+                        this.precordsCount = item.preCords.length ;
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of away players: ", this.handledPlayersAway);
                     }
                     this.shoutout("All Away players on the page coords set!");
                 }else{
                     this.shoutout("None moved objects found");
-                    return;
                 }
             },
             addHomePlayer(e){//adds new player object and circle  to the stage
@@ -507,7 +510,7 @@
                 return text;
             },
             animInit(e){
-                if(this.handledPlayersHome.length < 1){ return; }
+                if(this.handledPlayersHome.length < 1 && this.handledPlayersAway.length < 1){ return; }
                 for (const idplayer of this.handledPlayersHome) {
                     var i = 1;
                     const item = this.listHome.find(i => i.id === idplayer);
@@ -518,7 +521,7 @@
                     });
                     this.animStart(item, player.circ, i);
                 }
-                if(this.handledPlayersAway.length < 1){ return; }
+               
                 for(const idplayer2 of this.handledPlayersAway){
                     var j = 1;
                     const item2 = this.listAway.find(i => i.id === idplayer2);
@@ -653,13 +656,19 @@
             setAnimationDuration(){
                 if(this.userInput.animDuration === null){
                     console.log("TUKSS INPUT FIELD");
-                    this.userInput.animDuration = 1;
+                    this.userInput.animDuration = 2;
                     console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
                     return this.userInput.animDuration;
                 }
-                else{
-                    console.log("NETUKSS INPUT FIELD");
+                else if(this.precordsCount <=2){
+                    console.log("PRECORDS IR MAZAK VAI VIENAADS AR 2");
+                    console.log("SPEED IR",this.userInput.animDuration);
                     return this.userInput.animDuration;
+                }
+                else if(this.userInput.animDuration !== null){
+                    console.log("NETUKSS INPUT FIELD");
+                    console.log("SPEED IR", this.userInput.animDuration / this.precordsCount);
+                    return  this.userInput.animDuration / this.precordsCount;
                 }
                 
             },
