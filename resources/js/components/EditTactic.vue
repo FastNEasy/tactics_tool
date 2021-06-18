@@ -61,10 +61,11 @@
                     </tr>
                     <tr>
                         <td class= "IdCell">Action time (sec)</td>
-                        <td class= "inputCell">
-                            <input type="text" class="inputField" v-model="userInput.animDuration">
+                       <td class= "inputCell">
+                            <input type="number" min="1" max="10" class="inputField"
+                            placeholder="action time (secs)" v-model="userInput.animDuration">
                         </td>
-                        <td class= "saveButton"><button class="button">Save</button></td>
+                        <td class= "saveButton"><button class="button" @click="saveTacticData">Save</button></td>
                     </tr>
                 </table>
             </div>
@@ -113,8 +114,8 @@
                 tacticName: null,
                 presetID: null,
                 ser : null,
-                listHome: [], //home speletaju info
-                listAway: [], //away speletaju info
+                listHome: [], //home speletaju info , save this
+                listAway: [], //away speletaju info, save this
                 listBall: [],
                 listBall2: [], //speles bumba info
                 dragItemAwayId: null,
@@ -146,21 +147,25 @@
                 setUp: 0,
                 choiceId: null,
                 isPlaying: 0,
-                circle: null,
                 cnt: 0,
-                listHomePlayers: [],
-                listAwayPlayers: [],
+                listHomePlayers: [],//save this
+                listAwayPlayers: [],// save this
                 identy: null,
-                handledPlayersHome: [],
-                handledPlayersAway: [],
+                handledPlayersHome: [],//this needs to be saved
+                handledPlayersAway: [],//this needs to be saved
+                placedCordsHome: [],//this needs to be saved
+                placedCordsAway: [],//this needs to be saved
                 count_times: 0,
                 played: false,
                 handledBall: [],
                 userInput: {
-                    animDuration: null,
+                    animDuration: null,//this needs to be saved
                 },
                 tweens: [],
+                savedData: {},
             }
+            //jauna kolonna textfield un visus array samest jaunaa objektaaa un to objektu json.stringify(object) 
+            //lai attaisitu vala- json.parse(the data)
         },
         mounted(){},
         methods: { 
@@ -172,14 +177,21 @@
                 this.presetID = data.id_presets;
                 this.userID = data.id_user;
                 this.image=data.sports_type.field_picture;
-                
-                
                 console.log('Data:', data.tactics_name);
                 this.img = new window.Image();
                 this.img.src = this.image;
                 this.img.onload = () => {
                     // set image only when it is loaded
                 };
+            },
+            saveTacticData(){
+                this.savedData = ({
+                   homeList: this.listHome,
+                   awayList: this.listAway,
+                });
+                let inputData = JSON.stringify(this.savedData);
+                this.shoutout(inputData);
+                sampleRequest.updateTactics({id: this.id, tacticData: inputData});
             },
             handleDragstart(e){//drag handler for inbuilt js circle creation
                 this.choiceId = e.target.id();
@@ -305,11 +317,13 @@
                         this.shoutout("current coords added: ",item.preCords);
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of home players: ", this.handledPlayersHome);
+                        if(this.placedCordsHome.indexOf(playerId) < 0){
+                            this.placedCordsHome.push(playerId)
+                        }
                     }
                     this.shoutout("All Home players on the page coords set!");
                 }else{
                     this.shoutout("None moved objects found");
-                    return;
                 }
                 if(this.handledPlayersAway.length > 0){
                    for (const playerId of this.handledPlayersAway) {
@@ -325,11 +339,14 @@
                         this.shoutout("current coords added: ",item.preCords);
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of away players: ", this.handledPlayersAway);
+                        if(this.placedCordsAway.indexOf(playerId) < 0){
+                            this.placedCordsAway.push(playerId);
+                        }
+                        
                     }
                     this.shoutout("All Away players on the page coords set!");
                 }else{
                     this.shoutout("None moved objects found");
-                    return;
                 }
             },
             addHomePlayer(e){//adds new player object and circle  to the stage
@@ -441,9 +458,11 @@
                     const index = this.listHome.indexOf(item);
                     const index2 = this.listHomePlayers.indexOf(circle);
                     const index3 = this.handledPlayersHome.indexOf(this.delItemHomeId);
+                    const index4 = this.placedCordsHome.indexOf(this.delItemHomeId);
                     this.shoutout("Deleted circle: ", index2);
                     this.shoutout("Deleted item: ",index);
                     circle.circ.remove();
+                    this.placedCordsHome.splice(index4, 1);
                     this.handledPlayersHome.splice(index3, 1);
                     this.listHomePlayers.splice(index2, 1);
                     this.listHome.splice(index, 1);
@@ -470,9 +489,11 @@
                     const index = this.listAway.indexOf(item);
                     const index2 = this.listAwayPlayers.indexOf(circle);
                     const index3 = this.handledPlayersAway.indexOf(this.delItemAwayId);
+                    const index4 = this.placedCordsAway.indexOf(this.delItemAwayId);
                     this.shoutout("Deleted circle: ", index2);
                     this.shoutout("Deleted item: ",index);
                     circle.circ.remove();
+                    this.placedCordsAway.splice(index4, 1);
                     this.handledPlayersAway.splice(index3, 1);
                     this.listAwayPlayers.splice(index2, 1);
                     this.listAway.splice(index, 1);
@@ -506,8 +527,8 @@
                 return text;
             },
             animInit(e){
-                if(this.handledPlayersHome.length < 1){ return; }
-                for (const idplayer of this.handledPlayersHome) {
+                if(this.placedCordsHome.length < 1 && this.placedCordsAway.length < 1){ return; }
+                for (const idplayer of this.placedCordsHome) {
                     var i = 1;
                     const item = this.listHome.find(i => i.id === idplayer);
                     const player = this.listHomePlayers.find(i => i.id === idplayer);
@@ -517,8 +538,7 @@
                     });
                     this.animStart(item, player.circ, i);
                 }
-                if(this.handledPlayersAway.length < 1){ return; }
-                for(const idplayer2 of this.handledPlayersAway){
+                for(const idplayer2 of this.placedCordsAway){
                     var j = 1;
                     const item2 = this.listAway.find(i => i.id === idplayer2);
                     const player2 = this.listAwayPlayers.find(i => i.id === idplayer2);
@@ -533,7 +553,7 @@
             animStart(item,player,i){
                 var tween = new Konva.Tween({
                     node: player,
-                    duration: 1,
+                    duration: this.animDuration(),
                     x: item.preCords[i].x,
                     y: item.preCords[i].y,
                     onUpdate: () => console.log("first tween updated"),
@@ -561,6 +581,18 @@
             animPlay(){
                for (const tween of this.tweens) {
                     tween.play();
+                }
+            },
+            animDuration(){
+                if(this.userInput.animDuration === null){
+                    console.log("TUKSS INPUT FIELD");
+                    this.userInput.animDuration = 1;
+                    console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
+                    return this.userInput.animDuration;
+                }
+                else{
+                    console.log("NETUKSS INPUT FIELD");
+                    return this.userInput.animDuration;
                 }
             },
             checkBoxAddRemoveBall(){

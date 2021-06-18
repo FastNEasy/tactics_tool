@@ -24,13 +24,13 @@
 <script> 
 //create so that displays tactics preset name        
     import SampleRequest from '@/api/sample-request';
-    import Cookies from 'js-cookie';
     const sampleRequest = new SampleRequest();
         export default {
             name: 'TacticsList',
             created(){
+                this.user = this.getUserCookie();
                 this.getData();
-                this.user = JSON.parse(Cookies.get("UserObject"));
+                console.log("User: ", this.user);
             },
             data(){
                 return{
@@ -39,7 +39,7 @@
             },
             methods:{
                 async getData(){
-                    const {data} = await sampleRequest.getTacticName();
+                    const {data} = await sampleRequest.getTacticName({id_user: this.user.id});
                     this.tacticsName = data;
                     console.log('Data:', data);
                 },

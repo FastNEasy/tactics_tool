@@ -21,6 +21,7 @@
  import ViewTactic from './components/ViewTactic';
  import EditTactic from './components/EditTactic';
  import TestCanvas from './components/TestCanvas';
+ import Cookies from 'js-cookie';
  
  //import VueFilename from './componets/VueFilename';
  
@@ -74,6 +75,10 @@
         }
         console.log.apply(console, output);
       },
+      getUserCookie(){
+        return JSON.parse(Cookies.get("UserObject"));
+      },
+      
     },
   });
   
