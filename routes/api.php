@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+// use App\Http\Controllers\UserController;
+//use \Illuminate\Support\Facades\Auth::guard()->logout();
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,10 +32,16 @@ Route::group(['middleware' => 'api'], function () {//midleware izpildaas pirms u
         Route::post('update-sports-type', 'App\Http\Controllers\SportsTypeController@updateSportsType');
         Route::post('update-tactics', 'App\Http\Controllers\TacticsController@updateTactics');
        // Route::get('display-sport', 'App\Http\Controllers\SportsTypeController@showSportsImage');
+        
 
         //pievienot route
     });
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/logout', 'API\AuthController@logout');
+        Route::get('/get-user', 'API\AuthController@getUser');
+    });
     Route::apiResource('users', 'UserController');
     Route::get('users/{user}/permissions', 'UserController@permissions');
-    
+    // Route::get('users/index', [UserController::class, 'index'])->name('users.index');
+    // Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });

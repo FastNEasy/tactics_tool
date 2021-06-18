@@ -164,7 +164,7 @@
                 userInput: {
                     animDuration: null,
                 },
-                tween: null,
+                tweens: [],
             }
         },
         mounted(){},
@@ -550,7 +550,7 @@
                 return;
             },
             animPlay(item,player,i){
-                this.tween = new Konva.Tween({
+                var tween = new Konva.Tween({
                     node: player,
                     duration: 1,
                     x: item.preCords[i].x,
@@ -568,13 +568,18 @@
                         }
                     },
                 });
-                this.tween.play();
+                this.tweens.push(tween);
+                tween.play();
             },
             animPause(){
-                this.tween.pause();
+                for (const tween of this.tweens) {
+                    tween.pause();
+                }
             },
             animContinue(){
-                this.tween.play();
+               for (const tween of this.tweens) {
+                    tween.play();
+                }
             },
             checkBoxAddRemoveBall(){
                 var check = document.getElementById("checkbox");

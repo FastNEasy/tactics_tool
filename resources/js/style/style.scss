@@ -3,7 +3,7 @@ body
 {  
     margin: 0;  
     padding: 0;  
-    background-color:rgba(202, 195, 195, 0.678);
+    background-color: rgb(211, 211, 211);;//arejas linijas
     font-family: 'Arial';  
 } 
 
@@ -26,11 +26,16 @@ body
     // }
     
     .nav-it-und{
-        background-color: rgb(211, 211, 211) !important;//chagne color to headbar
-        position:absolute;
+        background-color: rgb(211, 211, 211) !important;//chagne saff  to headbar
+        position:fixed;
         border-radius:5%;
-        right:10px;
+        display:block;
+        right: 10%;
+        width: 90px;
+        //height: 200px;
+        // padding-left: 95%;
         top:5px;
+        text-align: center;
         a{
             display: block;
             overflow: hidden;
@@ -40,6 +45,8 @@ body
             max-block-size: 100%;
             text-decoration: none;
             border-radius:5%;
+            //right:1px;
+            
         }
         
         
@@ -70,7 +77,7 @@ body
     }
     
     .container{
-        background-color:rgba(202, 195, 195, 0.678);
+        background-color:rgb(211, 211, 211)
     }
     
 }
@@ -100,7 +107,7 @@ body
 
 
 .card-body{ //padding no augsas
-    padding-top: 8%;
+    padding-top: 5%;
 }
 
 .form-control{//textfield lielumi
