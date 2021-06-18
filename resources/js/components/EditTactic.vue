@@ -27,9 +27,7 @@
         <div class="fieldAndInputs">
             <div class="field">
                 <div class= "courtKonvas">
-                    <table class="Court" style="overflow-x:auto;" >
-                        <tr>
-                            <td>
+                    
                                 <v-stage class="stage"
                                     ref="stage"
                                     :config="configKonva"
@@ -47,9 +45,13 @@
                                         }"/>
                                     </v-layer>
                                 </v-stage>
-                            </td>
-                        </tr>
-                    </table>
+        <div class= "saveStartCords">
+            <button class= "button" @click="animInit">Start animation!</button>
+            <button class= "button" @click="animPlay">Play!</button>
+            <button class= "button" @click="animPause">Pause!</button>
+            <button class="button" @click="setCords">Save player/s position!</button>
+        </div>
+                            
                 </div>
             </div>              
             <div class="inputs">
@@ -58,9 +60,9 @@
                         <th></th>
                         <th>Action time (sec)</th>
                         <th>Save</th>
-                    </tr>
+                    </tr>time
                     <tr>
-                        <td class= "IdCell">Action time (sec)</td>
+                        <td class= "IdCell">Action  (sec)</td>
                         <td class= "inputCell">
                             <input type="number" min="1" max="10" class="inputField"
                              placeholder="action time (secs)" v-model="userInput.animDuration">
@@ -72,12 +74,7 @@
            
         </div>
         <!-- <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p> -->
-        <div class= "saveStartCords">
-            <button class= "button" @click="animInit">Start animation!</button>
-            <button class= "button" @click="animPlay">Play!</button>
-            <button class= "button" @click="animPause">Pause!</button>
-            <button class="button" @click="setCords">Save player/s position!</button>
-        </div>
+        
     </div>
 </template>
 
@@ -656,9 +653,9 @@
             setAnimationDuration(){
                 if(this.userInput.animDuration === null){
                     console.log("TUKSS INPUT FIELD");
-                    this.userInput.animDuration = 2;
+                    var defaultTime = 1;
                     console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
-                    return this.userInput.animDuration;
+                    return defaultTime;
                 }
                 else if(this.precordsCount <=2){
                     console.log("PRECORDS IR MAZAK VAI VIENAADS AR 2");
@@ -666,9 +663,11 @@
                     return this.userInput.animDuration;
                 }
                 else if(this.userInput.animDuration !== null){
+                    var speed;
+                    speed = this.userInput.animDuration / this.precordsCount;
                     console.log("NETUKSS INPUT FIELD");
                     console.log("SPEED IR", this.userInput.animDuration / this.precordsCount);
-                    return  this.userInput.animDuration / this.precordsCount;
+                    return  speed;
                 }
                 
             },
@@ -835,7 +834,7 @@
 </script>
 
 <style lang="scss" scoped>
-    #edittactic{
+   #edittactic{
         
         #viewtactic{
             text-align: center;
@@ -853,16 +852,24 @@
 
         .buttonDiv{
             width:70%;//mos samazinat
-            display:table;
+            //display:table;
             margin-top:2%;
-            margin-left:1%;
+            margin-left:2%;
             text-align: center;
             
         }
-
+        .saveStartCords{
+            width:100%;//mos samazinat
+            display:table;
+            margin-top:2%;
+            
+        // margin-left:3%;
+            text-align: center;
+            
+        }
         .Buttons{
             display:table-cell;
-            margin-left: 20%;
+            //margin-left: 20%;
             //float:left;
             //margin-left:4%;
         }
@@ -894,6 +901,7 @@
             display: inline-block;
             width: 60px;
             height: 34px;
+            margin-right: 4px;
         }           
 
         .switch input { 
@@ -972,6 +980,7 @@
             margin-right: 2%;
             //overflow-y: auto;
             height: 155px;
+            //width: 10px;
             
         }
 
@@ -998,10 +1007,12 @@
             height: 50px;
             // padding-right: 50px;
             //margin-right: 2%;
+            margin-right: 30px;
         }
          
         table{
             float:left;
+            
         }
 
 
@@ -1025,17 +1036,17 @@
             width:30%;
             height: 30px;
             font-size:16px;
-              float:center; 
+            float:center; 
             margin-right: 5%;
             // float:center; //mos vajag
             // margin-right: 5%;
             //margin-left: 25%;
         }
         
-        .inputField::placeholder{
-            text-align: right;
-            margin-right: 10%;
-        }
+        // .inputField::placeholder{
+        //     text-align: right;
+        //     margin-right: 10%;
+        // }
 
         // .saveStartCords{
         //     // float:center;
