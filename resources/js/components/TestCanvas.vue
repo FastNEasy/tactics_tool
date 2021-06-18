@@ -125,7 +125,11 @@
                 x1: 0,
                 y1: 0,
                 counter: 0,
+<<<<<<< HEAD
                 id_preset: 56,
+=======
+                id_preset: 69,
+>>>>>>> b1d10031f3c86ccf784ce6eea6c7abc06b581bd6
                 canvas: null,
                 context: null,
                 img: null,
