@@ -126,6 +126,7 @@
                 },
                 savedData: {},
                 tweens: [],
+                speed: 0,
             }
         },
         mounted(){},
@@ -139,6 +140,7 @@
                 this.savedData = JSON.parse(data.tactic_data);
                 this.listHome = this.savedData.homeList;
                 this.listAway = this.savedData.awayList;
+                this.speed = this.savedData.speed;
                 this.shoutout("Saved data:",this.savedData);
                 this.userID = data.id_user;
                 this.image=data.sports_type.field_picture;
@@ -210,7 +212,7 @@
             animStart(item,player,i){
                 var tween = new Konva.Tween({
                     node: player,
-                    duration: 1,
+                    duration: this.speed,
                     x: item.preCords[i].x,
                     y: item.preCords[i].y,
                     onUpdate: () => console.log("first tween updated"),

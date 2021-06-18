@@ -27,57 +27,48 @@
         <div class="fieldAndInputs">
             <div class="field">
                 <div class= "courtKonvas">
-                    <table class="Court" style="overflow-x:auto;" >
-                        <tr>
-                            <td>
-                                <v-stage class="stage"
-                                    ref="stage"
-                                    :config="configKonva"
-                                    @dragstart="handleDragstart"
-                                    @dragend="handleDragend"
-                                    @mousemove="displayCords"
-                                >
-                                    <v-layer ref="layer">
-                                        <v-image :config="{
-                                            width: configKonva.width,
-                                            height: configKonva.height,
-                                            image: img,
-                                            listening: false,
-                                            fillEnabled: true,
-                                        }"/>
-                                    </v-layer>
-                                </v-stage>
-                            </td>
-                        </tr>
-                    </table>
+                    <v-stage class="stage"
+                        ref="stage"
+                        :config="configKonva"
+                        @dragstart="handleDragstart"
+                        @dragend="handleDragend"
+                        @mousemove="displayCords"
+                        >
+                            <v-layer ref="layer">
+                                <v-image :config="{
+                                     width: configKonva.width,
+                                    height: configKonva.height,
+                                    image: img,
+                                    listening: false,
+                                    fillEnabled: true,
+                                    }"/>
+                            </v-layer>
+                        </v-stage>
+                                <div class= "saveStartCords">
+                                    <button class= "button" @click="animInit">Start animation!</button>
+                                    <button class= "button" @click="animPlay">Play!</button>
+                                    <button class= "button" @click="animPause">Pause!</button>
+                                    <button class="button" @click="setCords">Save player/s position!</button>
+                                    <button class="button" @click="saveTacticData">Save tactic!</button>
+                                </div>
                 </div>
             </div>              
             <div class="inputs">
                 <table class="actionTimeTable" style="overflow-x:auto;">
                     <tr>
-                        <th></th>
                         <th>Action time (sec)</th>
-                        <th>Save</th>
                     </tr>
                     <tr>
-                        <td class= "IdCell">Action time (sec)</td>
                        <td class= "inputCell">
                             <input type="number" min="1" max="10" class="inputField"
                             placeholder="action time (secs)" v-model="userInput.animDuration">
                         </td>
-                        <td class= "saveButton"><button class="button" @click="saveTacticData">Save</button></td>
                     </tr>
                 </table>
             </div>
            
         </div>
         <!-- <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p> -->
-        <div class= "saveStartCords">
-            <button class= "button" @click="animInit">Start animation!</button>
-            <button class= "button" @click="animPlay">Play!</button>
-            <button class= "button" @click="animPause">Pause!</button>
-            <button class="button" @click="setCords">Save player/s position!</button>
-        </div>
     </div>
 </template>
 
@@ -163,6 +154,8 @@
                 },
                 tweens: [],
                 savedData: {},
+                precordsCount: 0,
+                timeSaved: 0,
             }
             //jauna kolonna textfield un visus array samest jaunaa objektaaa un to objektu json.stringify(object) 
             //lai attaisitu vala- json.parse(the data)
@@ -188,6 +181,7 @@
                 this.savedData = ({
                    homeList: this.listHome,
                    awayList: this.listAway,
+                   speed: this.timeSaved,
                 });
                 let inputData = JSON.stringify(this.savedData);
                 this.shoutout(inputData);
@@ -315,6 +309,8 @@
                             y: item.y,
                         });
                         this.shoutout("current coords added: ",item.preCords);
+                        this.precordsCount = item.preCords.length ;
+                        this.shoutout("ITEMS PRECORD COUNT", this.precordsCount);
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of home players: ", this.handledPlayersHome);
                         if(this.placedCordsHome.indexOf(playerId) < 0){
@@ -337,6 +333,7 @@
                             y: item.y,
                         });
                         this.shoutout("current coords added: ",item.preCords);
+                        this.precordsCount = item.preCords.length;
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of away players: ", this.handledPlayersAway);
                         if(this.placedCordsAway.indexOf(playerId) < 0){
@@ -586,14 +583,23 @@
             animDuration(){
                 if(this.userInput.animDuration === null){
                     console.log("TUKSS INPUT FIELD");
-                    this.userInput.animDuration = 1;
+                    var defaultTime = 1;
                     console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
+                    this.timeSaved = defaultTime;
+                    return defaultTime;
+                }
+                else if(this.precordsCount <=2){
+                    console.log("PRECORDS IR MAZAK VAI VIENAADS AR 2");
+                    console.log("SPEED IR",this.userInput.animDuration);
+                    this.timeSaved = this.userInput.animDuration;
                     return this.userInput.animDuration;
                 }
-                else{
+                else if(this.userInput.animDuration !== null){
                     console.log("NETUKSS INPUT FIELD");
-                    return this.userInput.animDuration;
-                }
+                    console.log("SPEED IR", this.userInput.animDuration / this.precordsCount);
+                    this.timeSaved = this.userInput.animDuration / this.precordsCount;
+                    return  this.userInput.animDuration / this.precordsCount;
+                }   
             },
             checkBoxAddRemoveBall(){
                 var check = document.getElementById("checkbox");
@@ -679,163 +685,7 @@
                     return;
                 }
             },
-            // handleDragend(e) {//change the save coordinates of the player when the drag ends
-            //     this.choiceId = e.target.id();
-            //     if(this.choiceId.includes('Home_')){
-            //         this.dragItemHomeId = e.target.id();//get the dragged player id
-            //         this.delItemHomeId = this.dragItemHomeId;
-            //         const item = this.listHome.find(i => i.id === this.dragItemHomeId);
-            //         item.x = e.target.x();
-            //         item.y = e.target.y();
-            //         // item.preCords.splice(1,1);
-            //         this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
-            //         this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-            //         this.dragItemHomeId = null;
-            //     }else{
-            //         this.dragItemAwayId = e.target.id();
-            //         this.delItemAwayId = this.dragItemAwayId;
-            //         const item = this.listAway.find(i => i.id == this.dragItemAwayId);
-            //         item.x = e.target.x();
-            //         item.y = e.target.y();
-            //         this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
-            //         this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-            //         this.dragItemAwayId = null;
-            //     }    
-            // },
-            // handleDragstart(e) {//starts to see which player is dragged and uses it respectivly
-            //     // save drag element:
-            //     this.choiceId = e.target.id();
-            //     if(this.choiceId.includes('Home_')){
-            //         this.shoutout("The chosen one is: ",this.choiceId);
-            //         this.dragItemHomeId = e.target.id();
-            //         // move current element to the top:
-            //         const item = this.listHome.find(i => i.id === this.dragItemHomeId);
-            //         const index = this.listHome.indexOf(item);
-            //         this.x1 = item.x;
-            //         this.y1 = item.y;
-            //         this.shoutout(this.x1,this.y1);
-            //         item.preCords.push({x: this.x1, y:this.y1});
-            //         // console.log(index);
-            //         this.listHome.splice(index, 1);
-            //         this.listHome.push(item);
-            //         this.shoutout("Drag started from ", item.x, item.y);
-            //     } else{
-            //         this.dragItemAwayId = e.target.id();
-            //         const item = this.listAway.find(i => i.id === this.dragItemAwayId);
-            //         const index = this.listAway.indexOf(item);
-            //         this.x1 = item.x;
-            //         this.y1 = item.y;
-            //         this.shoutout(this.x1,this.y1);
-            //         item.preCords.push({x: this.x1, y: this.y1});
-            //         this.listAway.splice(index, 1);
-            //         this.listAway.push(item);
-            //         this.shoutout("Drag started: ", item.x, item.y);
-            //     }
-            // },
-            // addHomePlayer(e){//adds new player object at the top of the field
-            //     if(this.count == 6){ return}
-            //     this.changeHomeX += 40;
-            //     this.listHome.push({
-            //         id: 'Home_'+this.count.toString(),
-            //         x: this.changeHomeX,
-            //         y: 30,
-            //         preCords: [],
-            //         scale: 1
-            //     });
-            //     this.count++;
-            //     this.shoutout("List data ",this.listHome);
-            // },
-            // removeHomePlayer(e){//removes last added player object
-            //     var check = this.count-1;
-            //     if(check <0){ return; }
-            //     console.log("check: ",this.delItemHomeId);
-            //     const item = this.listHome.find(i => i.id === this.delItemHomeId);
-            //     this.shoutout("Item: ",item);
-            //     const index = this.listHome.indexOf(item);
-            //     this.shoutout("Deleted: ",index);
-            //     this.listHome.splice(index, 1);
-            //     this.count--;
-            //     this.changeHomeX-=40;
-            //     if(this.count <= 0){
-            //         this.count = 0;
-            //     }
-            //     this.shoutout("Home List data ", this.listHome);
-            //     this.delItemHomeId = null;
-            // },
-                    //list.splice(start-1); nogrieziis visas koordinates iznemot pedejo
-                    //ielikt listaa vecaas koordinates atbilstosham id, lai izveidotu pattern for animation
-                    //just continue adding coords to the table
-                    //pectam izveidojot animaciju, padot shos listus ,lai ar tiem darbotos
-
-            // addAwayPlayer(e){
-            //     if(this.count2 == 6){ return; }
-            //     this.changeAwayX -= 40;
-            //     this.listAway.push({
-            //         id: 'Away_'+this.count2.toString(),
-            //         x: this.changeAwayX,
-            //         y: 30,
-            //         preCords: [],
-            //         scale: 1
-            //     });
-            //     this.count2++;
-            //     this.shoutout("List data ",this.listAway);
-            // },
-            // removeAwayPlayer(e){
-            //     var check = this.count2-1;
-            //     if(check < 0){ return; }
-            //     console.log("check: ", this.delItemAwayId);
-            //     const item = this.listAway.find(i => i.id === this.delItemAwayId);
-            //     this.shoutout("Item: ", item);
-            //     const index = this.listAway.indexOf(item);
-            //     this.shoutout("Deleted: ",index);
-            //     this.listAway.splice(index, 1);
-            //     this.count2--;
-            //     this.changeAwayX+=40;
-            //     if(this.count2 <= 0){
-            //         this.count2 = 0;
-            //     }
-            //     this.shoutout("Away List data: ", this.listAway);
-            //     this.delItemAwayId = null;
-            // },
-            // updateCoords(event){
-            //     this.xpoint = event.clientX;
-            //     this.ypoint = event.clientY;
-            // },
-            // replayAnim(){
-            //     let moveHome = this.listHome.find(i => i.id === this.delItemHomeId);
-            //     let moveAway = this.listAway.find(i => i.id === this.delItemAwayId);
-            //     var turnAroun1 = false;
-            //     var turnAroun2 = false;
-            //     this.shoutout(moveHome);
-            //     this.shoutout(moveAway);
-            //     let amplitude = 5;
-            //     var velocity = 50;
-            //     var anim = new Konva.Animation(function (frame) {
-            //         if(turnAroun1){
-            //             moveHome.x -= (velocity * (50/ 1000));
-            //             if(moveHome.x <= 20){
-            //                 turnAroun1 = false;
-            //             }
-            //         }else if(moveHome.x >= 980){
-            //             turnAroun1 = true;
-            //         }else{
-            //             moveHome.x += (velocity * (50/ 1000));
-            //             moveHome.y += amplitude * Math.sin((frame.time * 2 * Math.PI) / 1000);
-            //         }
-            //         if(turnAroun2){
-            //             moveAway.x += (velocity * (50/ 1000));
-            //             if(moveAway.x >= 980){
-            //                 turnAroun2 = false;
-            //             }
-            //         }else if(moveAway.x <= 20){
-            //             turnAroun2 = true;
-            //         }else{
-            //             moveAway.x -= (velocity * (50/1000));
-            //             moveAway.y += amplitude * Math.sin((frame.time * 2 * Math.PI)/1000);
-            //         }  
-            //     }, this.$refs.layer.getNode());
-            //     anim.start();
-            // },
+           
 
         },
     };
@@ -860,16 +710,24 @@
 
         .buttonDiv{
             width:70%;//mos samazinat
-            display:table;
+            //display:table;
             margin-top:2%;
-            margin-left:1%;
+            margin-left:2%;
             text-align: center;
             
         }
-
+        .saveStartCords{
+            width:100%;//mos samazinat
+            display:table;
+            margin-top:2%;
+            
+        // margin-left:3%;
+            text-align: center;
+            
+        }
         .Buttons{
             display:table-cell;
-            margin-left: 20%;
+            //margin-left: 20%;
             //float:left;
             //margin-left:4%;
         }
@@ -901,6 +759,7 @@
             display: inline-block;
             width: 60px;
             height: 34px;
+            margin-right: 4px;
         }           
 
         .switch input { 
@@ -979,6 +838,7 @@
             margin-right: 2%;
             //overflow-y: auto;
             height: 155px;
+            //width: 10px;
             
         }
 
@@ -1005,10 +865,12 @@
             height: 50px;
             // padding-right: 50px;
             //margin-right: 2%;
+            margin-right: 30px;
         }
          
         table{
             float:left;
+            
         }
 
 
@@ -1032,17 +894,17 @@
             width:30%;
             height: 30px;
             font-size:16px;
-              float:center; 
+            float:center; 
             margin-right: 5%;
             // float:center; //mos vajag
             // margin-right: 5%;
             //margin-left: 25%;
         }
         
-        .inputField::placeholder{
-            text-align: right;
-            margin-right: 10%;
-        }
+        // .inputField::placeholder{
+        //     text-align: right;
+        //     margin-right: 10%;
+        // }
 
         // .saveStartCords{
         //     // float:center;

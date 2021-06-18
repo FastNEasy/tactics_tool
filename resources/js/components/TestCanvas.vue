@@ -25,6 +25,7 @@
                 <button class="button" @click="removeAwayPlayer();">Remove AWAY player!</button>
             </div>        
         </div>
+        
         <div class="fieldAndInputs">
             <div class="field">
                 <div class= "courtKonvas">
@@ -54,21 +55,39 @@
                 </div>
             </div>              
             <div class="inputs">
-                <table class="actionTimeTable" style="overflow-x:auto;">
+                <div>
+                    <table class="actionTimeTable" style="overflow-x:auto;">
+                        <tr>
+                            <th>Action</th>
+                            <th>Action time</th>
+                            <th>Save</th>
+                        </tr>
+                        <tr>
+                            <td class= "IdCell">Action time</td>
+                            <td class= "inputCell">
+                                <input type="number" min="1" max="10" class="inputField" placeholder="action time (secs)" v-model="userInput.animDuration">
+                            </td>
+                            <td class= "saveButton"><button class="button">Save</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- <div class="commentsTableDiv">
+               <table class="commentTable" style="overflow-x:auto;">
                     <tr>
-                        <th></th>
+                        <th>Action</th>
                         <th>Action time</th>
                         <th>Save</th>
                     </tr>
                     <tr>
                         <td class= "IdCell">Action time</td>
                         <td class= "inputCell">
-                            <input type="text" class="inputField" placeholder="action time (secs)" v-model="userInput.animDuration">
+                            <input type="number" min="1" max="10" class="inputField" placeholder="action time (secs)" v-model="userInput.animDuration">
                         </td>
                         <td class= "saveButton"><button class="button">Save</button></td>
                     </tr>
                 </table>
-            </div>
+            </div>  -->
            
         </div>
         <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p>
@@ -107,7 +126,11 @@
                 x1: 0,
                 y1: 0,
                 counter: 0,
-                id_preset: 23,
+
+                id_preset: 56,
+
+
+
                 canvas: null,
                 context: null,
                 img: null,
@@ -163,6 +186,7 @@
                 handledBall: [],
                 userInput: {
                     animDuration: null,
+                    userComment:null,
                 },
                 tweens: [],
             }
@@ -549,10 +573,25 @@
                 }
                 return;
             },
+
+            setAnimationDuration(){
+                if(this.userInput.animDuration === null){
+                    console.log("TUKSS INPUT FIELD");
+                    this.userInput.animDuration = 1;
+                    console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
+                    return this.userInput.animDuration;
+                }
+                else{
+                    console.log("NETUKSS INPUT FIELD");
+                    return this.userInput.animDuration;
+                }
+                
+            },
+
             animPlay(item,player,i){
                 var tween = new Konva.Tween({
                     node: player,
-                    duration: 1,
+                    duration: this.setAnimationDuration(),
                     x: item.preCords[i].x,
                     y: item.preCords[i].y,
                     onUpdate: () => console.log("first tween updated"),
@@ -567,6 +606,7 @@
                             this.animPlay(item,player,i);
                         }
                     },
+                    
                 });
                 this.tweens.push(tween);
                 tween.play();
@@ -665,163 +705,6 @@
                     return;
                 }
             },
-            // handleDragend(e) {//change the save coordinates of the player when the drag ends
-            //     this.choiceId = e.target.id();
-            //     if(this.choiceId.includes('Home_')){
-            //         this.dragItemHomeId = e.target.id();//get the dragged player id
-            //         this.delItemHomeId = this.dragItemHomeId;
-            //         const item = this.listHome.find(i => i.id === this.dragItemHomeId);
-            //         item.x = e.target.x();
-            //         item.y = e.target.y();
-            //         // item.preCords.splice(1,1);
-            //         this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
-            //         this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-            //         this.dragItemHomeId = null;
-            //     }else{
-            //         this.dragItemAwayId = e.target.id();
-            //         this.delItemAwayId = this.dragItemAwayId;
-            //         const item = this.listAway.find(i => i.id == this.dragItemAwayId);
-            //         item.x = e.target.x();
-            //         item.y = e.target.y();
-            //         this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
-            //         this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-            //         this.dragItemAwayId = null;
-            //     }    
-            // },
-            // handleDragstart(e) {//starts to see which player is dragged and uses it respectivly
-            //     // save drag element:
-            //     this.choiceId = e.target.id();
-            //     if(this.choiceId.includes('Home_')){
-            //         this.shoutout("The chosen one is: ",this.choiceId);
-            //         this.dragItemHomeId = e.target.id();
-            //         // move current element to the top:
-            //         const item = this.listHome.find(i => i.id === this.dragItemHomeId);
-            //         const index = this.listHome.indexOf(item);
-            //         this.x1 = item.x;
-            //         this.y1 = item.y;
-            //         this.shoutout(this.x1,this.y1);
-            //         item.preCords.push({x: this.x1, y:this.y1});
-            //         // console.log(index);
-            //         this.listHome.splice(index, 1);
-            //         this.listHome.push(item);
-            //         this.shoutout("Drag started from ", item.x, item.y);
-            //     } else{
-            //         this.dragItemAwayId = e.target.id();
-            //         const item = this.listAway.find(i => i.id === this.dragItemAwayId);
-            //         const index = this.listAway.indexOf(item);
-            //         this.x1 = item.x;
-            //         this.y1 = item.y;
-            //         this.shoutout(this.x1,this.y1);
-            //         item.preCords.push({x: this.x1, y: this.y1});
-            //         this.listAway.splice(index, 1);
-            //         this.listAway.push(item);
-            //         this.shoutout("Drag started: ", item.x, item.y);
-            //     }
-            // },
-            // addHomePlayer(e){//adds new player object at the top of the field
-            //     if(this.count == 6){ return}
-            //     this.changeHomeX += 40;
-            //     this.listHome.push({
-            //         id: 'Home_'+this.count.toString(),
-            //         x: this.changeHomeX,
-            //         y: 30,
-            //         preCords: [],
-            //         scale: 1
-            //     });
-            //     this.count++;
-            //     this.shoutout("List data ",this.listHome);
-            // },
-            // removeHomePlayer(e){//removes last added player object
-            //     var check = this.count-1;
-            //     if(check <0){ return; }
-            //     console.log("check: ",this.delItemHomeId);
-            //     const item = this.listHome.find(i => i.id === this.delItemHomeId);
-            //     this.shoutout("Item: ",item);
-            //     const index = this.listHome.indexOf(item);
-            //     this.shoutout("Deleted: ",index);
-            //     this.listHome.splice(index, 1);
-            //     this.count--;
-            //     this.changeHomeX-=40;
-            //     if(this.count <= 0){
-            //         this.count = 0;
-            //     }
-            //     this.shoutout("Home List data ", this.listHome);
-            //     this.delItemHomeId = null;
-            // },
-                    //list.splice(start-1); nogrieziis visas koordinates iznemot pedejo
-                    //ielikt listaa vecaas koordinates atbilstosham id, lai izveidotu pattern for animation
-                    //just continue adding coords to the table
-                    //pectam izveidojot animaciju, padot shos listus ,lai ar tiem darbotos
-
-            // addAwayPlayer(e){
-            //     if(this.count2 == 6){ return; }
-            //     this.changeAwayX -= 40;
-            //     this.listAway.push({
-            //         id: 'Away_'+this.count2.toString(),
-            //         x: this.changeAwayX,
-            //         y: 30,
-            //         preCords: [],
-            //         scale: 1
-            //     });
-            //     this.count2++;
-            //     this.shoutout("List data ",this.listAway);
-            // },
-            // removeAwayPlayer(e){
-            //     var check = this.count2-1;
-            //     if(check < 0){ return; }
-            //     console.log("check: ", this.delItemAwayId);
-            //     const item = this.listAway.find(i => i.id === this.delItemAwayId);
-            //     this.shoutout("Item: ", item);
-            //     const index = this.listAway.indexOf(item);
-            //     this.shoutout("Deleted: ",index);
-            //     this.listAway.splice(index, 1);
-            //     this.count2--;
-            //     this.changeAwayX+=40;
-            //     if(this.count2 <= 0){
-            //         this.count2 = 0;
-            //     }
-            //     this.shoutout("Away List data: ", this.listAway);
-            //     this.delItemAwayId = null;
-            // },
-            // updateCoords(event){
-            //     this.xpoint = event.clientX;
-            //     this.ypoint = event.clientY;
-            // },
-            // replayAnim(){
-            //     let moveHome = this.listHome.find(i => i.id === this.delItemHomeId);
-            //     let moveAway = this.listAway.find(i => i.id === this.delItemAwayId);
-            //     var turnAroun1 = false;
-            //     var turnAroun2 = false;
-            //     this.shoutout(moveHome);
-            //     this.shoutout(moveAway);
-            //     let amplitude = 5;
-            //     var velocity = 50;
-            //     var anim = new Konva.Animation(function (frame) {
-            //         if(turnAroun1){
-            //             moveHome.x -= (velocity * (50/ 1000));
-            //             if(moveHome.x <= 20){
-            //                 turnAroun1 = false;
-            //             }
-            //         }else if(moveHome.x >= 980){
-            //             turnAroun1 = true;
-            //         }else{
-            //             moveHome.x += (velocity * (50/ 1000));
-            //             moveHome.y += amplitude * Math.sin((frame.time * 2 * Math.PI) / 1000);
-            //         }
-            //         if(turnAroun2){
-            //             moveAway.x += (velocity * (50/ 1000));
-            //             if(moveAway.x >= 980){
-            //                 turnAroun2 = false;
-            //             }
-            //         }else if(moveAway.x <= 20){
-            //             turnAroun2 = true;
-            //         }else{
-            //             moveAway.x -= (velocity * (50/1000));
-            //             moveAway.y += amplitude * Math.sin((frame.time * 2 * Math.PI)/1000);
-            //         }  
-            //     }, this.$refs.layer.getNode());
-            //     anim.start();
-            // },
 
         },
     };
@@ -990,18 +873,23 @@
 
 
         .IdCell{
-            width:20%;
+            width:10%;
             text-align: center;
          }
         
         .inputCell{
-            width: 50%;
+            width: 30%;
             text-align: center;
             height: 100px;
         }
 
+        .commentCell{
+            width:40%;
+            text-align: center;
+        }
+
         .saveButton{
-            width:30%;
+            width:20%;
             text-align: center;
         }
 
@@ -1015,15 +903,19 @@
         }
         
         .inputField::placeholder{
-            text-align: right;
-            margin-right: 10%;
+            text-align: center;
+            //margin-right: 10%;
+            font-size:12px;
         }
 
         .saveStartCords{
-            float:right;
+            float:left;
             margin-right: 7%;
         }
 
+        // .commentsTableDiv{
+        //     margin-top:20%;
+        // }
 
 
     }
