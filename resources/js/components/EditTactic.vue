@@ -177,7 +177,7 @@
                     // set image only when it is loaded
                 };
             },
-            saveTacticData(){
+            saveTacticData(){//saves tactic to the database
                 this.savedData = ({
                    homeList: this.listHome,
                    awayList: this.listAway,
