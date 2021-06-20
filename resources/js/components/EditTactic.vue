@@ -124,7 +124,7 @@
                 countAway : 0,
                 countRow2 : 0,
                 countRow : 0,
-                changeHomeX : 175,
+                changeHomeX : 60,
                 changeHomeY : 30,
                 changeAwayX: 950,
                 changeAwayY: 30,
@@ -177,7 +177,7 @@
                     // set image only when it is loaded
                 };
             },
-            saveTacticData(){
+            saveTacticData(){//saves tactic to the database
                 this.savedData = ({
                    homeList: this.listHome,
                    awayList: this.listAway,

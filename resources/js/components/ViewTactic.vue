@@ -184,6 +184,37 @@
                         this.$refs.layer.getNode().add(circle);
                         this.listHomePlayers.push({ id: item.id, circ: circle,});
                     }
+                    for(const item2 of this.listAway){
+                        this.shoutout("Item2: ", item2);
+                        var circle2 = new Konva.Circle({
+                            x: item2.preCords[0].x,
+                            y: item2.preCords[0].y,
+                            id: item2.id,
+                            radius: 20,
+                            fill: 'red',
+                            opacity: 0.9,
+                            draggable: false,
+                            scaleX: item2.id === item2.id ? item2.scale * 1.2 : item2.scale,
+                            scaleY: item2.id === item2.id ? item2.scale * 1.2 : item2.scale,
+                            shadowColor: 'black',
+                            shadowBlur: 10,
+                            shadowOffsetX: item2.id === item2.id ? 15 : 5,
+                            shadowOffsetY: item2.id === item2.id ? 15 : 5,
+                            shadowOpacity: 0.6,
+                            prevCords: item2.preCords,
+                            dragBoundFunc: function (pos){
+                                this.y1 =  pos.y < 20 ? 20 :pos.y && pos.y > 480 ? 480 :pos.y;
+                                this.x1 = pos.x < 20 ? 20 :pos.x && pos.x >980 ? 980 :pos.x;
+                                return{
+                                    x: this.x1,
+                                    y: this.y1,
+                                };
+                            },
+                        });
+                        this.placedCordsAway.push(item2.id);
+                        this.$refs.layer.getNode().add(circle2);
+                        this.listAwayPlayers.push({id: item2.id, circ: circle2});
+                    }
             },
             animInit(e){
                 for (const idplayer of this.placedCordsHome) {
