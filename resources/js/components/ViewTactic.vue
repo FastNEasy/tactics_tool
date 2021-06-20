@@ -469,7 +469,8 @@
         }
 
         .stage{
-margin-left:25%;        }
+            margin-left:25%;        
+            }
 
 
     }
