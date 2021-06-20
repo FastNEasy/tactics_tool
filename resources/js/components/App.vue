@@ -12,11 +12,11 @@
             <router-link to="/tacticlist">Go to all tactics</router-link>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div class="gridItem">
             <router-link to="/testcanvas">Canvas Test</router-link>
           </div>
-        </li>
+        </li> -->
         <li>
           <div class="gridItem">
             <router-link to="/sportlist">Check all Sports</router-link>
@@ -71,7 +71,8 @@
         this.$emit('logout()');
         document.getElementById("logout-form").submit();
         
-      }
+      },
+     
     },
   };
 </script>

@@ -24,7 +24,8 @@ class CreateTacticsTable extends Migration
                 $table->id();
                 $table->foreignID('id_presets')->constrained('table_preset')->onDelete('cascade')->onUpdate('cascade');
                 $table->string("tactic_name");
-                $table->string("id_tactic_table");
+                // $table->string("id_tactic_table");
+                $table->text("tactic_data");
                 $table->foreignID('id_user')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
                 $table->timestamps();
             });

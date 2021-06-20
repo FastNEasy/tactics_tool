@@ -10,39 +10,21 @@ use Illuminate\Support\Facades\Auth;
 class TacticsController extends Controller
 {
      public function saveTactic(Request $request){
-        $tacticTableN = "_tactic_table";
-        $secondSideAnim = "animation_";
+        // $tacticTableN = "_tactic_table";
+        // $secondSideAnim = "animation_";
         $params = (Object)$request->all();
         $query = new tacticsModel();
         $userId = $params->loginId;
         $query->id_presets = $params->presetChoice;
         $query->tactic_name = $params->nameTactic;
-        $query->id_tactic_table = "a";
+        $query->tactic_data = "";
+        // $query->id_tactic_table = "a";
         $query->id_user = $userId['id'];
         $query->save();
-        $tableNameTactic = "$query->id"."$tacticTableN";
-        $animTableName = "$secondSideAnim"."$query->id";
-        $query->id_tactic_table = $tableNameTactic;
+        // $tableNameTactic = "$query->id"."$tacticTableN";
+        // $animTableName = "$secondSideAnim"."$query->id";
+        // $query->id_tactic_table = $tableNameTactic;
         $query->save();
-        if (!Schema::hasTable($animTableName)) {
-            Schema::create($animTableName, function (Blueprint $table) {
-                $table->id();
-                $table->bigInteger("time");
-                $table->text("comment");
-                $table->timestamps();
-                //papildus lauks- id no id_tactic_table, lai katrai animacijai butu savs table(piesaistiitu animaciju tabulai)
-            });
-        }
-        if (!Schema::hasTable($tableNameTactic)) {
-            Schema::create($tableNameTactic, function($table) use($animTableName){
-                $table->increments('id');
-                $table->integer("id_player");
-                $table->foreignID("id_anim")->constrained($animTableName)->onUpdate('cascade')->onDelete('cascade');//nonemt sho
-                $table->float("player_pos_x");
-                $table->float("player_pos_y");
-                $table->timestamps();
-            });
-        }
         return response()->json([
             "data" => $params,
             "saved_value" => $query,
@@ -56,7 +38,7 @@ class TacticsController extends Controller
                 $query = tacticsModel::with("sportsType")->find($params->id);
             }
             else{
-                $query = tacticsModel::with("sportsType")->select('id','tactic_name')->get();
+                $query = tacticsModel::with("sportsType")->where('id_user', $params->id_user)->select('id','tactic_name')->get();
             }
             return response()->json([
                 "data" => $query,
@@ -74,7 +56,7 @@ class TacticsController extends Controller
     public function updateTactics(Request $request){
         $params = (Object)$request->all();
         //$theBaseImg = explode(',', $params->baseImg);
-        tacticsModel::where('id', $params->id)->update(['tactic_name' => $params->tacticName]);
+        tacticsModel::where('id', $params->id)->update(['tactic_data' => $params->tacticData]);
         return response()->json([
             "data" => $params,
 

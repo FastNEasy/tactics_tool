@@ -27,54 +27,48 @@
         <div class="fieldAndInputs">
             <div class="field">
                 <div class= "courtKonvas">
-                    
-                                <v-stage class="stage"
-                                    ref="stage"
-                                    :config="configKonva"
-                                    @dragstart="handleDragstart"
-                                    @dragend="handleDragend"
-                                    @mousemove="displayCords"
-                                >
-                                    <v-layer ref="layer">
-                                        <v-image :config="{
-                                            width: configKonva.width,
-                                            height: configKonva.height,
-                                            image: img,
-                                            listening: false,
-                                            fillEnabled: true,
-                                        }"/>
-                                    </v-layer>
-                                </v-stage>
-        <div class= "saveStartCords">
-            <button class= "button" @click="animInit">Start animation!</button>
-            <button class= "button" @click="animPlay">Play!</button>
-            <button class= "button" @click="animPause">Pause!</button>
-            <button class="button" @click="setCords">Save player/s position!</button>
-        </div>
-                            
+                    <v-stage class="stage"
+                        ref="stage"
+                        :config="configKonva"
+                        @dragstart="handleDragstart"
+                        @dragend="handleDragend"
+                        @mousemove="displayCords"
+                        >
+                            <v-layer ref="layer">
+                                <v-image :config="{
+                                     width: configKonva.width,
+                                    height: configKonva.height,
+                                    image: img,
+                                    listening: false,
+                                    fillEnabled: true,
+                                    }"/>
+                            </v-layer>
+                        </v-stage>
+                                <div class= "saveStartCords">
+                                    <button class= "button" @click="animInit">Start animation!</button>
+                                    <button class= "button" @click="animPlay">Play!</button>
+                                    <button class= "button" @click="animPause">Pause!</button>
+                                    <button class="button" @click="setCords">Save player/s position!</button>
+                                    <button class="button" @click="saveTacticData">Save tactic!</button>
+                                </div>
                 </div>
             </div>              
             <div class="inputs">
                 <table class="actionTimeTable" style="overflow-x:auto;">
                     <tr>
-                        <th></th>
                         <th>Action time (sec)</th>
-                        <th>Save</th>
-                    </tr>time
+                    </tr>
                     <tr>
-                        <td class= "IdCell">Action  (sec)</td>
-                        <td class= "inputCell">
+                       <td class= "inputCell">
                             <input type="number" min="1" max="10" class="inputField"
-                             placeholder="action time (secs)" v-model="userInput.animDuration">
+                            placeholder="action time (secs)" v-model="userInput.animDuration">
                         </td>
-                        <td class= "saveButton"><button class="button">Save</button></td>
                     </tr>
                 </table>
             </div>
            
         </div>
         <!-- <p>Coordinates: {{ xpoint }} / {{ ypoint }}</p> -->
-        
     </div>
 </template>
 
@@ -111,8 +105,8 @@
                 tacticName: null,
                 presetID: null,
                 ser : null,
-                listHome: [], //home speletaju info
-                listAway: [], //away speletaju info
+                listHome: [], //home speletaju info , save this
+                listAway: [], //away speletaju info, save this
                 listBall: [],
                 listBall2: [], //speles bumba info
                 dragItemAwayId: null,
@@ -130,7 +124,7 @@
                 countAway : 0,
                 countRow2 : 0,
                 countRow : 0,
-                changeHomeX : 175,
+                changeHomeX : 60,
                 changeHomeY : 30,
                 changeAwayX: 950,
                 changeAwayY: 30,
@@ -144,23 +138,27 @@
                 setUp: 0,
                 choiceId: null,
                 isPlaying: 0,
-                circle: null,
                 cnt: 0,
-                listHomePlayers: [],
-                listAwayPlayers: [],
+                listHomePlayers: [],//save this
+                listAwayPlayers: [],// save this
                 identy: null,
-                handledPlayersHome: [],
-                handledPlayersAway: [],
+                handledPlayersHome: [],//this needs to be saved
+                handledPlayersAway: [],//this needs to be saved
+                placedCordsHome: [],//this needs to be saved
+                placedCordsAway: [],//this needs to be saved
                 count_times: 0,
                 played: false,
                 handledBall: [],
                 userInput: {
-                    animDuration: null,
+                    animDuration: null,//this needs to be saved
                 },
                 tweens: [],
+                savedData: {},
                 precordsCount: 0,
-                unitedBallCount: 0, //test for counting time right
+                timeSaved: 0,
             }
+            //jauna kolonna textfield un visus array samest jaunaa objektaaa un to objektu json.stringify(object) 
+            //lai attaisitu vala- json.parse(the data)
         },
         mounted(){},
         methods: { 
@@ -172,14 +170,22 @@
                 this.presetID = data.id_presets;
                 this.userID = data.id_user;
                 this.image=data.sports_type.field_picture;
-                
-                
                 console.log('Data:', data.tactics_name);
                 this.img = new window.Image();
                 this.img.src = this.image;
                 this.img.onload = () => {
                     // set image only when it is loaded
                 };
+            },
+            saveTacticData(){
+                this.savedData = ({
+                   homeList: this.listHome,
+                   awayList: this.listAway,
+                   speed: this.timeSaved,
+                });
+                let inputData = JSON.stringify(this.savedData);
+                this.shoutout(inputData);
+                sampleRequest.updateTactics({id: this.id, tacticData: inputData});
             },
             handleDragstart(e){//drag handler for inbuilt js circle creation
                 this.choiceId = e.target.id();
@@ -307,6 +313,9 @@
                         this.shoutout("ITEMS PRECORD COUNT", this.precordsCount);
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of home players: ", this.handledPlayersHome);
+                        if(this.placedCordsHome.indexOf(playerId) < 0){
+                            this.placedCordsHome.push(playerId)
+                        }
                     }
                     this.shoutout("All Home players on the page coords set!");
                 }else{
@@ -324,9 +333,13 @@
                             y: item.y,
                         });
                         this.shoutout("current coords added: ",item.preCords);
-                        this.precordsCount = item.preCords.length ;
+                        this.precordsCount = item.preCords.length;
                         this.shoutout(player.circ);
                         this.shoutout("the touched list of away players: ", this.handledPlayersAway);
+                        if(this.placedCordsAway.indexOf(playerId) < 0){
+                            this.placedCordsAway.push(playerId);
+                        }
+                        
                     }
                     this.shoutout("All Away players on the page coords set!");
                 }else{
@@ -442,9 +455,11 @@
                     const index = this.listHome.indexOf(item);
                     const index2 = this.listHomePlayers.indexOf(circle);
                     const index3 = this.handledPlayersHome.indexOf(this.delItemHomeId);
+                    const index4 = this.placedCordsHome.indexOf(this.delItemHomeId);
                     this.shoutout("Deleted circle: ", index2);
                     this.shoutout("Deleted item: ",index);
                     circle.circ.remove();
+                    this.placedCordsHome.splice(index4, 1);
                     this.handledPlayersHome.splice(index3, 1);
                     this.listHomePlayers.splice(index2, 1);
                     this.listHome.splice(index, 1);
@@ -471,9 +486,11 @@
                     const index = this.listAway.indexOf(item);
                     const index2 = this.listAwayPlayers.indexOf(circle);
                     const index3 = this.handledPlayersAway.indexOf(this.delItemAwayId);
+                    const index4 = this.placedCordsAway.indexOf(this.delItemAwayId);
                     this.shoutout("Deleted circle: ", index2);
                     this.shoutout("Deleted item: ",index);
                     circle.circ.remove();
+                    this.placedCordsAway.splice(index4, 1);
                     this.handledPlayersAway.splice(index3, 1);
                     this.listAwayPlayers.splice(index2, 1);
                     this.listAway.splice(index, 1);
@@ -507,8 +524,8 @@
                 return text;
             },
             animInit(e){
-                if(this.handledPlayersHome.length < 1 && this.handledPlayersAway.length < 1){ return; }
-                for (const idplayer of this.handledPlayersHome) {
+                if(this.placedCordsHome.length < 1 && this.placedCordsAway.length < 1){ return; }
+                for (const idplayer of this.placedCordsHome) {
                     var i = 1;
                     const item = this.listHome.find(i => i.id === idplayer);
                     const player = this.listHomePlayers.find(i => i.id === idplayer);
@@ -518,8 +535,7 @@
                     });
                     this.animStart(item, player.circ, i);
                 }
-               
-                for(const idplayer2 of this.handledPlayersAway){
+                for(const idplayer2 of this.placedCordsAway){
                     var j = 1;
                     const item2 = this.listAway.find(i => i.id === idplayer2);
                     const player2 = this.listAwayPlayers.find(i => i.id === idplayer2);
@@ -534,7 +550,7 @@
             animStart(item,player,i){
                 var tween = new Konva.Tween({
                     node: player,
-                    duration: this.setAnimationDuration(),
+                    duration: this.animDuration(),
                     x: item.preCords[i].x,
                     y: item.preCords[i].y,
                     onUpdate: () => console.log("first tween updated"),
@@ -563,6 +579,27 @@
                for (const tween of this.tweens) {
                     tween.play();
                 }
+            },
+            animDuration(){
+                if(this.userInput.animDuration === null){
+                    console.log("TUKSS INPUT FIELD");
+                    var defaultTime = 1;
+                    console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
+                    this.timeSaved = defaultTime;
+                    return defaultTime;
+                }
+                else if(this.precordsCount <=2){
+                    console.log("PRECORDS IR MAZAK VAI VIENAADS AR 2");
+                    console.log("SPEED IR",this.userInput.animDuration);
+                    this.timeSaved = this.userInput.animDuration;
+                    return this.userInput.animDuration;
+                }
+                else if(this.userInput.animDuration !== null){
+                    console.log("NETUKSS INPUT FIELD");
+                    console.log("SPEED IR", this.userInput.animDuration / this.precordsCount);
+                    this.timeSaved = this.userInput.animDuration / this.precordsCount;
+                    return  this.userInput.animDuration / this.precordsCount;
+                }   
             },
             checkBoxAddRemoveBall(){
                 var check = document.getElementById("checkbox");
@@ -648,186 +685,7 @@
                     return;
                 }
             },
-
-
-            setAnimationDuration(){
-                if(this.userInput.animDuration === null){
-                    console.log("TUKSS INPUT FIELD");
-                    var defaultTime = 1;
-                    console.log("UZLIEKU SPEED UZ", this.userInput.animDuration);
-                    return defaultTime;
-                }
-                else if(this.precordsCount <=2){
-                    console.log("PRECORDS IR MAZAK VAI VIENAADS AR 2");
-                    console.log("SPEED IR",this.userInput.animDuration);
-                    return this.userInput.animDuration;
-                }
-                else if(this.userInput.animDuration !== null){
-                    var speed;
-                    speed = this.userInput.animDuration / this.precordsCount;
-                    console.log("NETUKSS INPUT FIELD");
-                    console.log("SPEED IR", this.userInput.animDuration / this.precordsCount);
-                    return  speed;
-                }
-                
-            },
-            // handleDragend(e) {//change the save coordinates of the player when the drag ends
-            //     this.choiceId = e.target.id();
-            //     if(this.choiceId.includes('Home_')){
-            //         this.dragItemHomeId = e.target.id();//get the dragged player id
-            //         this.delItemHomeId = this.dragItemHomeId;
-            //         const item = this.listHome.find(i => i.id === this.dragItemHomeId);
-            //         item.x = e.target.x();
-            //         item.y = e.target.y();
-            //         // item.preCords.splice(1,1);
-            //         this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
-            //         this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-            //         this.dragItemHomeId = null;
-            //     }else{
-            //         this.dragItemAwayId = e.target.id();
-            //         this.delItemAwayId = this.dragItemAwayId;
-            //         const item = this.listAway.find(i => i.id == this.dragItemAwayId);
-            //         item.x = e.target.x();
-            //         item.y = e.target.y();
-            //         this.shoutout("Old coordinates for: ",item.id," is: ",item.preCords);
-            //         this.shoutout("New coordinates for: ",item.id," is: ",item.x,item.y);
-            //         this.dragItemAwayId = null;
-            //     }    
-            // },
-            // handleDragstart(e) {//starts to see which player is dragged and uses it respectivly
-            //     // save drag element:
-            //     this.choiceId = e.target.id();
-            //     if(this.choiceId.includes('Home_')){
-            //         this.shoutout("The chosen one is: ",this.choiceId);
-            //         this.dragItemHomeId = e.target.id();
-            //         // move current element to the top:
-            //         const item = this.listHome.find(i => i.id === this.dragItemHomeId);
-            //         const index = this.listHome.indexOf(item);
-            //         this.x1 = item.x;
-            //         this.y1 = item.y;
-            //         this.shoutout(this.x1,this.y1);
-            //         item.preCords.push({x: this.x1, y:this.y1});
-            //         // console.log(index);
-            //         this.listHome.splice(index, 1);
-            //         this.listHome.push(item);
-            //         this.shoutout("Drag started from ", item.x, item.y);
-            //     } else{
-            //         this.dragItemAwayId = e.target.id();
-            //         const item = this.listAway.find(i => i.id === this.dragItemAwayId);
-            //         const index = this.listAway.indexOf(item);
-            //         this.x1 = item.x;
-            //         this.y1 = item.y;
-            //         this.shoutout(this.x1,this.y1);
-            //         item.preCords.push({x: this.x1, y: this.y1});
-            //         this.listAway.splice(index, 1);
-            //         this.listAway.push(item);
-            //         this.shoutout("Drag started: ", item.x, item.y);
-            //     }
-            // },
-            // addHomePlayer(e){//adds new player object at the top of the field
-            //     if(this.count == 6){ return}
-            //     this.changeHomeX += 40;
-            //     this.listHome.push({
-            //         id: 'Home_'+this.count.toString(),
-            //         x: this.changeHomeX,
-            //         y: 30,
-            //         preCords: [],
-            //         scale: 1
-            //     });
-            //     this.count++;
-            //     this.shoutout("List data ",this.listHome);
-            // },
-            // removeHomePlayer(e){//removes last added player object
-            //     var check = this.count-1;
-            //     if(check <0){ return; }
-            //     console.log("check: ",this.delItemHomeId);
-            //     const item = this.listHome.find(i => i.id === this.delItemHomeId);
-            //     this.shoutout("Item: ",item);
-            //     const index = this.listHome.indexOf(item);
-            //     this.shoutout("Deleted: ",index);
-            //     this.listHome.splice(index, 1);
-            //     this.count--;
-            //     this.changeHomeX-=40;
-            //     if(this.count <= 0){
-            //         this.count = 0;
-            //     }
-            //     this.shoutout("Home List data ", this.listHome);
-            //     this.delItemHomeId = null;
-            // },
-                    //list.splice(start-1); nogrieziis visas koordinates iznemot pedejo
-                    //ielikt listaa vecaas koordinates atbilstosham id, lai izveidotu pattern for animation
-                    //just continue adding coords to the table
-                    //pectam izveidojot animaciju, padot shos listus ,lai ar tiem darbotos
-
-            // addAwayPlayer(e){
-            //     if(this.count2 == 6){ return; }
-            //     this.changeAwayX -= 40;
-            //     this.listAway.push({
-            //         id: 'Away_'+this.count2.toString(),
-            //         x: this.changeAwayX,
-            //         y: 30,
-            //         preCords: [],
-            //         scale: 1
-            //     });
-            //     this.count2++;
-            //     this.shoutout("List data ",this.listAway);
-            // },
-            // removeAwayPlayer(e){
-            //     var check = this.count2-1;
-            //     if(check < 0){ return; }
-            //     console.log("check: ", this.delItemAwayId);
-            //     const item = this.listAway.find(i => i.id === this.delItemAwayId);
-            //     this.shoutout("Item: ", item);
-            //     const index = this.listAway.indexOf(item);
-            //     this.shoutout("Deleted: ",index);
-            //     this.listAway.splice(index, 1);
-            //     this.count2--;
-            //     this.changeAwayX+=40;
-            //     if(this.count2 <= 0){
-            //         this.count2 = 0;
-            //     }
-            //     this.shoutout("Away List data: ", this.listAway);
-            //     this.delItemAwayId = null;
-            // },
-            // updateCoords(event){
-            //     this.xpoint = event.clientX;
-            //     this.ypoint = event.clientY;
-            // },
-            // replayAnim(){
-            //     let moveHome = this.listHome.find(i => i.id === this.delItemHomeId);
-            //     let moveAway = this.listAway.find(i => i.id === this.delItemAwayId);
-            //     var turnAroun1 = false;
-            //     var turnAroun2 = false;
-            //     this.shoutout(moveHome);
-            //     this.shoutout(moveAway);
-            //     let amplitude = 5;
-            //     var velocity = 50;
-            //     var anim = new Konva.Animation(function (frame) {
-            //         if(turnAroun1){
-            //             moveHome.x -= (velocity * (50/ 1000));
-            //             if(moveHome.x <= 20){
-            //                 turnAroun1 = false;
-            //             }
-            //         }else if(moveHome.x >= 980){
-            //             turnAroun1 = true;
-            //         }else{
-            //             moveHome.x += (velocity * (50/ 1000));
-            //             moveHome.y += amplitude * Math.sin((frame.time * 2 * Math.PI) / 1000);
-            //         }
-            //         if(turnAroun2){
-            //             moveAway.x += (velocity * (50/ 1000));
-            //             if(moveAway.x >= 980){
-            //                 turnAroun2 = false;
-            //             }
-            //         }else if(moveAway.x <= 20){
-            //             turnAroun2 = true;
-            //         }else{
-            //             moveAway.x -= (velocity * (50/1000));
-            //             moveAway.y += amplitude * Math.sin((frame.time * 2 * Math.PI)/1000);
-            //         }  
-            //     }, this.$refs.layer.getNode());
-            //     anim.start();
-            // },
+           
 
         },
     };
